@@ -12,4 +12,9 @@ public class TravelsController {
         return string;
     }
 
+    public Integer getTotalPackages() {
+
+        return 20;
+    }
+
 }

@@ -1,12 +1,11 @@
-package com.tourism.travels;
+package com.tourism.travels.controller;
 
-import com.tourism.travels.controller.TravelsController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TravelsApplicationTests {
+class TravelsControllerTest {
 
     private TravelsController travelsController;
 
@@ -17,7 +16,7 @@ class TravelsApplicationTests {
     }
 
     @Test
-    void works() {
+    void getPackagesTest() {
         // Arrange
         var travels = "Travels";
 
@@ -26,6 +25,16 @@ class TravelsApplicationTests {
 
         // Assert
         assertThat(returnedString).isEqualTo(travels);
+
+    }
+
+    @Test
+    void getTotalPackagesTest() {
+        // Arrange/Act
+        var returnedNumberOfPackages = travelsController.getTotalPackages();
+
+        // Assert
+        assertThat(returnedNumberOfPackages).isEqualTo(20);
 
     }
 
