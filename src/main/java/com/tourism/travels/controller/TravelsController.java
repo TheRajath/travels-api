@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class TravelsController {
 
-    public String getPackages() {
+    public String getPackages(String string) {
 
-        return "Travels";
+        return string;
     }
 
 }
