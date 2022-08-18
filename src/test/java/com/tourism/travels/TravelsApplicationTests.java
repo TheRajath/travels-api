@@ -8,25 +8,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TravelsApplicationTests {
 
-	private TravelsController travelsController;
+    private TravelsController travelsController;
 
-	@BeforeEach
-	void setUp() {
+    @BeforeEach
+    void setUp() {
 
-		travelsController = new TravelsController();
-	}
+        travelsController = new TravelsController();
+    }
 
-	@Test
-	void works() {
-		// Arrange
-		var travels = "Travels";
+    @Test
+    void works() {
+        // Arrange
+        var travels = "Travels";
 
-		// Act
-		var returnedString = travelsController.getPackages(travels);
+        // Act
+        var returnedString = travelsController.getPackages(travels);
 
-		// Assert
-		assertThat(returnedString).isEqualTo(travels);
+        // Assert
+        assertThat(returnedString).isEqualTo(travels);
 
-	}
+    }
 
 }
