@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: travels
+  datasource:
+    url: jdbc:mysql://localhost:3306/travels
+    username: ENC(tOrqSrO18J9zTMb6WabC0A==)
+    password: ENC(r1aogTz3OyV5+V8+SKu1VQ==)
