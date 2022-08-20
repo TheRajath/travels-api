@@ -107,14 +107,7 @@ class TravelsControllerTest {
         void return400BadException_whenCustomerIdIsNull() throws Exception {
             // Arrange
             var request = CUSTOMER_SIGN_UP.replace("123", "null");
-            var errorMessage =
-                    """
-                            [
-                                {
-                                    "field": "customerId",
-                                    "message": "must not be null"
-                                }
-                            ]""";
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "customerId").replace("empty", "null");
 
             // Act/Assert
             mockMvc.perform(put("/customer/signup")
@@ -128,14 +121,7 @@ class TravelsControllerTest {
         void return400BadException_whenFirstNameIsEmpty() throws Exception {
             // Arrange
             var request = CUSTOMER_SIGN_UP.replace("firstName", "");
-            var errorMessage =
-                    """
-                            [
-                                {
-                                    "field": "firstName",
-                                    "message": "must not be empty"
-                                }
-                            ]""";
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "firstName");
 
             // Act/Assert
             mockMvc.perform(put("/customer/signup")
@@ -149,14 +135,8 @@ class TravelsControllerTest {
         void return400BadException_whenEmailIsNotInProperForm() throws Exception {
             // Arrange
             var request = CUSTOMER_SIGN_UP.replace("email@gmail.com", "email");
-            var errorMessage =
-                    """
-                            [
-                                {
-                                    "field": "email",
-                                    "message": "must be a well-formed email address"
-                                }
-                            ]""";
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "email")
+                    .replace("must not be empty", "must be a well-formed email address");
 
             // Act/Assert
             mockMvc.perform(put("/customer/signup")
@@ -170,14 +150,7 @@ class TravelsControllerTest {
         void return400BadException_whenEmailIsEmpty() throws Exception {
             // Arrange
             var request = CUSTOMER_SIGN_UP.replace("email@gmail.com", "");
-            var errorMessage =
-                    """
-                            [
-                                {
-                                    "field": "email",
-                                    "message": "must not be empty"
-                                }
-                            ]""";
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "email");
 
             // Act/Assert
             mockMvc.perform(put("/customer/signup")
@@ -191,14 +164,7 @@ class TravelsControllerTest {
         void return400BadException_whenPasswordIsEmpty() throws Exception {
             // Arrange
             var request = CUSTOMER_SIGN_UP.replace("secret", "");
-            var errorMessage =
-                    """
-                            [
-                                {
-                                    "field": "password",
-                                    "message": "must not be empty"
-                                }
-                            ]""";
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "password");
 
             // Act/Assert
             mockMvc.perform(put("/customer/signup")
@@ -229,5 +195,14 @@ class TravelsControllerTest {
                         "email": "email@gmail.com",
                         "password": "secret"
                     }""";
+
+    private static final String COMMON_ERROR_MESSAGE =
+            """
+                    [
+                        {
+                            "field": "fieldName",
+                            "message": "must not be empty"
+                        }
+                    ]""";
 
 }
