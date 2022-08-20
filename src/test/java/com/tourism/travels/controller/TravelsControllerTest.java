@@ -40,28 +40,33 @@ class TravelsControllerTest {
                 .build();
     }
 
-    @Test
-    void getPackagesTest() throws Exception {
-        // Arrange
-        var packageDetailsResource = new PackageDetailsResource();
-        packageDetailsResource.setPackageName("Bangalore");
-        packageDetailsResource.setTripDuration("2 Days,1 Night");
-        packageDetailsResource.setTotalCost(5000);
+    @Nested
+    class GetPackages {
 
-        var packageEntity = new PackageEntity();
+        @Test
+        void works() throws Exception {
+            // Arrange
+            var packageDetailsResource = new PackageDetailsResource();
+            packageDetailsResource.setPackageName("Bangalore");
+            packageDetailsResource.setTripDuration("2 Days,1 Night");
+            packageDetailsResource.setTotalCost(5000);
 
-        when(travelsService.getPackageDetails()).thenReturn(Collections.singletonList(packageEntity));
-        when(travelMapper.toPackageDetailsResource(packageEntity)).thenReturn(packageDetailsResource);
+            var packageEntity = new PackageEntity();
 
-        // Act/Assert
-        mockMvc.perform(get("/packages"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(PACKAGE_RESPONSE));
+            when(travelsService.getPackageDetails()).thenReturn(Collections.singletonList(packageEntity));
+            when(travelMapper.toPackageDetailsResource(packageEntity)).thenReturn(packageDetailsResource);
 
-        verify(travelsService).getPackageDetails();
-        verify(travelMapper).toPackageDetailsResource(packageEntity);
+            // Act/Assert
+            mockMvc.perform(get("/packages"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(PACKAGE_RESPONSE));
 
-        verifyNoMoreInteractions(travelsService, travelMapper);
+            verify(travelsService).getPackageDetails();
+            verify(travelMapper).toPackageDetailsResource(packageEntity);
+
+            verifyNoMoreInteractions(travelsService, travelMapper);
+
+        }
 
     }
 
