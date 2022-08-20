@@ -1,4 +1,4 @@
-package com.tourism.travels.controller;
+package com.tourism.travels.sql;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

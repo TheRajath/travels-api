@@ -1,6 +1,10 @@
 package com.tourism.travels.controller;
 
 import com.tourism.travels.exception.AlreadyExistsException;
+import com.tourism.travels.sql.CustomerEntity;
+import com.tourism.travels.sql.CustomerRepository;
+import com.tourism.travels.sql.PackageEntity;
+import com.tourism.travels.sql.PackageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

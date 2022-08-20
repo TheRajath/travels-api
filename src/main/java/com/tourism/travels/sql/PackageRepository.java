@@ -1,9 +1,9 @@
-package com.tourism.travels.controller;
+package com.tourism.travels.sql;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-interface PackageRepository extends JpaRepository<PackageEntity, Integer> {
+public interface PackageRepository extends JpaRepository<PackageEntity, Integer> {
 
 }

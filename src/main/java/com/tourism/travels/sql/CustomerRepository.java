@@ -1,4 +1,4 @@
-package com.tourism.travels.controller;
+package com.tourism.travels.sql;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-interface CustomerRepository extends JpaRepository<CustomerEntity, Integer> {
+public interface CustomerRepository extends JpaRepository<CustomerEntity, Integer> {
 
     Optional<CustomerEntity> findByEmail(String email);
 
