@@ -1,30 +1,63 @@
 package com.tourism.travels.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tourism.travels.exception.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith(MockitoExtension.class)
 class TravelsControllerTest {
 
+    @Mock
+    private TravelsService travelsService;
+
     private TravelsController travelsController;
+
+    private MockMvc mockMvc;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
 
-        travelsController = new TravelsController();
+        travelsController = new TravelsController(travelsService);
+
+        mockMvc = MockMvcBuilders.standaloneSetup(travelsController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
 
     @Test
-    void getPackagesTest() {
+    void getPackagesTest() throws Exception {
         // Arrange
-        var travels = "Travels";
+        var packageEntity = new PackageEntity();
+        packageEntity.setId(123);
+        packageEntity.setPackageName("Bangalore");
+        packageEntity.setDuration("2 Days,1 Night");
 
-        // Act
-        var returnedString = travelsController.getPackages(travels);
+        when(travelsService.getPackageDetails()).thenReturn(Collections.singletonList(packageEntity));
 
-        // Assert
-        assertThat(returnedString).isEqualTo(travels);
+        // Act/Assert
+        mockMvc.perform(get("/packages"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(PACKAGE_RESPONSE));
+
+        verify(travelsService).getPackageDetails();
+
+        verifyNoMoreInteractions(travelsService);
 
     }
 
@@ -38,4 +71,13 @@ class TravelsControllerTest {
 
     }
 
+    private static final String PACKAGE_RESPONSE =
+            """
+                    [
+                        {
+                            "id": 123,
+                            "packageName": "Bangalore",
+                            "duration": "2 Days,1 Night"
+                        }
+                    ]""";
 }

@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: travels
+  datasource:
+    url: jdbc:mysql://localhost:3306/travels
+    username: root
+    password: root

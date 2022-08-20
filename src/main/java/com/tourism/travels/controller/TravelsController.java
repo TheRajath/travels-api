@@ -1,17 +1,24 @@
 package com.tourism.travels.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequiredArgsConstructor
 public class TravelsController {
 
-    public String getPackages(String string) {
+    private final TravelsService travelsService;
 
-        return string;
+    @GetMapping("/packages")
+    public List<PackageEntity> getPackages() {
+
+        return travelsService.getPackageDetails();
     }
 
+    @GetMapping("/totalPackages")
     public Integer getTotalPackages() {
 
         return 20;
