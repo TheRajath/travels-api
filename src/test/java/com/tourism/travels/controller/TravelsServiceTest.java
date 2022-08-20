@@ -17,12 +17,15 @@ class TravelsServiceTest {
     @Mock
     private PackageRepository packageRepository;
 
+    @Mock
+    private CustomerRepository customerRepository;
+
     private TravelsService travelsService;
 
     @BeforeEach
     void setup() {
 
-        travelsService = new TravelsService(packageRepository);
+        travelsService = new TravelsService(packageRepository, customerRepository);
     }
 
     @Test

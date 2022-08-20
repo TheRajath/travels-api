@@ -68,7 +68,7 @@ class TravelsControllerTest {
 
     }
 
-    @Test
+    /*@Test
     void getTotalPackagesTest() {
         // Arrange/Act
         var returnedNumberOfPackages = travelsController.getTotalPackages();
@@ -76,7 +76,7 @@ class TravelsControllerTest {
         // Assert
         assertThat(returnedNumberOfPackages).isEqualTo(20);
 
-    }
+    }*/
 
     private static final String PACKAGE_RESPONSE =
             """
