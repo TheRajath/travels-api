@@ -23,6 +23,8 @@ public class PackageEntity {
     private String packageName;
 
     @Column(name = "trip_duration")
-    private String duration;
+    private String tripDuration;
 
+    @Column(name = "cost_per_person")
+    private int costPerPerson;
 }

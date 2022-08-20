@@ -24,6 +24,9 @@ class TravelsControllerTest {
     @Mock
     private TravelsService travelsService;
 
+    @Mock
+    private TravelMapper travelMapper;
+
     private TravelsController travelsController;
 
     private MockMvc mockMvc;
@@ -33,7 +36,7 @@ class TravelsControllerTest {
     @BeforeEach
     void setUp() {
 
-        travelsController = new TravelsController(travelsService);
+        travelsController = new TravelsController(travelsService, travelMapper);
 
         mockMvc = MockMvcBuilders.standaloneSetup(travelsController)
                 .setControllerAdvice(new GlobalExceptionHandler())
@@ -43,12 +46,15 @@ class TravelsControllerTest {
     @Test
     void getPackagesTest() throws Exception {
         // Arrange
+        var packageDetailsResource = new PackageDetailsResource();
+        packageDetailsResource.setPackageName("Bangalore");
+        packageDetailsResource.setTripDuration("2 Days,1 Night");
+        packageDetailsResource.setTotalCost(5000);
+
         var packageEntity = new PackageEntity();
-        packageEntity.setId(123);
-        packageEntity.setPackageName("Bangalore");
-        packageEntity.setDuration("2 Days,1 Night");
 
         when(travelsService.getPackageDetails()).thenReturn(Collections.singletonList(packageEntity));
+        when(travelMapper.toPackageDetailsResource(packageEntity)).thenReturn(packageDetailsResource);
 
         // Act/Assert
         mockMvc.perform(get("/packages"))
@@ -56,8 +62,9 @@ class TravelsControllerTest {
                 .andExpect(content().json(PACKAGE_RESPONSE));
 
         verify(travelsService).getPackageDetails();
+        verify(travelMapper).toPackageDetailsResource(packageEntity);
 
-        verifyNoMoreInteractions(travelsService);
+        verifyNoMoreInteractions(travelsService, travelMapper);
 
     }
 
@@ -75,9 +82,9 @@ class TravelsControllerTest {
             """
                     [
                         {
-                            "id": 123,
                             "packageName": "Bangalore",
-                            "duration": "2 Days,1 Night"
+                            "tripDuration": "2 Days,1 Night",
+                            "totalCost": 5000
                         }
                     ]""";
 }
