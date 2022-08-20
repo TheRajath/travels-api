@@ -14,7 +14,6 @@ class CustomerSignUp {
     @NotNull
     private Integer customerId;
 
-    @NotNull
     @NotEmpty
     private String firstName;
 
@@ -24,7 +23,6 @@ class CustomerSignUp {
     @NotEmpty
     private String email;
 
-    @NotNull
     @NotEmpty
     private String password;
 

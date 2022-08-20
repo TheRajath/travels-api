@@ -25,7 +25,7 @@ public class TravelsController {
     }
 
     @PutMapping("/customer/signup")
-    public CustomerSignUp customerSignUp(@Valid @RequestBody CustomerSignUp customerSignUp) {
+    public CustomerSignUp signUpCustomer(@Valid @RequestBody CustomerSignUp customerSignUp) {
 
         var customerEntity = travelMapper.toCustomerEntity(customerSignUp);
         var customerEntityWithUpdates = travelsService.signUp(customerEntity);
