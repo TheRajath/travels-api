@@ -1,6 +1,10 @@
 package com.tourism.travels.controller;
 
 import com.tourism.travels.exception.AlreadyExistsException;
+import com.tourism.travels.sql.CustomerEntity;
+import com.tourism.travels.sql.CustomerRepository;
+import com.tourism.travels.sql.PackageEntity;
+import com.tourism.travels.sql.PackageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

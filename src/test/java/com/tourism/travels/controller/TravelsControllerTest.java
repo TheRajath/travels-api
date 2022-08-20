@@ -1,6 +1,10 @@
 package com.tourism.travels.controller;
 
 import com.tourism.travels.exception.GlobalExceptionHandler;
+import com.tourism.travels.pojo.CustomerSignUp;
+import com.tourism.travels.pojo.PackageDetailsResource;
+import com.tourism.travels.sql.CustomerEntity;
+import com.tourism.travels.sql.PackageEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

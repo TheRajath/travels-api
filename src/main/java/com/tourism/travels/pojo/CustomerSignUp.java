@@ -1,4 +1,4 @@
-package com.tourism.travels.controller;
+package com.tourism.travels.pojo;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-class CustomerSignUp {
+public class CustomerSignUp {
 
     @NotNull
     private Integer customerId;

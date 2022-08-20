@@ -1,6 +1,10 @@
 
 package com.tourism.travels.controller;
 
+import com.tourism.travels.pojo.CustomerSignUp;
+import com.tourism.travels.pojo.PackageDetailsResource;
+import com.tourism.travels.sql.CustomerEntity;
+import com.tourism.travels.sql.PackageEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
