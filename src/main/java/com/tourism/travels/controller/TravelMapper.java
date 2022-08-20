@@ -1,5 +1,6 @@
 
 package com.tourism.travels.controller;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
