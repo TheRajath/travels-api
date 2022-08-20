@@ -47,7 +47,7 @@ class TravelsControllerTest {
         void works() throws Exception {
             // Arrange
             var packageDetailsResource = new PackageDetailsResource();
-            packageDetailsResource.setPackageName("Bangalore");
+            packageDetailsResource.setPackageName("Bangalore1");
             packageDetailsResource.setTripDuration("2 Days,1 Night");
             packageDetailsResource.setTotalCost(5000);
 
