@@ -26,3 +26,5 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Test with Maven
       run: mvn -B test --file pom.xml
+    - name: Code Coverage Report
+      uses: romeovs/lcov-reporter-action@v0.2.11
