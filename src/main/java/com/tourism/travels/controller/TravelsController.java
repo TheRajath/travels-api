@@ -2,9 +2,11 @@ package com.tourism.travels.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,10 +24,13 @@ public class TravelsController {
                 .toList();
     }
 
-    @GetMapping("/totalPackages")
-    public Integer getTotalPackages() {
+    @PutMapping("/customer/signup")
+    public CustomerSignUp signUpCustomer(@Valid @RequestBody CustomerSignUp customerSignUp) {
 
-        return 20;
+        var customerEntity = travelMapper.toCustomerEntity(customerSignUp);
+        var customerEntityWithUpdates = travelsService.signUp(customerEntity);
+
+        return travelMapper.toSignUpRequest(customerEntityWithUpdates);
     }
 
 }

@@ -10,4 +10,8 @@ public interface TravelMapper {
     @Mapping(target = "totalCost", source = "costPerPerson")
     PackageDetailsResource toPackageDetailsResource(PackageEntity entity);
 
+    CustomerEntity toCustomerEntity(CustomerSignUp customerSignUp);
+
+    CustomerSignUp toSignUpRequest(CustomerEntity customerEntity);
+
 }
