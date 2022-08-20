@@ -47,7 +47,7 @@ class TravelsControllerTest {
         void works() throws Exception {
             // Arrange
             var packageDetailsResource = new PackageDetailsResource();
-            packageDetailsResource.setPackageName("Bangalore");
+            packageDetailsResource.setPackageName("Agra");
             packageDetailsResource.setTripDuration("2 Days,1 Night");
             packageDetailsResource.setTotalCost(5000);
 
@@ -180,7 +180,7 @@ class TravelsControllerTest {
             """
                     [
                         {
-                            "packageName": "Bangalore",
+                            "packageName": "Agra",
                             "tripDuration": "2 Days,1 Night",
                             "totalCost": 5000
                         }
