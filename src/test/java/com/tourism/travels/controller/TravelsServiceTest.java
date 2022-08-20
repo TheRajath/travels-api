@@ -1,14 +1,18 @@
 package com.tourism.travels.controller;
 
+import com.tourism.travels.exception.AlreadyExistsException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,22 +32,62 @@ class TravelsServiceTest {
         travelsService = new TravelsService(packageRepository, customerRepository);
     }
 
-    @Test
-    void getPackageDetailsTest() {
-        // Arrange
-        var packageEntities = Collections.singletonList(new PackageEntity());
+    @Nested
+    class GetPackageDetails {
 
-        when(packageRepository.findAll()).thenReturn(packageEntities);
+        @Test
+        void works() {
+            // Arrange
+            var packageEntities = Collections.singletonList(new PackageEntity());
 
-        // Act
-        var packageDetails = travelsService.getPackageDetails();
+            when(packageRepository.findAll()).thenReturn(packageEntities);
 
-        //Assert
-        assertThat(packageDetails).isEqualTo(packageEntities);
+            // Act
+            var packageDetails = travelsService.getPackageDetails();
 
-        verify(packageRepository).findAll();
+            //Assert
+            assertThat(packageDetails).isEqualTo(packageEntities);
 
-        verifyNoMoreInteractions(packageRepository);
+            verify(packageRepository).findAll();
+
+            verifyNoMoreInteractions(packageRepository);
+        }
+
+    }
+
+    @Nested
+    class SignUp {
+
+        @Test
+        void works() {
+            // Arrange
+            var customerEntity = new CustomerEntity();
+            customerEntity.setEmail("email@gmail.com");
+
+            // Act
+            travelsService.signUp(customerEntity);
+
+            // Assert
+            verify(customerRepository).findByEmail(customerEntity.getEmail());
+            verify(customerRepository).save(customerEntity);
+
+            verifyNoMoreInteractions(customerRepository);
+        }
+
+        @Test
+        void throwsAlreadyExistsException_whenThereIsAnExistingRecord() {
+            // Arrange
+            var customerEntity = new CustomerEntity();
+            customerEntity.setEmail("email@gmail.com");
+
+            when(customerRepository.findByEmail(customerEntity.getEmail())).thenReturn(Optional.of(customerEntity));
+
+            // Act/Assert
+            assertThatThrownBy(() -> travelsService.signUp(customerEntity))
+                    .isInstanceOf(AlreadyExistsException.class)
+                    .hasMessage("Customer with this email: email@gmail.com already exists");
+        }
+
     }
 
 }
