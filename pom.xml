@@ -11,7 +11,6 @@
     <groupId>com.tourism</groupId>
     <artifactId>travels</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
     <name>travels</name>
     <description>Tourism Project</description>
     <properties>
