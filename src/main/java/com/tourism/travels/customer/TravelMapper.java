@@ -1,6 +1,7 @@
 
 package com.tourism.travels.customer;
 
+import com.tourism.travels.pojo.CustomerDetailsResource;
 import com.tourism.travels.pojo.CustomerSignUp;
 import com.tourism.travels.pojo.PackageDetailsResource;
 import com.tourism.travels.sql.CustomerEntity;
@@ -13,6 +14,8 @@ public interface TravelMapper {
 
     @Mapping(target = "totalCost", source = "costPerPerson")
     PackageDetailsResource toPackageDetailsResource(PackageEntity entity);
+
+    CustomerDetailsResource toCustomerDetailsResource(CustomerEntity entity);
 
     CustomerEntity toCustomerEntity(CustomerSignUp customerSignUp);
 
