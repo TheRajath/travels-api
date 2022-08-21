@@ -21,4 +21,5 @@ public class AddPackageRequest {
 
     @NotNull
     private Integer costPerPerson;
+
 }
