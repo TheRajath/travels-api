@@ -61,13 +61,13 @@ class CustomerServiceTest {
         void works() {
             // Arrange
             var customerEntity = new CustomerEntity();
-            customerEntity.setEmail("email@gmail.com");
+            customerEntity.setCustomerId(123);
 
             // Act
             customerService.signUp(customerEntity);
 
             // Assert
-            verify(customerRepository).findByEmail(customerEntity.getEmail());
+            verify(customerRepository).findById(customerEntity.getCustomerId());
             verify(customerRepository).save(customerEntity);
 
             verifyNoMoreInteractions(customerRepository);
@@ -77,14 +77,14 @@ class CustomerServiceTest {
         void throwsAlreadyExistsException_whenThereIsAnExistingRecord() {
             // Arrange
             var customerEntity = new CustomerEntity();
-            customerEntity.setEmail("email@gmail.com");
+            customerEntity.setCustomerId(123);
 
-            when(customerRepository.findByEmail(customerEntity.getEmail())).thenReturn(Optional.of(customerEntity));
+            when(customerRepository.findById(customerEntity.getCustomerId())).thenReturn(Optional.of(customerEntity));
 
             // Act/Assert
             assertThatThrownBy(() -> customerService.signUp(customerEntity))
                     .isInstanceOf(AlreadyExistsException.class)
-                    .hasMessage("Customer with this email: email@gmail.com already exists");
+                    .hasMessage("Customer with this customerId: 123 already exists");
         }
 
     }
