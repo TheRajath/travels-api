@@ -59,7 +59,7 @@ class CustomerControllerTest {
             when(travelMapper.toSignUpRequest(customerEntity)).thenReturn(customerSignUp);
 
             // Act/Assert
-            mockMvc.perform(put("/customer/signup")
+            mockMvc.perform(put("/customers/signup")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(CUSTOMER_SIGN_UP))
                     .andExpect(status().isOk())
@@ -79,7 +79,7 @@ class CustomerControllerTest {
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "customerId").replace("empty", "null");
 
             // Act/Assert
-            mockMvc.perform(put("/customer/signup")
+            mockMvc.perform(put("/customers/signup")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(request))
                     .andExpect(status().isBadRequest())
@@ -93,7 +93,7 @@ class CustomerControllerTest {
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "firstName");
 
             // Act/Assert
-            mockMvc.perform(put("/customer/signup")
+            mockMvc.perform(put("/customers/signup")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(request))
                     .andExpect(status().isBadRequest())
@@ -108,7 +108,7 @@ class CustomerControllerTest {
                     .replace("must not be empty", "must be a well-formed email address");
 
             // Act/Assert
-            mockMvc.perform(put("/customer/signup")
+            mockMvc.perform(put("/customers/signup")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(request))
                     .andExpect(status().isBadRequest())
@@ -122,7 +122,7 @@ class CustomerControllerTest {
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "email");
 
             // Act/Assert
-            mockMvc.perform(put("/customer/signup")
+            mockMvc.perform(put("/customers/signup")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(request))
                     .andExpect(status().isBadRequest())
@@ -136,7 +136,7 @@ class CustomerControllerTest {
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "password");
 
             // Act/Assert
-            mockMvc.perform(put("/customer/signup")
+            mockMvc.perform(put("/customers/signup")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(request))
                     .andExpect(status().isBadRequest())
