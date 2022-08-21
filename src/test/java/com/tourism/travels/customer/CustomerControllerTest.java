@@ -62,7 +62,7 @@ class CustomerControllerTest {
             when(travelMapper.toCustomerDetailsResource(customerEntity)).thenReturn(customerDetailsResource);
 
             // Act/Assert
-            mockMvc.perform(get("/customer"))
+            mockMvc.perform(get("/customers"))
                     .andExpect(status().isOk())
                     .andExpect(content().json(CUSTOMER_DETAILS_RESPONSE));
 
