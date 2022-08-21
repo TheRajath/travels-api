@@ -1,5 +1,6 @@
 package com.tourism.travels.packages;
 
+import com.tourism.travels.exception.AlreadyExistsException;
 import com.tourism.travels.sql.PackageEntity;
 import com.tourism.travels.sql.PackageRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,16 @@ public class PackageService {
     public List<PackageEntity> getPackageDetails() {
 
         return packageRepository.findAll();
+    }
+
+    public PackageEntity addNewPackage(PackageEntity packageEntityWithUpdates) {
+
+        var packageId = packageEntityWithUpdates.getId();
+
+        packageRepository.findById(packageId)
+                .ifPresent(x -> { throw new AlreadyExistsException("Package with is id: " + packageId + " already exists"); });
+
+        return packageRepository.save(packageEntityWithUpdates);
     }
 
 }
