@@ -101,13 +101,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Getter
-    @AllArgsConstructor
-    static class Error {
-
-        @JsonInclude(JsonInclude.Include.NON_NULL)
-        private final String field;
-        private final String message;
+    record Error (
+            @JsonInclude(JsonInclude.Include.NON_NULL)
+            String field,
+            String message) {
 
     }
 
