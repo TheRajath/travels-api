@@ -21,10 +21,10 @@ public class CustomerService {
 
     public CustomerEntity signUp(CustomerEntity customerEntityWithUpdates) {
 
-        var email = customerEntityWithUpdates.getEmail();
+        var customerId = customerEntityWithUpdates.getCustomerId();
 
-        customerRepository.findByEmail(email)
-                .ifPresent(x -> { throw new AlreadyExistsException("Customer with this email: " + email + " already exists"); });
+        customerRepository.findById(customerId)
+                .ifPresent(x -> { throw new AlreadyExistsException("Customer with this customerId: " + customerId + " already exists"); });
 
         return customerRepository.save(customerEntityWithUpdates);
     }
