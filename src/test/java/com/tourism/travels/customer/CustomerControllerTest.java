@@ -1,6 +1,7 @@
 package com.tourism.travels.customer;
 
 import com.tourism.travels.exception.GlobalExceptionHandler;
+import com.tourism.travels.pojo.CustomerDetailsResource;
 import com.tourism.travels.pojo.CustomerSignUp;
 import com.tourism.travels.sql.CustomerEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Collections;
+
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -37,6 +41,37 @@ class CustomerControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(customerController)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
+    }
+
+    @Nested
+    class getCustomers {
+
+        @Test
+        void works() throws Exception {
+            // Arrange
+            var customerDetailsResource = new CustomerDetailsResource();
+            customerDetailsResource.setCustomerId(123);
+            customerDetailsResource.setFirstName("firstName");
+            customerDetailsResource.setLastName("lastName");
+            customerDetailsResource.setEmail("email@gmail.com");
+            customerDetailsResource.setPassword("password");
+
+            var customerEntity = new CustomerEntity();
+
+            when(customerService.getCustomerDetails()).thenReturn(Collections.singletonList(customerEntity));
+            when(travelMapper.toCustomerDetailsResource(customerEntity)).thenReturn(customerDetailsResource);
+
+            // Act/Assert
+            mockMvc.perform(get("/customer"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(CUSTOMER_DETAILS_RESPONSE));
+
+            verify(customerService).getCustomerDetails();
+            verify(travelMapper).toCustomerDetailsResource(customerEntity);
+
+            verifyNoMoreInteractions(customerService, travelMapper);
+        }
+
     }
 
     @Nested
@@ -145,6 +180,17 @@ class CustomerControllerTest {
 
     }
 
+    private static final String CUSTOMER_DETAILS_RESPONSE =
+            """
+                    [
+                        {
+                            "customerId": 123,
+                            "firstName": "firstName",
+                            "lastName": "lastName",
+                            "email": "email@gmail.com",
+                            "password": "password"
+                        }
+                    ]""";
     private static final String CUSTOMER_SIGN_UP =
             """
                     {

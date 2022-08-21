@@ -10,8 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
@@ -27,6 +29,29 @@ class CustomerServiceTest {
     void setup() {
 
         customerService = new CustomerService(customerRepository);
+    }
+
+    @Nested
+    class GetCustomerDetails {
+
+        @Test
+        void works() {
+            // Arrange
+            var customerEntities = Collections.singletonList(new CustomerEntity());
+
+            when(customerRepository.findAll()).thenReturn(customerEntities);
+
+            // Act
+            var customerDetails = customerService.getCustomerDetails();
+
+            // Assert
+            assertThat(customerDetails).isEqualTo(customerEntities);
+
+            verify(customerRepository).findAll();
+
+            verifyNoMoreInteractions(customerRepository);
+        }
+
     }
 
     @Nested
