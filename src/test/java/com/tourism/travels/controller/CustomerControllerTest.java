@@ -2,9 +2,7 @@ package com.tourism.travels.controller;
 
 import com.tourism.travels.exception.GlobalExceptionHandler;
 import com.tourism.travels.pojo.CustomerSignUp;
-import com.tourism.travels.pojo.PackageDetailsResource;
 import com.tourism.travels.sql.CustomerEntity;
-import com.tourism.travels.sql.PackageEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,19 +13,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Collections;
-
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-class TravelsControllerTest {
+class CustomerControllerTest {
 
     @Mock
-    private TravelsService travelsService;
+    private CustomerService customerService;
 
     @Mock
     private TravelMapper travelMapper;
@@ -37,41 +32,11 @@ class TravelsControllerTest {
     @BeforeEach
     void setUp() {
 
-        var travelsController = new TravelsController(travelsService, travelMapper);
+        var customerController = new CustomerController(customerService, travelMapper);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(travelsController)
+        mockMvc = MockMvcBuilders.standaloneSetup(customerController)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
-    }
-
-    @Nested
-    class GetPackages {
-
-        @Test
-        void works() throws Exception {
-            // Arrange
-            var packageDetailsResource = new PackageDetailsResource();
-            packageDetailsResource.setPackageName("Agra");
-            packageDetailsResource.setTripDuration("2 Days,1 Night");
-            packageDetailsResource.setTotalCost(5000);
-
-            var packageEntity = new PackageEntity();
-
-            when(travelsService.getPackageDetails()).thenReturn(Collections.singletonList(packageEntity));
-            when(travelMapper.toPackageDetailsResource(packageEntity)).thenReturn(packageDetailsResource);
-
-            // Act/Assert
-            mockMvc.perform(get("/packages"))
-                    .andExpect(status().isOk())
-                    .andExpect(content().json(PACKAGE_RESPONSE));
-
-            verify(travelsService).getPackageDetails();
-            verify(travelMapper).toPackageDetailsResource(packageEntity);
-
-            verifyNoMoreInteractions(travelsService, travelMapper);
-
-        }
-
     }
 
     @Nested
@@ -90,7 +55,7 @@ class TravelsControllerTest {
             var customerEntity = new CustomerEntity();
 
             when(travelMapper.toCustomerEntity(any(CustomerSignUp.class))).thenReturn(customerEntity);
-            when(travelsService.signUp(customerEntity)).thenReturn(customerEntity);
+            when(customerService.signUp(customerEntity)).thenReturn(customerEntity);
             when(travelMapper.toSignUpRequest(customerEntity)).thenReturn(customerSignUp);
 
             // Act/Assert
@@ -101,10 +66,10 @@ class TravelsControllerTest {
                     .andExpect(content().json(CUSTOMER_SIGN_UP));
 
             verify(travelMapper).toCustomerEntity(any(CustomerSignUp.class));
-            verify(travelsService).signUp(customerEntity);
+            verify(customerService).signUp(customerEntity);
             verify(travelMapper).toSignUpRequest(customerEntity);
 
-            verifyNoMoreInteractions(travelsService, travelMapper);
+            verifyNoMoreInteractions(customerService, travelMapper);
         }
 
         @Test
@@ -179,16 +144,6 @@ class TravelsControllerTest {
         }
 
     }
-
-    private static final String PACKAGE_RESPONSE =
-            """
-                    [
-                        {
-                            "packageName": "Agra",
-                            "tripDuration": "2 Days,1 Night",
-                            "totalCost": 5000
-                        }
-                    ]""";
 
     private static final String CUSTOMER_SIGN_UP =
             """
