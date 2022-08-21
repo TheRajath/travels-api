@@ -191,6 +191,7 @@ class CustomerControllerTest {
                             "password": "password"
                         }
                     ]""";
+
     private static final String CUSTOMER_SIGN_UP =
             """
                     {
