@@ -1,36 +1,27 @@
-package com.tourism.travels.controller;
+package com.tourism.travels.customer;
 
 import com.tourism.travels.pojo.CustomerSignUp;
-import com.tourism.travels.pojo.PackageDetailsResource;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class TravelsController {
+@RequestMapping("/customer")
+public class CustomerController {
 
-    private final TravelsService travelsService;
+    private final CustomerService customerService;
     private final TravelMapper travelMapper;
 
-    @GetMapping("/packages")
-    public List<PackageDetailsResource> getPackages() {
-
-        return travelsService.getPackageDetails().stream()
-                .map(travelMapper::toPackageDetailsResource)
-                .toList();
-    }
-
-    @PutMapping("/customer/signup")
+    @PutMapping("/signup")
     public CustomerSignUp signUpCustomer(@Valid @RequestBody CustomerSignUp customerSignUp) {
 
         var customerEntity = travelMapper.toCustomerEntity(customerSignUp);
-        var customerEntityWithUpdates = travelsService.signUp(customerEntity);
+        var customerEntityWithUpdates = customerService.signUp(customerEntity);
 
         return travelMapper.toSignUpRequest(customerEntityWithUpdates);
     }

@@ -1,26 +1,16 @@
-package com.tourism.travels.controller;
+package com.tourism.travels.customer;
 
 import com.tourism.travels.exception.AlreadyExistsException;
 import com.tourism.travels.sql.CustomerEntity;
 import com.tourism.travels.sql.CustomerRepository;
-import com.tourism.travels.sql.PackageEntity;
-import com.tourism.travels.sql.PackageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
-public class TravelsService {
+public class CustomerService {
 
-    private final PackageRepository packageRepository;
     private final CustomerRepository customerRepository;
-
-    public List<PackageEntity> getPackageDetails() {
-
-        return packageRepository.findAll();
-    }
 
     public CustomerEntity signUp(CustomerEntity customerEntityWithUpdates) {
 
