@@ -1,4 +1,4 @@
-package com.tourism.travels.controller;
+package com.tourism.travels.customer;
 
 import com.tourism.travels.exception.GlobalExceptionHandler;
 import com.tourism.travels.pojo.CustomerSignUp;

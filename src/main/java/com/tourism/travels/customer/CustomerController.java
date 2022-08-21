@@ -1,4 +1,4 @@
-package com.tourism.travels.controller;
+package com.tourism.travels.customer;
 
 import com.tourism.travels.pojo.CustomerSignUp;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.tourism.travels.packages;
 
-import com.tourism.travels.controller.TravelMapper;
+import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.pojo.PackageDetailsResource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

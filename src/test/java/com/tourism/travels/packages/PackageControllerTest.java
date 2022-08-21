@@ -1,6 +1,6 @@
 package com.tourism.travels.packages;
 
-import com.tourism.travels.controller.TravelMapper;
+import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.GlobalExceptionHandler;
 import com.tourism.travels.pojo.PackageDetailsResource;
 import com.tourism.travels.sql.PackageEntity;
