@@ -24,7 +24,8 @@ public class CustomerService {
         var customerId = customerEntityWithUpdates.getCustomerId();
 
         customerRepository.findById(customerId)
-                .ifPresent(x -> { throw new AlreadyExistsException("Customer with this customerId: " + customerId + " already exists"); });
+                .ifPresent(x -> { throw new AlreadyExistsException("Customer with this customerId: "
+                           + customerId + " already exists"); });
 
         return customerRepository.save(customerEntityWithUpdates);
     }

@@ -24,7 +24,8 @@ public class PackageService {
         var packageId = packageEntityWithUpdates.getId();
 
         packageRepository.findById(packageId)
-                .ifPresent(x -> { throw new AlreadyExistsException("Package with is id: " + packageId + " already exists"); });
+                .ifPresent(x -> { throw new AlreadyExistsException("Package with is id: "
+                           + packageId + " already exists"); });
 
         return packageRepository.save(packageEntityWithUpdates);
     }
