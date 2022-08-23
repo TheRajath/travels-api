@@ -44,19 +44,13 @@ class CustomerControllerTest {
     }
 
     @Nested
-    class getCustomers {
+    class GetCustomers {
 
         @Test
         void works() throws Exception {
             // Arrange
-            var customerDetailsResource = new CustomerDetailsResource();
-            customerDetailsResource.setCustomerId(123);
-            customerDetailsResource.setFirstName("firstName");
-            customerDetailsResource.setLastName("lastName");
-            customerDetailsResource.setEmail("email@gmail.com");
-            customerDetailsResource.setPassword("password");
-
             var customerEntity = new CustomerEntity();
+            var customerDetailsResource = getCustomerDetailsResource();
 
             when(customerService.getCustomerDetails()).thenReturn(Collections.singletonList(customerEntity));
             when(travelMapper.toCustomerDetailsResource(customerEntity)).thenReturn(customerDetailsResource);
@@ -67,6 +61,33 @@ class CustomerControllerTest {
                     .andExpect(content().json(CUSTOMER_DETAILS_RESPONSE));
 
             verify(customerService).getCustomerDetails();
+            verify(travelMapper).toCustomerDetailsResource(customerEntity);
+
+            verifyNoMoreInteractions(customerService, travelMapper);
+        }
+
+    }
+
+    @Nested
+    class GetCustomerById {
+
+        @Test
+        void works() throws Exception {
+            // Arrange
+            var customerId = 123;
+            var customerEntity = new CustomerEntity();
+            var request = CUSTOMER_DETAILS_RESPONSE.replace("[", "");
+            var customerDetailsResource = getCustomerDetailsResource();
+
+            when(customerService.getCustomerEntityById(customerId)).thenReturn(customerEntity);
+            when(travelMapper.toCustomerDetailsResource(customerEntity)).thenReturn(customerDetailsResource);
+
+            // Act/Assert
+            mockMvc.perform(get("/customers/123"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(request));
+
+            verify(customerService).getCustomerEntityById(customerId);
             verify(travelMapper).toCustomerDetailsResource(customerEntity);
 
             verifyNoMoreInteractions(customerService, travelMapper);
@@ -178,6 +199,18 @@ class CustomerControllerTest {
                     .andExpect(content().json(errorMessage));
         }
 
+    }
+
+    private CustomerDetailsResource getCustomerDetailsResource() {
+
+        var customerDetailsResource = new CustomerDetailsResource();
+        customerDetailsResource.setCustomerId(123);
+        customerDetailsResource.setFirstName("firstName");
+        customerDetailsResource.setLastName("lastName");
+        customerDetailsResource.setEmail("email@gmail.com");
+        customerDetailsResource.setPassword("password");
+
+        return customerDetailsResource;
     }
 
     private static final String CUSTOMER_DETAILS_RESPONSE =
