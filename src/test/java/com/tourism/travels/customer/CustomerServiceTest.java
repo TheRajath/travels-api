@@ -1,6 +1,7 @@
 package com.tourism.travels.customer;
 
 import com.tourism.travels.exception.AlreadyExistsException;
+import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.CustomerEntity;
 import com.tourism.travels.sql.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +51,42 @@ class CustomerServiceTest {
             verify(customerRepository).findAll();
 
             verifyNoMoreInteractions(customerRepository);
+        }
+
+    }
+
+    @Nested
+    class GetCustomerEntityById {
+
+        @Test
+        void works() {
+            // Arrange
+            var customerId = 123;
+            var customerEntity = new CustomerEntity();
+
+            when(customerRepository.findById(customerId)).thenReturn(Optional.of(customerEntity));
+
+            // Act
+            var returnedCustomerEntity = customerService.getCustomerEntityById(customerId);
+
+            // Assert
+            assertThat(returnedCustomerEntity).isEqualTo(customerEntity);
+
+            verify(customerRepository).findById(customerId);
+
+            verifyNoMoreInteractions(customerRepository);
+        }
+
+        @Test
+        void throwsNotFoundException_whenEntityIsNotFound() {
+            // Arrange
+            var customerId = 123;
+
+            when(customerRepository.findById(customerId)).thenReturn(Optional.empty());
+
+            // Act/ Assert
+            assertThatThrownBy(() -> customerService.getCustomerEntityById(customerId))
+                    .isInstanceOf(NotFoundException.class);
         }
 
     }

@@ -1,6 +1,7 @@
 package com.tourism.travels.customer;
 
 import com.tourism.travels.exception.AlreadyExistsException;
+import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.CustomerEntity;
 import com.tourism.travels.sql.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,12 @@ public class CustomerService {
     public List<CustomerEntity> getCustomerDetails() {
 
         return customerRepository.findAll();
+    }
+
+    public CustomerEntity getCustomerEntityById(int customerId) {
+
+        return customerRepository.findById(customerId)
+                .orElseThrow(NotFoundException::new);
     }
 
     public CustomerEntity signUp(CustomerEntity customerEntityWithUpdates) {
