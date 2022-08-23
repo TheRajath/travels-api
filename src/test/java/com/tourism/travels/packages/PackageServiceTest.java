@@ -1,6 +1,7 @@
 package com.tourism.travels.packages;
 
 import com.tourism.travels.exception.AlreadyExistsException;
+import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.PackageEntity;
 import com.tourism.travels.sql.PackageRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +51,42 @@ class PackageServiceTest {
             verify(packageRepository).findAll();
 
             verifyNoMoreInteractions(packageRepository);
+        }
+
+    }
+
+    @Nested
+    class GetPackageEntityById {
+
+        @Test
+        void works() {
+            // Arrange
+            var packageId = 123;
+            var packageEntity = new PackageEntity();
+
+            when(packageRepository.findById(packageId)).thenReturn(Optional.of(packageEntity));
+
+            // Act
+            var returnedPackageEntity = packageService.getPackageEntityById(packageId);
+
+            // Assert
+            assertThat(returnedPackageEntity).isEqualTo(packageEntity);
+
+            verify(packageRepository).findById(packageId);
+
+            verifyNoMoreInteractions(packageRepository);
+        }
+
+        @Test
+        void throwsNotFoundException_whenEntityIsNotFound() {
+            // Arrange
+            var packageId = 123;
+
+            when(packageRepository.findById(packageId)).thenReturn(Optional.empty());
+
+            // Act/ Assert
+            assertThatThrownBy(() -> packageService.getPackageEntityById(packageId))
+                    .isInstanceOf(NotFoundException.class);
         }
 
     }

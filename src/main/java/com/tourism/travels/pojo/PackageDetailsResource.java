@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class PackageDetailsResource {
 
+    private int id;
     private String packageName;
     private String tripDuration;
     private int totalCost;
