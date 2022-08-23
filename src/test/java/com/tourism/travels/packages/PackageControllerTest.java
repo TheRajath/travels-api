@@ -50,12 +50,8 @@ class PackageControllerTest {
         @Test
         void works() throws Exception {
             // Arrange
-            var packageDetailsResource = new PackageDetailsResource();
-            packageDetailsResource.setPackageName("Agra");
-            packageDetailsResource.setTripDuration("2 Days,1 Night");
-            packageDetailsResource.setTotalCost(5000);
-
             var packageEntity = new PackageEntity();
+            var packageDetailsResource = getPackageDetailsResource();
 
             when(packageService.getPackageDetails()).thenReturn(Collections.singletonList(packageEntity));
             when(travelMapper.toPackageDetailsResource(packageEntity)).thenReturn(packageDetailsResource);
@@ -70,6 +66,33 @@ class PackageControllerTest {
 
             verifyNoMoreInteractions(packageService, travelMapper);
 
+        }
+
+    }
+
+    @Nested
+    class GetPackageById {
+
+        @Test
+        void works() throws Exception {
+            // Arrange
+            var packageId = 123;
+            var packageEntity = new PackageEntity();
+            var request = PACKAGE_RESPONSE.replace("[", "");
+            var packageDetailsResource = getPackageDetailsResource();
+
+            when(packageService.getPackageEntityById(packageId)).thenReturn(packageEntity);
+            when(travelMapper.toPackageDetailsResource(packageEntity)).thenReturn(packageDetailsResource);
+
+            // Act/Assert
+            mockMvc.perform(get("/packages/123"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(request));
+
+            verify(packageService).getPackageEntityById(packageId);
+            verify(travelMapper).toPackageDetailsResource(packageEntity);
+
+            verifyNoMoreInteractions(packageService, travelMapper);
         }
 
     }
@@ -164,10 +187,23 @@ class PackageControllerTest {
 
     }
 
+    private PackageDetailsResource getPackageDetailsResource() {
+
+        var packageDetailsResource = new PackageDetailsResource();
+
+        packageDetailsResource.setId(123);
+        packageDetailsResource.setPackageName("Agra");
+        packageDetailsResource.setTripDuration("2 Days,1 Night");
+        packageDetailsResource.setTotalCost(5000);
+
+        return packageDetailsResource;
+    }
+
     private static final String PACKAGE_RESPONSE =
             """
                     [
                         {
+                            "id": 123,
                             "packageName": "Agra",
                             "tripDuration": "2 Days,1 Night",
                             "totalCost": 5000
