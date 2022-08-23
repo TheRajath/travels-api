@@ -25,6 +25,14 @@ public class PackageController {
                 .toList();
     }
 
+    @GetMapping("/{packageId}")
+    public PackageDetailsResource getPackageById(@PathVariable String packageId) {
+
+        var packageEntity = packageService.getPackageEntityById(Integer.parseInt(packageId));
+
+        return travelMapper.toPackageDetailsResource(packageEntity);
+    }
+
     @PutMapping("/add")
     public AddPackageRequest addPackage(@Valid @RequestBody AddPackageRequest addPackageRequest) {
 
