@@ -24,6 +24,14 @@ public class CustomerController {
                 .toList();
     }
 
+    @GetMapping("/{customerId}")
+    public CustomerDetailsResource getCustomerById(@PathVariable String customerId) {
+
+        var customerEntity = customerService.getCustomerEntityById(Integer.parseInt(customerId));
+
+        return travelMapper.toCustomerDetailsResource(customerEntity);
+    }
+
     @PutMapping("/signup")
     public CustomerSignUp signUpCustomer(@Valid @RequestBody CustomerSignUp customerSignUp) {
 
