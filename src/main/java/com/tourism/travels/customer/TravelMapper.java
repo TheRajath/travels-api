@@ -16,7 +16,7 @@ public interface TravelMapper {
     @Mapping(target = "totalCost", source = "costPerPerson")
     PackageDetailsResource toPackageDetailsResource(PackageEntity entity);
 
-    CustomerDetailsResource toCustomerDetailsResource(CustomerEntity entity);
+    CustomerDetailsResource toCustomerResource(CustomerEntity entity);
 
     CustomerEntity toCustomerEntity(CustomerSignUp customerSignUp);
 

@@ -52,7 +52,7 @@ class CustomerControllerTest {
             var customerDetailsResource = getCustomerDetailsResource();
 
             when(customerService.getCustomerDetails()).thenReturn(Collections.singletonList(customerEntity));
-            when(travelMapper.toCustomerDetailsResource(customerEntity)).thenReturn(customerDetailsResource);
+            when(travelMapper.toCustomerResource(customerEntity)).thenReturn(customerDetailsResource);
 
             // Act/Assert
             mockMvc.perform(get("/customers"))
@@ -60,7 +60,7 @@ class CustomerControllerTest {
                     .andExpect(content().json(CUSTOMER_DETAILS_RESPONSE));
 
             verify(customerService).getCustomerDetails();
-            verify(travelMapper).toCustomerDetailsResource(customerEntity);
+            verify(travelMapper).toCustomerResource(customerEntity);
 
             verifyNoMoreInteractions(customerService, travelMapper);
         }
@@ -79,7 +79,7 @@ class CustomerControllerTest {
             var customerDetailsResource = getCustomerDetailsResource();
 
             when(customerService.getCustomerEntityById(customerId)).thenReturn(customerEntity);
-            when(travelMapper.toCustomerDetailsResource(customerEntity)).thenReturn(customerDetailsResource);
+            when(travelMapper.toCustomerResource(customerEntity)).thenReturn(customerDetailsResource);
 
             // Act/Assert
             mockMvc.perform(get("/customers/123"))
@@ -87,7 +87,7 @@ class CustomerControllerTest {
                     .andExpect(content().json(request));
 
             verify(customerService).getCustomerEntityById(customerId);
-            verify(travelMapper).toCustomerDetailsResource(customerEntity);
+            verify(travelMapper).toCustomerResource(customerEntity);
 
             verifyNoMoreInteractions(customerService, travelMapper);
         }

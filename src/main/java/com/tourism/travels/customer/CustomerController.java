@@ -22,7 +22,7 @@ public class CustomerController {
     public List<CustomerDetailsResource> getCustomers() {
 
         return customerService.getCustomerDetails().stream()
-                .map(travelMapper::toCustomerDetailsResource)
+                .map(travelMapper::toCustomerResource)
                 .toList();
     }
 
@@ -31,7 +31,7 @@ public class CustomerController {
 
         var customerEntity = customerService.getCustomerEntityById(Integer.parseInt(customerId));
 
-        return travelMapper.toCustomerDetailsResource(customerEntity);
+        return travelMapper.toCustomerResource(customerEntity);
     }
 
     @PutMapping("/signup")
