@@ -3,7 +3,7 @@ package com.tourism.travels.packages;
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.GlobalExceptionHandler;
 import com.tourism.travels.pojo.AddPackageRequest;
-import com.tourism.travels.pojo.PackageDetailsResource;
+import com.tourism.travels.pojo.PackageResource;
 import com.tourism.travels.sql.PackageEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -50,10 +50,10 @@ class PackageControllerTest {
         void works() throws Exception {
             // Arrange
             var packageEntity = new PackageEntity();
-            var packageDetailsResource = getPackageDetailsResource();
+            var packageResource = getPackageDetailsResource();
 
             when(packageService.getPackageDetails()).thenReturn(Collections.singletonList(packageEntity));
-            when(travelMapper.toPackageDetailsResource(packageEntity)).thenReturn(packageDetailsResource);
+            when(travelMapper.toPackageResource(packageEntity)).thenReturn(packageResource);
 
             // Act/Assert
             mockMvc.perform(get("/packages"))
@@ -61,7 +61,7 @@ class PackageControllerTest {
                     .andExpect(content().json(PACKAGE_RESPONSE));
 
             verify(packageService).getPackageDetails();
-            verify(travelMapper).toPackageDetailsResource(packageEntity);
+            verify(travelMapper).toPackageResource(packageEntity);
 
             verifyNoMoreInteractions(packageService, travelMapper);
 
@@ -78,10 +78,10 @@ class PackageControllerTest {
             var packageId = 123;
             var packageEntity = new PackageEntity();
             var request = PACKAGE_RESPONSE.replace("[", "");
-            var packageDetailsResource = getPackageDetailsResource();
+            var packageResource = getPackageDetailsResource();
 
             when(packageService.getPackageEntityById(packageId)).thenReturn(packageEntity);
-            when(travelMapper.toPackageDetailsResource(packageEntity)).thenReturn(packageDetailsResource);
+            when(travelMapper.toPackageResource(packageEntity)).thenReturn(packageResource);
 
             // Act/Assert
             mockMvc.perform(get("/packages/123"))
@@ -89,7 +89,7 @@ class PackageControllerTest {
                     .andExpect(content().json(request));
 
             verify(packageService).getPackageEntityById(packageId);
-            verify(travelMapper).toPackageDetailsResource(packageEntity);
+            verify(travelMapper).toPackageResource(packageEntity);
 
             verifyNoMoreInteractions(packageService, travelMapper);
         }
@@ -202,16 +202,16 @@ class PackageControllerTest {
 
     }
 
-    private PackageDetailsResource getPackageDetailsResource() {
+    private PackageResource getPackageDetailsResource() {
 
-        var packageDetailsResource = new PackageDetailsResource();
+        var packageResource = new PackageResource();
 
-        packageDetailsResource.setId(123);
-        packageDetailsResource.setPackageName("Agra");
-        packageDetailsResource.setTripDuration("2 Days,1 Night");
-        packageDetailsResource.setTotalCost(5000);
+        packageResource.setId(123);
+        packageResource.setPackageName("Agra");
+        packageResource.setTripDuration("2 Days,1 Night");
+        packageResource.setTotalCost(5000);
 
-        return packageDetailsResource;
+        return packageResource;
     }
 
     private static final String PACKAGE_RESPONSE =

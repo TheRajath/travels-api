@@ -1,6 +1,6 @@
 package com.tourism.travels.customer;
 
-import com.tourism.travels.pojo.CustomerDetailsResource;
+import com.tourism.travels.pojo.CustomerResource;
 import com.tourism.travels.pojo.CustomerSignUp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,19 +19,19 @@ public class CustomerController {
     private final TravelMapper travelMapper;
 
     @GetMapping
-    public List<CustomerDetailsResource> getCustomers() {
+    public List<CustomerResource> getCustomers() {
 
         return customerService.getCustomerDetails().stream()
-                .map(travelMapper::toCustomerDetailsResource)
+                .map(travelMapper::toCustomerResource)
                 .toList();
     }
 
     @GetMapping("/{customerId}")
-    public CustomerDetailsResource getCustomerById(@PathVariable String customerId) {
+    public CustomerResource getCustomerById(@PathVariable String customerId) {
 
         var customerEntity = customerService.getCustomerEntityById(Integer.parseInt(customerId));
 
-        return travelMapper.toCustomerDetailsResource(customerEntity);
+        return travelMapper.toCustomerResource(customerEntity);
     }
 
     @PutMapping("/signup")

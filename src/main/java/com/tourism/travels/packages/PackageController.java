@@ -2,7 +2,7 @@ package com.tourism.travels.packages;
 
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.pojo.AddPackageRequest;
-import com.tourism.travels.pojo.PackageDetailsResource;
+import com.tourism.travels.pojo.PackageResource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,19 +20,19 @@ public class PackageController {
     private final TravelMapper travelMapper;
 
     @GetMapping
-    public List<PackageDetailsResource> getPackages() {
+    public List<PackageResource> getPackages() {
 
         return packageService.getPackageDetails().stream()
-                .map(travelMapper::toPackageDetailsResource)
+                .map(travelMapper::toPackageResource)
                 .toList();
     }
 
     @GetMapping("/{packageId}")
-    public PackageDetailsResource getPackageById(@PathVariable String packageId) {
+    public PackageResource getPackageById(@PathVariable String packageId) {
 
         var packageEntity = packageService.getPackageEntityById(Integer.parseInt(packageId));
 
-        return travelMapper.toPackageDetailsResource(packageEntity);
+        return travelMapper.toPackageResource(packageEntity);
     }
 
     @PutMapping("/add")

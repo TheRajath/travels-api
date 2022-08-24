@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PackageDetailsResource {
+public class PackageResource {
 
     private int id;
     private String packageName;

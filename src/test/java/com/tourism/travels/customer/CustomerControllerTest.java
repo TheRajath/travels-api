@@ -1,7 +1,7 @@
 package com.tourism.travels.customer;
 
 import com.tourism.travels.exception.GlobalExceptionHandler;
-import com.tourism.travels.pojo.CustomerDetailsResource;
+import com.tourism.travels.pojo.CustomerResource;
 import com.tourism.travels.pojo.CustomerSignUp;
 import com.tourism.travels.sql.CustomerEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,10 +49,10 @@ class CustomerControllerTest {
         void works() throws Exception {
             // Arrange
             var customerEntity = new CustomerEntity();
-            var customerDetailsResource = getCustomerDetailsResource();
+            var customerResource = getCustomerResource();
 
             when(customerService.getCustomerDetails()).thenReturn(Collections.singletonList(customerEntity));
-            when(travelMapper.toCustomerDetailsResource(customerEntity)).thenReturn(customerDetailsResource);
+            when(travelMapper.toCustomerResource(customerEntity)).thenReturn(customerResource);
 
             // Act/Assert
             mockMvc.perform(get("/customers"))
@@ -60,7 +60,7 @@ class CustomerControllerTest {
                     .andExpect(content().json(CUSTOMER_DETAILS_RESPONSE));
 
             verify(customerService).getCustomerDetails();
-            verify(travelMapper).toCustomerDetailsResource(customerEntity);
+            verify(travelMapper).toCustomerResource(customerEntity);
 
             verifyNoMoreInteractions(customerService, travelMapper);
         }
@@ -76,10 +76,10 @@ class CustomerControllerTest {
             var customerId = 123;
             var customerEntity = new CustomerEntity();
             var request = CUSTOMER_DETAILS_RESPONSE.replace("[", "");
-            var customerDetailsResource = getCustomerDetailsResource();
+            var customerResource = getCustomerResource();
 
             when(customerService.getCustomerEntityById(customerId)).thenReturn(customerEntity);
-            when(travelMapper.toCustomerDetailsResource(customerEntity)).thenReturn(customerDetailsResource);
+            when(travelMapper.toCustomerResource(customerEntity)).thenReturn(customerResource);
 
             // Act/Assert
             mockMvc.perform(get("/customers/123"))
@@ -87,7 +87,7 @@ class CustomerControllerTest {
                     .andExpect(content().json(request));
 
             verify(customerService).getCustomerEntityById(customerId);
-            verify(travelMapper).toCustomerDetailsResource(customerEntity);
+            verify(travelMapper).toCustomerResource(customerEntity);
 
             verifyNoMoreInteractions(customerService, travelMapper);
         }
@@ -216,16 +216,16 @@ class CustomerControllerTest {
 
     }
 
-    private CustomerDetailsResource getCustomerDetailsResource() {
+    private CustomerResource getCustomerResource() {
 
-        var customerDetailsResource = new CustomerDetailsResource();
-        customerDetailsResource.setCustomerId(123);
-        customerDetailsResource.setFirstName("firstName");
-        customerDetailsResource.setLastName("lastName");
-        customerDetailsResource.setEmail("email@gmail.com");
-        customerDetailsResource.setPassword("savedPassword");
+        var customerResource = new CustomerResource();
+        customerResource.setCustomerId(123);
+        customerResource.setFirstName("firstName");
+        customerResource.setLastName("lastName");
+        customerResource.setEmail("email@gmail.com");
+        customerResource.setPassword("savedPassword");
 
-        return customerDetailsResource;
+        return customerResource;
     }
 
     private static final String CUSTOMER_DETAILS_RESPONSE =
