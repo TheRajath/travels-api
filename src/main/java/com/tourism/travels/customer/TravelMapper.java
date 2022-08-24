@@ -2,9 +2,9 @@
 package com.tourism.travels.customer;
 
 import com.tourism.travels.pojo.AddPackageRequest;
-import com.tourism.travels.pojo.CustomerDetailsResource;
+import com.tourism.travels.pojo.CustomerResource;
 import com.tourism.travels.pojo.CustomerSignUp;
-import com.tourism.travels.pojo.PackageDetailsResource;
+import com.tourism.travels.pojo.PackageResource;
 import com.tourism.travels.sql.CustomerEntity;
 import com.tourism.travels.sql.PackageEntity;
 import org.mapstruct.Mapper;
@@ -14,9 +14,9 @@ import org.mapstruct.Mapping;
 public interface TravelMapper {
 
     @Mapping(target = "totalCost", source = "costPerPerson")
-    PackageDetailsResource toPackageResource(PackageEntity entity);
+    PackageResource toPackageResource(PackageEntity entity);
 
-    CustomerDetailsResource toCustomerResource(CustomerEntity entity);
+    CustomerResource toCustomerResource(CustomerEntity entity);
 
     CustomerEntity toCustomerEntity(CustomerSignUp customerSignUp);
 
