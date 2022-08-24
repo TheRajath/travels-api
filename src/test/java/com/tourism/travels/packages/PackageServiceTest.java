@@ -98,13 +98,13 @@ class PackageServiceTest {
         void works() {
             // Arrange
             var packageEntity = new PackageEntity();
-            packageEntity.setId(123);
+            packageEntity.setPackageId(123);
 
             // Act
             packageService.addNewPackage(packageEntity);
 
             // Assert
-            verify(packageRepository).findById(packageEntity.getId());
+            verify(packageRepository).findById(packageEntity.getPackageId());
             verify(packageRepository).save(packageEntity);
 
             verifyNoMoreInteractions(packageRepository);
@@ -114,9 +114,9 @@ class PackageServiceTest {
         void throwsAlreadyExistsException_whenThereIsAnExistingRecord() {
             // Arrange
             var packageEntity = new PackageEntity();
-            packageEntity.setId(123);
+            packageEntity.setPackageId(123);
 
-            when(packageRepository.findById(packageEntity.getId())).thenReturn(Optional.of(packageEntity));
+            when(packageRepository.findById(packageEntity.getPackageId())).thenReturn(Optional.of(packageEntity));
 
             // Act/Assert
             assertThatThrownBy(() -> packageService.addNewPackage(packageEntity))
@@ -135,7 +135,7 @@ class PackageServiceTest {
             var packageId = 123;
 
             var packageEntity = new PackageEntity();
-            packageEntity.setId(packageId);
+            packageEntity.setPackageId(packageId);
 
             when(packageRepository.findById(packageId)).thenReturn(Optional.of(packageEntity));
 

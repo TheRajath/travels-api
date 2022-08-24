@@ -28,7 +28,7 @@ public class PackageService {
 
     public PackageEntity addNewPackage(PackageEntity packageEntityWithUpdates) {
 
-        var packageId = packageEntityWithUpdates.getId();
+        var packageId = packageEntityWithUpdates.getPackageId();
 
         packageRepository.findById(packageId)
                 .ifPresent(x -> { throw new AlreadyExistsException("Package with is id: "

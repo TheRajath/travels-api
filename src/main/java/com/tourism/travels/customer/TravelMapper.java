@@ -22,10 +22,8 @@ public interface TravelMapper {
 
     CustomerSignUp toSignUpRequest(CustomerEntity customerEntity);
 
-    @Mapping(target = "id", source = "packageId")
     PackageEntity toPackageEntity(AddPackageRequest addPackageRequest);
 
-    @Mapping(target = "packageId", source = "id")
     AddPackageRequest toAddPackageRequest(PackageEntity packageEntity);
 
 }

@@ -206,7 +206,7 @@ class PackageControllerTest {
 
         var packageResource = new PackageResource();
 
-        packageResource.setId(123);
+        packageResource.setPackageId(123);
         packageResource.setPackageName("Agra");
         packageResource.setTripDuration("2 Days,1 Night");
         packageResource.setTotalCost(5000);
@@ -218,7 +218,7 @@ class PackageControllerTest {
             """
                     [
                         {
-                            "id": 123,
+                            "packageId": 123,
                             "packageName": "Agra",
                             "tripDuration": "2 Days,1 Night",
                             "totalCost": 5000

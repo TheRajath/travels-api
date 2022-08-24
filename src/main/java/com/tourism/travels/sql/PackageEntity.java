@@ -17,7 +17,8 @@ import javax.persistence.Table;
 public class PackageEntity {
 
     @Id
-    private int id;
+    @Column(name = "id")
+    private int packageId;
 
     @Column(name = "package_Name")
     private String packageName;
