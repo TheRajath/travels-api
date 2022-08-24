@@ -223,7 +223,7 @@ class CustomerControllerTest {
         customerDetailsResource.setFirstName("firstName");
         customerDetailsResource.setLastName("lastName");
         customerDetailsResource.setEmail("email@gmail.com");
-        customerDetailsResource.setPassword("password");
+        customerDetailsResource.setPassword("savedPassword");
 
         return customerDetailsResource;
     }
@@ -236,7 +236,7 @@ class CustomerControllerTest {
                             "firstName": "firstName",
                             "lastName": "lastName",
                             "email": "email@gmail.com",
-                            "password": "password"
+                            "password": "savedPassword"
                         }
                     ]""";
 
