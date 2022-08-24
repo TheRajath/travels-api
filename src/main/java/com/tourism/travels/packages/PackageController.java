@@ -23,7 +23,7 @@ public class PackageController {
     public List<PackageDetailsResource> getPackages() {
 
         return packageService.getPackageDetails().stream()
-                .map(travelMapper::toPackageDetailsResource)
+                .map(travelMapper::toPackageResource)
                 .toList();
     }
 
@@ -32,7 +32,7 @@ public class PackageController {
 
         var packageEntity = packageService.getPackageEntityById(Integer.parseInt(packageId));
 
-        return travelMapper.toPackageDetailsResource(packageEntity);
+        return travelMapper.toPackageResource(packageEntity);
     }
 
     @PutMapping("/add")

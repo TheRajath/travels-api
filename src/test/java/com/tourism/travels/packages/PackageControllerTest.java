@@ -53,7 +53,7 @@ class PackageControllerTest {
             var packageDetailsResource = getPackageDetailsResource();
 
             when(packageService.getPackageDetails()).thenReturn(Collections.singletonList(packageEntity));
-            when(travelMapper.toPackageDetailsResource(packageEntity)).thenReturn(packageDetailsResource);
+            when(travelMapper.toPackageResource(packageEntity)).thenReturn(packageDetailsResource);
 
             // Act/Assert
             mockMvc.perform(get("/packages"))
@@ -61,7 +61,7 @@ class PackageControllerTest {
                     .andExpect(content().json(PACKAGE_RESPONSE));
 
             verify(packageService).getPackageDetails();
-            verify(travelMapper).toPackageDetailsResource(packageEntity);
+            verify(travelMapper).toPackageResource(packageEntity);
 
             verifyNoMoreInteractions(packageService, travelMapper);
 
@@ -81,7 +81,7 @@ class PackageControllerTest {
             var packageDetailsResource = getPackageDetailsResource();
 
             when(packageService.getPackageEntityById(packageId)).thenReturn(packageEntity);
-            when(travelMapper.toPackageDetailsResource(packageEntity)).thenReturn(packageDetailsResource);
+            when(travelMapper.toPackageResource(packageEntity)).thenReturn(packageDetailsResource);
 
             // Act/Assert
             mockMvc.perform(get("/packages/123"))
@@ -89,7 +89,7 @@ class PackageControllerTest {
                     .andExpect(content().json(request));
 
             verify(packageService).getPackageEntityById(packageId);
-            verify(travelMapper).toPackageDetailsResource(packageEntity);
+            verify(travelMapper).toPackageResource(packageEntity);
 
             verifyNoMoreInteractions(packageService, travelMapper);
         }

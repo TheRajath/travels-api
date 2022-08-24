@@ -14,7 +14,7 @@ import org.mapstruct.Mapping;
 public interface TravelMapper {
 
     @Mapping(target = "totalCost", source = "costPerPerson")
-    PackageDetailsResource toPackageDetailsResource(PackageEntity entity);
+    PackageDetailsResource toPackageResource(PackageEntity entity);
 
     CustomerDetailsResource toCustomerResource(CustomerEntity entity);
 
