@@ -126,4 +126,35 @@ class CustomerServiceTest {
 
     }
 
+    @Nested
+    class DeleteByCustomerId {
+
+        @Test
+        void works() {
+            // Arrange
+            var customerId = 123;
+
+            var customerEntity = new CustomerEntity();
+            customerEntity.setCustomerId(customerId);
+
+            when(customerRepository.findById(customerId)).thenReturn(Optional.of(customerEntity));
+
+            // Act
+            customerService.deleteByCustomerId(customerId);
+            
+            // Assert
+            verify(customerRepository).deleteById(customerId);
+
+            verifyNoMoreInteractions(customerRepository);
+        }
+
+        @Test
+        void throwsNotFoundException_whenRecordIsNotPresent() {
+            // Act/Assert
+            assertThatThrownBy(() -> customerService.deleteByCustomerId(123))
+                    .isInstanceOf(NotFoundException.class);
+        }
+
+    }
+
 }
