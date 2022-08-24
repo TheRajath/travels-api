@@ -126,4 +126,35 @@ class PackageServiceTest {
 
     }
 
+    @Nested
+    class DeleteByPackageId {
+
+        @Test
+        void works() {
+            // Arrange
+            var packageId = 123;
+
+            var packageEntity = new PackageEntity();
+            packageEntity.setId(packageId);
+
+            when(packageRepository.findById(packageId)).thenReturn(Optional.of(packageEntity));
+
+            // Act
+            packageService.deleteByPackageId(packageId);
+
+            // Assert
+            verify(packageRepository).deleteById(packageId);
+
+            verifyNoMoreInteractions(packageRepository);
+        }
+
+        @Test
+        void throwsNotFoundException_whenRecordIsNotPresent() {
+            // Act/Assert
+            assertThatThrownBy(() -> packageService.deleteByPackageId(123))
+                    .isInstanceOf(NotFoundException.class);
+        }
+
+    }
+
 }

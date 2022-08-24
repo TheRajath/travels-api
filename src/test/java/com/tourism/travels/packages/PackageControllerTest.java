@@ -18,8 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Collections;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -183,6 +182,22 @@ class PackageControllerTest {
                     .content(request))
                     .andExpect(status().isBadRequest())
                     .andExpect(content().json(errorMessage));
+        }
+
+    }
+
+    @Nested
+    class DeletePackage {
+
+        @Test
+        void works() throws Exception {
+            // Act/Assert
+            mockMvc.perform(delete("/packages/1"))
+                    .andExpect(status().isNoContent());
+
+            verify(packageService).deleteByPackageId(1);
+
+            verifyNoMoreInteractions(packageService);
         }
 
     }

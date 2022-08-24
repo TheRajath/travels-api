@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/packages")
@@ -40,6 +42,13 @@ public class PackageController {
         var packageEntityWithUpdates = packageService.addNewPackage(packageEntity);
 
         return travelMapper.toAddPackageRequest(packageEntityWithUpdates);
+    }
+
+    @DeleteMapping("/{customerId}")
+    @ResponseStatus(NO_CONTENT)
+    public void deletePackage(@PathVariable String customerId) {
+
+        packageService.deleteByPackageId(Integer.parseInt(customerId));
     }
 
 }
