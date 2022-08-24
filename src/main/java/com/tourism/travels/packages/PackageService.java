@@ -37,7 +37,7 @@ public class PackageService {
         return packageRepository.save(packageEntityWithUpdates);
     }
 
-    public void deleteByCustomerId(int packageId) {
+    public void deleteByPackageId(int packageId) {
 
         packageRepository.findById(packageId)
                 .orElseThrow(NotFoundException::new);

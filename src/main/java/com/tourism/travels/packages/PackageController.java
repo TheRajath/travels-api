@@ -48,7 +48,7 @@ public class PackageController {
     @ResponseStatus(NO_CONTENT)
     public void deletePackage(@PathVariable String customerId) {
 
-        packageService.deleteByCustomerId(Integer.parseInt(customerId));
+        packageService.deleteByPackageId(Integer.parseInt(customerId));
     }
 
 }
