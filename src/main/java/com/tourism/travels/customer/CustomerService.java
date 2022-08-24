@@ -37,4 +37,12 @@ public class CustomerService {
         return customerRepository.save(customerEntityWithUpdates);
     }
 
+    public void deleteByCustomerId(int customerId) {
+
+        customerRepository.findById(customerId)
+                .orElseThrow(NotFoundException::new);
+
+        customerRepository.deleteById(customerId);
+    }
+
 }

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/customers")
@@ -39,6 +41,13 @@ public class CustomerController {
         var customerEntityWithUpdates = customerService.signUp(customerEntity);
 
         return travelMapper.toSignUpRequest(customerEntityWithUpdates);
+    }
+
+    @DeleteMapping("/{customerId}")
+    @ResponseStatus(NO_CONTENT)
+    public void deleteCustomer(@PathVariable String customerId) {
+
+        customerService.deleteByCustomerId(Integer.parseInt(customerId));
     }
 
 }
