@@ -5,3 +5,7 @@ spring:
     url: jdbc:mysql://localhost:3306/travels
     username: root
     password: root
+server:
+  port: 8080
+  servlet:
+    context-path: /travels-api
