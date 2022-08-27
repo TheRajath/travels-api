@@ -1,7 +1,7 @@
 package com.tourism.travels.customer;
 
+import com.tourism.travels.pojo.CustomerRequest;
 import com.tourism.travels.pojo.CustomerResource;
-import com.tourism.travels.pojo.CustomerSignUp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,12 +35,21 @@ public class CustomerController {
     }
 
     @PutMapping("/signup")
-    public CustomerSignUp signUpCustomer(@Valid @RequestBody CustomerSignUp customerSignUp) {
+    public CustomerRequest signUpCustomer(@Valid @RequestBody CustomerRequest customerRequest) {
 
-        var customerEntity = travelMapper.toCustomerEntity(customerSignUp);
+        var customerEntity = travelMapper.toCustomerEntity(customerRequest);
         var customerEntityWithUpdates = customerService.signUp(customerEntity);
 
-        return travelMapper.toSignUpRequest(customerEntityWithUpdates);
+        return travelMapper.toCustomerRequest(customerEntityWithUpdates);
+    }
+
+    @PutMapping("/update")
+    public CustomerRequest updateCustomerDetails(@Valid @RequestBody CustomerRequest customerRequest) {
+
+        var customerEntity = travelMapper.toCustomerEntity(customerRequest);
+        var customerEntityWithUpdates = customerService.updateCustomer(customerEntity);
+
+        return travelMapper.toCustomerRequest(customerEntityWithUpdates);
     }
 
     @DeleteMapping("/{customerId}")

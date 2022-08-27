@@ -3,7 +3,7 @@ package com.tourism.travels.customer;
 
 import com.tourism.travels.pojo.PackageRequest;
 import com.tourism.travels.pojo.CustomerResource;
-import com.tourism.travels.pojo.CustomerSignUp;
+import com.tourism.travels.pojo.CustomerRequest;
 import com.tourism.travels.pojo.PackageResource;
 import com.tourism.travels.sql.CustomerEntity;
 import com.tourism.travels.sql.PackageEntity;
@@ -19,9 +19,9 @@ public interface TravelMapper {
 
     CustomerResource toCustomerResource(CustomerEntity entity);
 
-    CustomerEntity toCustomerEntity(CustomerSignUp customerSignUp);
+    CustomerEntity toCustomerEntity(CustomerRequest customerRequest);
 
-    CustomerSignUp toSignUpRequest(CustomerEntity customerEntity);
+    CustomerRequest toCustomerRequest(CustomerEntity customerEntity);
 
     PackageEntity toPackageEntity(PackageRequest packageRequest);
 
@@ -29,5 +29,8 @@ public interface TravelMapper {
 
     @Mapping(target = "packageId", ignore = true)
     void updatePackageEntity(@MappingTarget PackageEntity packageEntity, PackageEntity packageEntityWithUpdates);
+
+    @Mapping(target = "customerId", ignore = true)
+    void updateCustomerEntity(@MappingTarget CustomerEntity customerEntity, CustomerEntity customerEntityWithUpdates);
 
 }

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class CustomerSignUp {
+public class CustomerRequest {
 
     @NotNull
     private Integer customerId;

@@ -140,6 +140,7 @@ class PackageServiceTest {
             packageEntity.setPackageId(123);
 
             when(packageRepository.findById(packageEntity.getPackageId())).thenReturn(Optional.of(packageEntity));
+
             // Act
             packageService.updateExistingPackage(packageEntity);
 
@@ -148,7 +149,7 @@ class PackageServiceTest {
             verify(travelMapper).updatePackageEntity(any(PackageEntity.class), any(PackageEntity.class));
             verify(packageRepository).save(packageEntity);
 
-            verifyNoMoreInteractions(packageRepository);
+            verifyNoMoreInteractions(travelMapper, packageRepository);
         }
 
         @Test

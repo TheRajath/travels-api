@@ -13,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerService {
 
+    private final TravelMapper travelMapper;
     private final CustomerRepository customerRepository;
 
     public List<CustomerEntity> getCustomerDetails() {
@@ -26,13 +27,25 @@ public class CustomerService {
                 .orElseThrow(NotFoundException::new);
     }
 
-    public CustomerEntity signUp(CustomerEntity customerEntityWithUpdates) {
+    public CustomerEntity signUp(CustomerEntity newCustomerEntity) {
 
-        var customerId = customerEntityWithUpdates.getCustomerId();
+        var customerId = newCustomerEntity.getCustomerId();
 
         customerRepository.findById(customerId)
                 .ifPresent(x -> { throw new AlreadyExistsException("Customer with this customerId: "
                            + customerId + " already exists"); });
+
+        return customerRepository.save(newCustomerEntity);
+    }
+
+    public CustomerEntity updateCustomer(CustomerEntity customerEntityWithUpdates) {
+
+        var customerId = customerEntityWithUpdates.getCustomerId();
+
+        var customerEntity = customerRepository.findById(customerId)
+                .orElseThrow(NotFoundException::new);
+
+        travelMapper.updateCustomerEntity(customerEntity, customerEntityWithUpdates);
 
         return customerRepository.save(customerEntityWithUpdates);
     }

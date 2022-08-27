@@ -22,6 +22,9 @@ import static org.mockito.Mockito.*;
 class CustomerServiceTest {
 
     @Mock
+    private TravelMapper travelMapper;
+
+    @Mock
     private CustomerRepository customerRepository;
 
     private CustomerService customerService;
@@ -29,7 +32,7 @@ class CustomerServiceTest {
     @BeforeEach
     void setup() {
 
-        customerService = new CustomerService(customerRepository);
+        customerService = new CustomerService(travelMapper, customerRepository);
     }
 
     @Nested
@@ -122,6 +125,43 @@ class CustomerServiceTest {
             assertThatThrownBy(() -> customerService.signUp(customerEntity))
                     .isInstanceOf(AlreadyExistsException.class)
                     .hasMessage("Customer with this customerId: 123 already exists");
+        }
+
+    }
+
+    @Nested
+    class UpdateCustomer {
+
+        @Test
+        void works() {
+            // Arrange
+            var customerEntity = new CustomerEntity();
+            customerEntity.setCustomerId(123);
+
+            when(customerRepository.findById(customerEntity.getCustomerId())).thenReturn(Optional.of(customerEntity));
+
+            // Act
+            customerService.updateCustomer(customerEntity);
+
+            // Assert
+            verify(customerRepository).findById(customerEntity.getCustomerId());
+            verify(travelMapper).updateCustomerEntity(any(CustomerEntity.class), any(CustomerEntity.class));
+            verify(customerRepository).save(customerEntity);
+
+            verifyNoMoreInteractions(travelMapper, customerRepository);
+        }
+
+        @Test
+        void throwsNotFoundException_whenThereIsNoRecordPresent() {
+            // Arrange
+            var customerEntity = new CustomerEntity();
+            customerEntity.setCustomerId(123);
+
+            when(customerRepository.findById(customerEntity.getCustomerId())).thenReturn(Optional.empty());
+
+            // Act/Assert
+            assertThatThrownBy(() -> customerService.updateCustomer(customerEntity))
+                    .isInstanceOf(NotFoundException.class);
         }
 
     }
