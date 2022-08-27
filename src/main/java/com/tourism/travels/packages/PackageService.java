@@ -28,15 +28,15 @@ public class PackageService {
                 .orElseThrow(NotFoundException::new);
     }
 
-    public PackageEntity addNewPackage(PackageEntity packageEntityWithUpdates) {
+    public PackageEntity addNewPackage(PackageEntity newPackage) {
 
-        var packageId = packageEntityWithUpdates.getPackageId();
+        var packageId = newPackage.getPackageId();
 
         packageRepository.findById(packageId)
                 .ifPresent(x -> { throw new AlreadyExistsException("Package with is id: "
                            + packageId + " already exists"); });
 
-        return packageRepository.save(packageEntityWithUpdates);
+        return packageRepository.save(newPackage);
     }
 
     public PackageEntity updateExistingPackage(PackageEntity packageEntityWithUpdates) {

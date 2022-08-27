@@ -1,5 +1,6 @@
 package com.tourism.travels.packages;
 
+import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.AlreadyExistsException;
 import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.PackageEntity;
@@ -22,6 +23,9 @@ import static org.mockito.Mockito.*;
 class PackageServiceTest {
 
     @Mock
+    private TravelMapper travelMapper;
+
+    @Mock
     private PackageRepository packageRepository;
 
     private PackageService packageService;
@@ -29,7 +33,7 @@ class PackageServiceTest {
     @BeforeEach
     void setup() {
 
-        packageService = new PackageService(packageRepository);
+        packageService = new PackageService(travelMapper, packageRepository);
     }
 
     @Nested

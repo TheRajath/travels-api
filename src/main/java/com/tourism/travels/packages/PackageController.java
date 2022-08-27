@@ -39,9 +39,9 @@ public class PackageController {
     public PackageRequest addPackage(@Valid @RequestBody PackageRequest packageRequest) {
 
         var packageEntity = travelMapper.toPackageEntity(packageRequest);
-        var packageEntityWithUpdates = packageService.addNewPackage(packageEntity);
+        var newPackage = packageService.addNewPackage(packageEntity);
 
-        return travelMapper.toPackageRequest(packageEntityWithUpdates);
+        return travelMapper.toPackageRequest(newPackage);
     }
 
     @PutMapping("/update")
