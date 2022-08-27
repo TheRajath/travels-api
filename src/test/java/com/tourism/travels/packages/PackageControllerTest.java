@@ -50,7 +50,7 @@ class PackageControllerTest {
         void works() throws Exception {
             // Arrange
             var packageEntity = new PackageEntity();
-            var packageResource = getPackageDetailsResource();
+            var packageResource = getPackageResource();
 
             when(packageService.getPackageDetails()).thenReturn(Collections.singletonList(packageEntity));
             when(travelMapper.toPackageResource(packageEntity)).thenReturn(packageResource);
@@ -78,7 +78,7 @@ class PackageControllerTest {
             var packageId = 123;
             var packageEntity = new PackageEntity();
             var request = PACKAGE_RESPONSE.replace("[", "");
-            var packageResource = getPackageDetailsResource();
+            var packageResource = getPackageResource();
 
             when(packageService.getPackageEntityById(packageId)).thenReturn(packageEntity);
             when(travelMapper.toPackageResource(packageEntity)).thenReturn(packageResource);
@@ -292,7 +292,7 @@ class PackageControllerTest {
 
     }
 
-    private PackageResource getPackageDetailsResource() {
+    private PackageResource getPackageResource() {
 
         var packageResource = new PackageResource();
 
