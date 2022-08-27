@@ -130,6 +130,43 @@ class CustomerServiceTest {
     }
 
     @Nested
+    class UpdateCustomer {
+
+        @Test
+        void works() {
+            // Arrange
+            var customerEntity = new CustomerEntity();
+            customerEntity.setCustomerId(123);
+
+            when(customerRepository.findById(customerEntity.getCustomerId())).thenReturn(Optional.of(customerEntity));
+
+            // Act
+            customerService.updateCustomer(customerEntity);
+
+            // Assert
+            verify(customerRepository).findById(customerEntity.getCustomerId());
+            verify(travelMapper).updateCustomerEntity(any(CustomerEntity.class), any(CustomerEntity.class));
+            verify(customerRepository).save(customerEntity);
+
+            verifyNoMoreInteractions(travelMapper, customerRepository);
+        }
+
+        @Test
+        void throwsNotFoundException_whenThereIsNoRecordPresent() {
+            // Arrange
+            var customerEntity = new CustomerEntity();
+            customerEntity.setCustomerId(123);
+
+            when(customerRepository.findById(customerEntity.getCustomerId())).thenReturn(Optional.empty());
+
+            // Act/Assert
+            assertThatThrownBy(() -> customerService.updateCustomer(customerEntity))
+                    .isInstanceOf(NotFoundException.class);
+        }
+
+    }
+
+    @Nested
     class DeleteByCustomerId {
 
         @Test

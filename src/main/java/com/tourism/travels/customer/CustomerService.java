@@ -27,15 +27,15 @@ public class CustomerService {
                 .orElseThrow(NotFoundException::new);
     }
 
-    public CustomerEntity signUp(CustomerEntity customerEntityWithUpdates) {
+    public CustomerEntity signUp(CustomerEntity newCustomerEntity) {
 
-        var customerId = customerEntityWithUpdates.getCustomerId();
+        var customerId = newCustomerEntity.getCustomerId();
 
         customerRepository.findById(customerId)
                 .ifPresent(x -> { throw new AlreadyExistsException("Customer with this customerId: "
                            + customerId + " already exists"); });
 
-        return customerRepository.save(customerEntityWithUpdates);
+        return customerRepository.save(newCustomerEntity);
     }
 
     public CustomerEntity updateCustomer(CustomerEntity customerEntityWithUpdates) {
