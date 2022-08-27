@@ -30,4 +30,7 @@ public interface TravelMapper {
     @Mapping(target = "packageId", ignore = true)
     void updatePackageEntity(@MappingTarget PackageEntity packageEntity, PackageEntity packageEntityWithUpdates);
 
+    @Mapping(target = "customerId", ignore = true)
+    void updateCustomerEntity(@MappingTarget CustomerEntity customerEntity, CustomerEntity customerEntityWithUpdates);
+
 }

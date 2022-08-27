@@ -43,6 +43,15 @@ public class CustomerController {
         return travelMapper.toCustomerRequest(customerEntityWithUpdates);
     }
 
+    @PutMapping("/update")
+    public CustomerRequest updateCustomerDetails(@Valid @RequestBody CustomerRequest customerRequest) {
+
+        var customerEntity = travelMapper.toCustomerEntity(customerRequest);
+        var customerEntityWithUpdates = customerService.updateCustomer(customerEntity);
+
+        return travelMapper.toCustomerRequest(customerEntityWithUpdates);
+    }
+
     @DeleteMapping("/{customerId}")
     @ResponseStatus(NO_CONTENT)
     public void deleteCustomer(@PathVariable String customerId) {

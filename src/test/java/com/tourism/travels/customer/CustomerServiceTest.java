@@ -22,6 +22,9 @@ import static org.mockito.Mockito.*;
 class CustomerServiceTest {
 
     @Mock
+    private TravelMapper travelMapper;
+
+    @Mock
     private CustomerRepository customerRepository;
 
     private CustomerService customerService;
@@ -29,7 +32,7 @@ class CustomerServiceTest {
     @BeforeEach
     void setup() {
 
-        customerService = new CustomerService(customerRepository);
+        customerService = new CustomerService(travelMapper, customerRepository);
     }
 
     @Nested
