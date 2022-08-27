@@ -1,5 +1,6 @@
 package com.tourism.travels.packages;
 
+import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.AlreadyExistsException;
 import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.PackageEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PackageService {
 
+    private final TravelMapper travelMapper;
     private final PackageRepository packageRepository;
 
     public List<PackageEntity> getPackageDetails() {
@@ -35,6 +37,18 @@ public class PackageService {
                            + packageId + " already exists"); });
 
         return packageRepository.save(packageEntityWithUpdates);
+    }
+
+    public PackageEntity updateExistingPackage(PackageEntity packageEntityWithUpdates) {
+
+        var packageId = packageEntityWithUpdates.getPackageId();
+
+        var packageEntity = packageRepository.findById(packageId)
+                .orElseThrow(NotFoundException::new);
+
+        travelMapper.updatePackageEntity(packageEntity, packageEntityWithUpdates);
+
+        return packageRepository.save(packageEntity);
     }
 
     public void deleteByPackageId(int packageId) {

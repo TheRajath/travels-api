@@ -9,6 +9,7 @@ import com.tourism.travels.sql.CustomerEntity;
 import com.tourism.travels.sql.PackageEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel="spring")
 public interface TravelMapper {
@@ -24,6 +25,9 @@ public interface TravelMapper {
 
     PackageEntity toPackageEntity(PackageRequest packageRequest);
 
-    PackageRequest toAddPackageRequest(PackageEntity packageEntity);
+    PackageRequest toPackageRequest(PackageEntity packageEntity);
+
+    @Mapping(target = "packageId", ignore = true)
+    void updatePackageEntity(@MappingTarget PackageEntity packageEntity, PackageEntity packageEntityWithUpdates);
 
 }

@@ -112,7 +112,7 @@ class PackageControllerTest {
 
             when(travelMapper.toPackageEntity(any(PackageRequest.class))).thenReturn(packageEntity);
             when(packageService.addNewPackage(packageEntity)).thenReturn(packageEntity);
-            when(travelMapper.toAddPackageRequest(packageEntity)).thenReturn(packageRequest);
+            when(travelMapper.toPackageRequest(packageEntity)).thenReturn(packageRequest);
 
             // Act/Assert
             mockMvc.perform(put("/packages/add")
@@ -123,7 +123,7 @@ class PackageControllerTest {
 
             verify(travelMapper).toPackageEntity(any(PackageRequest.class));
             verify(packageService).addNewPackage(packageEntity);
-            verify(travelMapper).toAddPackageRequest(packageEntity);
+            verify(travelMapper).toPackageRequest(packageEntity);
 
             verifyNoMoreInteractions(packageService, travelMapper);
         }

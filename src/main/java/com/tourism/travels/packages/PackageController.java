@@ -41,8 +41,18 @@ public class PackageController {
         var packageEntity = travelMapper.toPackageEntity(packageRequest);
         var packageEntityWithUpdates = packageService.addNewPackage(packageEntity);
 
-        return travelMapper.toAddPackageRequest(packageEntityWithUpdates);
+        return travelMapper.toPackageRequest(packageEntityWithUpdates);
     }
+
+    @PutMapping("/update")
+    public PackageRequest updatePackage(@Valid @RequestBody PackageRequest packageRequest) {
+
+        var packageEntity = travelMapper.toPackageEntity(packageRequest);
+        var packageEntityWithUpdates = packageService.updateExistingPackage(packageEntity);
+
+        return travelMapper.toPackageRequest(packageEntityWithUpdates);
+    }
+
 
     @DeleteMapping("/{customerId}")
     @ResponseStatus(NO_CONTENT)
