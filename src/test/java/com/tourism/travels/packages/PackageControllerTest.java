@@ -117,9 +117,9 @@ class PackageControllerTest {
             // Act/Assert
             mockMvc.perform(put("/packages/add")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(ADD_PACKAGE_REQUEST))
+                    .content(PACKAGE_REQUEST))
                     .andExpect(status().isOk())
-                    .andExpect(content().json(ADD_PACKAGE_REQUEST));
+                    .andExpect(content().json(PACKAGE_REQUEST));
 
             verify(travelMapper).toPackageEntity(any(PackageRequest.class));
             verify(packageService).addNewPackage(packageEntity);
@@ -131,7 +131,7 @@ class PackageControllerTest {
         @Test
         void returns400BadRequest_whenPackageIdIsNull() throws Exception {
             // Arrange
-            var request = ADD_PACKAGE_REQUEST.replace("123", "null");
+            var request = PACKAGE_REQUEST.replace("123", "null");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "packageId").replace("empty", "null");
 
             // Act/Assert
@@ -145,7 +145,7 @@ class PackageControllerTest {
         @Test
         void returns400BadRequest_whenPackageNameIsEmpty() throws Exception {
             // Arrange
-            var request = ADD_PACKAGE_REQUEST.replace("Agra", "");
+            var request = PACKAGE_REQUEST.replace("Agra", "");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "packageName");
 
             // Act/Assert
@@ -159,7 +159,7 @@ class PackageControllerTest {
         @Test
         void returns400BadRequest_whenTripDurationIsEmpty() throws Exception {
             // Arrange
-            var request = ADD_PACKAGE_REQUEST.replace("4 Day", "");
+            var request = PACKAGE_REQUEST.replace("4 Day", "");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "tripDuration");
 
             // Act/Assert
@@ -173,13 +173,103 @@ class PackageControllerTest {
         @Test
         void returns400BadRequest_whenCostPerPersonIsNull() throws Exception {
             // Arrange
-            var request = ADD_PACKAGE_REQUEST.replace("5000", "null");
+            var request = PACKAGE_REQUEST.replace("5000", "null");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "costPerPerson").replace("empty", "null");
 
             // Act/Assert
             mockMvc.perform(put("/packages/add")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+    }
+
+    @Nested
+    class UpdatePackage {
+
+        @Test
+        void works() throws Exception {
+            // Arrange
+            var packageRequest = new PackageRequest();
+            packageRequest.setPackageId(123);
+            packageRequest.setPackageName("Agra");
+            packageRequest.setTripDuration("4 Day");
+            packageRequest.setCostPerPerson(5000);
+
+            var packageEntity = new PackageEntity();
+
+            when(travelMapper.toPackageEntity(any(PackageRequest.class))).thenReturn(packageEntity);
+            when(packageService.updateExistingPackage(packageEntity)).thenReturn(packageEntity);
+            when(travelMapper.toPackageRequest(packageEntity)).thenReturn(packageRequest);
+
+            // Act/Assert
+            mockMvc.perform(put("/packages/update")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(PACKAGE_REQUEST))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(PACKAGE_REQUEST));
+
+            verify(travelMapper).toPackageEntity(any(PackageRequest.class));
+            verify(packageService).updateExistingPackage(packageEntity);
+            verify(travelMapper).toPackageRequest(packageEntity);
+
+            verifyNoMoreInteractions(packageService, travelMapper);
+        }
+
+        @Test
+        void returns400BadRequest_whenPackageIdIsNull() throws Exception {
+            // Arrange
+            var request = PACKAGE_REQUEST.replace("123", "null");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "packageId").replace("empty", "null");
+
+            // Act/Assert
+            mockMvc.perform(put("/packages/update")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void returns400BadRequest_whenPackageNameIsEmpty() throws Exception {
+            // Arrange
+            var request = PACKAGE_REQUEST.replace("Agra", "");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "packageName");
+
+            // Act/Assert
+            mockMvc.perform(put("/packages/update")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void returns400BadRequest_whenTripDurationIsEmpty() throws Exception {
+            // Arrange
+            var request = PACKAGE_REQUEST.replace("4 Day", "");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "tripDuration");
+
+            // Act/Assert
+            mockMvc.perform(put("/packages/update")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void returns400BadRequest_whenCostPerPersonIsNull() throws Exception {
+            // Arrange
+            var request = PACKAGE_REQUEST.replace("5000", "null");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "costPerPerson").replace("empty", "null");
+
+            // Act/Assert
+            mockMvc.perform(put("/packages/update")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
                     .andExpect(status().isBadRequest())
                     .andExpect(content().json(errorMessage));
         }
@@ -225,7 +315,7 @@ class PackageControllerTest {
                         }
                     ]""";
 
-    private static final String ADD_PACKAGE_REQUEST =
+    private static final String PACKAGE_REQUEST =
             """
                     {
                         "packageId": 123,
