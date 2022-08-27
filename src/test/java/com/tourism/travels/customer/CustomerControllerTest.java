@@ -116,9 +116,9 @@ class CustomerControllerTest {
             // Act/Assert
             mockMvc.perform(put("/customers/signup")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(CUSTOMER_SIGN_UP))
+                    .content(CUSTOMER_REQUEST))
                     .andExpect(status().isOk())
-                    .andExpect(content().json(CUSTOMER_SIGN_UP));
+                    .andExpect(content().json(CUSTOMER_REQUEST));
 
             verify(travelMapper).toCustomerEntity(any(CustomerRequest.class));
             verify(customerService).signUp(customerEntity);
@@ -130,7 +130,7 @@ class CustomerControllerTest {
         @Test
         void return400BadException_whenCustomerIdIsNull() throws Exception {
             // Arrange
-            var request = CUSTOMER_SIGN_UP.replace("123", "null");
+            var request = CUSTOMER_REQUEST.replace("123", "null");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "customerId").replace("empty", "null");
 
             // Act/Assert
@@ -144,7 +144,7 @@ class CustomerControllerTest {
         @Test
         void return400BadException_whenFirstNameIsEmpty() throws Exception {
             // Arrange
-            var request = CUSTOMER_SIGN_UP.replace("firstName", "");
+            var request = CUSTOMER_REQUEST.replace("firstName", "");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "firstName");
 
             // Act/Assert
@@ -158,7 +158,7 @@ class CustomerControllerTest {
         @Test
         void return400BadException_whenEmailIsNotInProperForm() throws Exception {
             // Arrange
-            var request = CUSTOMER_SIGN_UP.replace("email@gmail.com", "email");
+            var request = CUSTOMER_REQUEST.replace("email@gmail.com", "email");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "email")
                     .replace("must not be empty", "must be a well-formed email address");
 
@@ -173,7 +173,7 @@ class CustomerControllerTest {
         @Test
         void return400BadException_whenEmailIsEmpty() throws Exception {
             // Arrange
-            var request = CUSTOMER_SIGN_UP.replace("email@gmail.com", "");
+            var request = CUSTOMER_REQUEST.replace("email@gmail.com", "");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "email");
 
             // Act/Assert
@@ -187,7 +187,7 @@ class CustomerControllerTest {
         @Test
         void return400BadException_whenPasswordIsEmpty() throws Exception {
             // Arrange
-            var request = CUSTOMER_SIGN_UP.replace("secret", "");
+            var request = CUSTOMER_REQUEST.replace("secret", "");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "password");
 
             // Act/Assert
@@ -200,6 +200,111 @@ class CustomerControllerTest {
 
     }
 
+    @Nested
+    class UpdateCustomerDetails {
+
+        @Test
+        void works() throws Exception {
+            // Arrange
+            var customerRequest = new CustomerRequest();
+            customerRequest.setCustomerId(123);
+            customerRequest.setFirstName("firstName");
+            customerRequest.setLastName("lastName");
+            customerRequest.setEmail("email@gmail.com");
+            customerRequest.setPassword("secret");
+
+            var customerEntity = new CustomerEntity();
+
+            when(travelMapper.toCustomerEntity(any(CustomerRequest.class))).thenReturn(customerEntity);
+            when(customerService.updateCustomer(customerEntity)).thenReturn(customerEntity);
+            when(travelMapper.toCustomerRequest(customerEntity)).thenReturn(customerRequest);
+
+            // Act/Assert
+            mockMvc.perform(put("/customers/update")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(CUSTOMER_REQUEST))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(CUSTOMER_REQUEST));
+
+            verify(travelMapper).toCustomerEntity(any(CustomerRequest.class));
+            verify(customerService).updateCustomer(customerEntity);
+            verify(travelMapper).toCustomerRequest(customerEntity);
+
+            verifyNoMoreInteractions(customerService, travelMapper);
+        }
+
+        @Test
+        void return400BadException_whenCustomerIdIsNull() throws Exception {
+            // Arrange
+            var request = CUSTOMER_REQUEST.replace("123", "null");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "customerId").replace("empty", "null");
+
+            // Act/Assert
+            mockMvc.perform(put("/customers/update")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void return400BadException_whenFirstNameIsEmpty() throws Exception {
+            // Arrange
+            var request = CUSTOMER_REQUEST.replace("firstName", "");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "firstName");
+
+            // Act/Assert
+            mockMvc.perform(put("/customers/update")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void return400BadException_whenEmailIsNotInProperForm() throws Exception {
+            // Arrange
+            var request = CUSTOMER_REQUEST.replace("email@gmail.com", "email");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "email")
+                    .replace("must not be empty", "must be a well-formed email address");
+
+            // Act/Assert
+            mockMvc.perform(put("/customers/update")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void return400BadException_whenEmailIsEmpty() throws Exception {
+            // Arrange
+            var request = CUSTOMER_REQUEST.replace("email@gmail.com", "");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "email");
+
+            // Act/Assert
+            mockMvc.perform(put("/customers/update")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void return400BadException_whenPasswordIsEmpty() throws Exception {
+            // Arrange
+            var request = CUSTOMER_REQUEST.replace("secret", "");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "password");
+
+            // Act/Assert
+            mockMvc.perform(put("/customers/update")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+    }
     @Nested
     class DeleteCustomer {
 
@@ -240,7 +345,7 @@ class CustomerControllerTest {
                         }
                     ]""";
 
-    private static final String CUSTOMER_SIGN_UP =
+    private static final String CUSTOMER_REQUEST =
             """
                     {
                         "customerId": 123,
