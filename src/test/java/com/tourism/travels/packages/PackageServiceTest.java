@@ -1,5 +1,6 @@
 package com.tourism.travels.packages;
 
+import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.AlreadyExistsException;
 import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.PackageEntity;
@@ -22,6 +23,9 @@ import static org.mockito.Mockito.*;
 class PackageServiceTest {
 
     @Mock
+    private TravelMapper travelMapper;
+
+    @Mock
     private PackageRepository packageRepository;
 
     private PackageService packageService;
@@ -29,7 +33,7 @@ class PackageServiceTest {
     @BeforeEach
     void setup() {
 
-        packageService = new PackageService(packageRepository);
+        packageService = new PackageService(travelMapper, packageRepository);
     }
 
     @Nested
@@ -122,6 +126,42 @@ class PackageServiceTest {
             assertThatThrownBy(() -> packageService.addNewPackage(packageEntity))
                     .isInstanceOf(AlreadyExistsException.class)
                     .hasMessage("Package with is id: 123 already exists");
+        }
+
+    }
+
+    @Nested
+    class UpdateExistingPackage {
+
+        @Test
+        void works() {
+            // Arrange
+            var packageEntity = new PackageEntity();
+            packageEntity.setPackageId(123);
+
+            when(packageRepository.findById(packageEntity.getPackageId())).thenReturn(Optional.of(packageEntity));
+            // Act
+            packageService.updateExistingPackage(packageEntity);
+
+            // Assert
+            verify(packageRepository).findById(packageEntity.getPackageId());
+            verify(travelMapper).updatePackageEntity(any(PackageEntity.class), any(PackageEntity.class));
+            verify(packageRepository).save(packageEntity);
+
+            verifyNoMoreInteractions(packageRepository);
+        }
+
+        @Test
+        void throwsNotFoundException_whenThereIsNoRecordPresent() {
+            // Arrange
+            var packageEntity = new PackageEntity();
+            packageEntity.setPackageId(123);
+
+            when(packageRepository.findById(packageEntity.getPackageId())).thenReturn(Optional.empty());
+
+            // Act/Assert
+            assertThatThrownBy(() -> packageService.updateExistingPackage(packageEntity))
+                    .isInstanceOf(NotFoundException.class);
         }
 
     }

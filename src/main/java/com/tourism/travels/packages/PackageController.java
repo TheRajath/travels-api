@@ -1,7 +1,7 @@
 package com.tourism.travels.packages;
 
 import com.tourism.travels.customer.TravelMapper;
-import com.tourism.travels.pojo.AddPackageRequest;
+import com.tourism.travels.pojo.PackageRequest;
 import com.tourism.travels.pojo.PackageResource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -36,13 +36,23 @@ public class PackageController {
     }
 
     @PutMapping("/add")
-    public AddPackageRequest addPackage(@Valid @RequestBody AddPackageRequest addPackageRequest) {
+    public PackageRequest addPackage(@Valid @RequestBody PackageRequest packageRequest) {
 
-        var packageEntity = travelMapper.toPackageEntity(addPackageRequest);
-        var packageEntityWithUpdates = packageService.addNewPackage(packageEntity);
+        var packageEntity = travelMapper.toPackageEntity(packageRequest);
+        var newPackage = packageService.addNewPackage(packageEntity);
 
-        return travelMapper.toAddPackageRequest(packageEntityWithUpdates);
+        return travelMapper.toPackageRequest(newPackage);
     }
+
+    @PutMapping("/update")
+    public PackageRequest updatePackage(@Valid @RequestBody PackageRequest packageRequest) {
+
+        var packageEntity = travelMapper.toPackageEntity(packageRequest);
+        var packageEntityWithUpdates = packageService.updateExistingPackage(packageEntity);
+
+        return travelMapper.toPackageRequest(packageEntityWithUpdates);
+    }
+
 
     @DeleteMapping("/{customerId}")
     @ResponseStatus(NO_CONTENT)

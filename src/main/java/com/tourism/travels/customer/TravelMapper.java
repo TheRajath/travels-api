@@ -1,7 +1,7 @@
 
 package com.tourism.travels.customer;
 
-import com.tourism.travels.pojo.AddPackageRequest;
+import com.tourism.travels.pojo.PackageRequest;
 import com.tourism.travels.pojo.CustomerResource;
 import com.tourism.travels.pojo.CustomerSignUp;
 import com.tourism.travels.pojo.PackageResource;
@@ -9,6 +9,7 @@ import com.tourism.travels.sql.CustomerEntity;
 import com.tourism.travels.sql.PackageEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel="spring")
 public interface TravelMapper {
@@ -22,8 +23,11 @@ public interface TravelMapper {
 
     CustomerSignUp toSignUpRequest(CustomerEntity customerEntity);
 
-    PackageEntity toPackageEntity(AddPackageRequest addPackageRequest);
+    PackageEntity toPackageEntity(PackageRequest packageRequest);
 
-    AddPackageRequest toAddPackageRequest(PackageEntity packageEntity);
+    PackageRequest toPackageRequest(PackageEntity packageEntity);
+
+    @Mapping(target = "packageId", ignore = true)
+    void updatePackageEntity(@MappingTarget PackageEntity packageEntity, PackageEntity packageEntityWithUpdates);
 
 }

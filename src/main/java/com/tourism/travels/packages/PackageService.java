@@ -1,5 +1,6 @@
 package com.tourism.travels.packages;
 
+import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.AlreadyExistsException;
 import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.PackageEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PackageService {
 
+    private final TravelMapper travelMapper;
     private final PackageRepository packageRepository;
 
     public List<PackageEntity> getPackageDetails() {
@@ -26,15 +28,27 @@ public class PackageService {
                 .orElseThrow(NotFoundException::new);
     }
 
-    public PackageEntity addNewPackage(PackageEntity packageEntityWithUpdates) {
+    public PackageEntity addNewPackage(PackageEntity newPackage) {
 
-        var packageId = packageEntityWithUpdates.getPackageId();
+        var packageId = newPackage.getPackageId();
 
         packageRepository.findById(packageId)
                 .ifPresent(x -> { throw new AlreadyExistsException("Package with is id: "
                            + packageId + " already exists"); });
 
-        return packageRepository.save(packageEntityWithUpdates);
+        return packageRepository.save(newPackage);
+    }
+
+    public PackageEntity updateExistingPackage(PackageEntity packageEntityWithUpdates) {
+
+        var packageId = packageEntityWithUpdates.getPackageId();
+
+        var packageEntity = packageRepository.findById(packageId)
+                .orElseThrow(NotFoundException::new);
+
+        travelMapper.updatePackageEntity(packageEntity, packageEntityWithUpdates);
+
+        return packageRepository.save(packageEntity);
     }
 
     public void deleteByPackageId(int packageId) {
