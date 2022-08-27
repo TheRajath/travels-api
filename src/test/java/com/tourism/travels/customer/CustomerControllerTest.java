@@ -1,8 +1,8 @@
 package com.tourism.travels.customer;
 
 import com.tourism.travels.exception.GlobalExceptionHandler;
+import com.tourism.travels.pojo.CustomerRequest;
 import com.tourism.travels.pojo.CustomerResource;
-import com.tourism.travels.pojo.CustomerSignUp;
 import com.tourism.travels.sql.CustomerEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -100,18 +100,18 @@ class CustomerControllerTest {
         @Test
         void works() throws Exception {
             // Arrange
-            var customerSignUp = new CustomerSignUp();
-            customerSignUp.setCustomerId(123);
-            customerSignUp.setFirstName("firstName");
-            customerSignUp.setLastName("lastName");
-            customerSignUp.setEmail("email@gmail.com");
-            customerSignUp.setPassword("secret");
+            var customerRequest = new CustomerRequest();
+            customerRequest.setCustomerId(123);
+            customerRequest.setFirstName("firstName");
+            customerRequest.setLastName("lastName");
+            customerRequest.setEmail("email@gmail.com");
+            customerRequest.setPassword("secret");
 
             var customerEntity = new CustomerEntity();
 
-            when(travelMapper.toCustomerEntity(any(CustomerSignUp.class))).thenReturn(customerEntity);
+            when(travelMapper.toCustomerEntity(any(CustomerRequest.class))).thenReturn(customerEntity);
             when(customerService.signUp(customerEntity)).thenReturn(customerEntity);
-            when(travelMapper.toSignUpRequest(customerEntity)).thenReturn(customerSignUp);
+            when(travelMapper.toSignUpRequest(customerEntity)).thenReturn(customerRequest);
 
             // Act/Assert
             mockMvc.perform(put("/customers/signup")
@@ -120,7 +120,7 @@ class CustomerControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(content().json(CUSTOMER_SIGN_UP));
 
-            verify(travelMapper).toCustomerEntity(any(CustomerSignUp.class));
+            verify(travelMapper).toCustomerEntity(any(CustomerRequest.class));
             verify(customerService).signUp(customerEntity);
             verify(travelMapper).toSignUpRequest(customerEntity);
 
