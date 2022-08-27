@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class AddPackageRequest {
+public class PackageRequest {
 
     @NotNull
     private Integer packageId;

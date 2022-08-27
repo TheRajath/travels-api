@@ -1,7 +1,7 @@
 
 package com.tourism.travels.customer;
 
-import com.tourism.travels.pojo.AddPackageRequest;
+import com.tourism.travels.pojo.PackageRequest;
 import com.tourism.travels.pojo.CustomerResource;
 import com.tourism.travels.pojo.CustomerSignUp;
 import com.tourism.travels.pojo.PackageResource;
@@ -22,8 +22,8 @@ public interface TravelMapper {
 
     CustomerSignUp toSignUpRequest(CustomerEntity customerEntity);
 
-    PackageEntity toPackageEntity(AddPackageRequest addPackageRequest);
+    PackageEntity toPackageEntity(PackageRequest packageRequest);
 
-    AddPackageRequest toAddPackageRequest(PackageEntity packageEntity);
+    PackageRequest toAddPackageRequest(PackageEntity packageEntity);
 
 }

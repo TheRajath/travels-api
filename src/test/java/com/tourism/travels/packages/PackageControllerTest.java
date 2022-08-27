@@ -2,7 +2,7 @@ package com.tourism.travels.packages;
 
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.GlobalExceptionHandler;
-import com.tourism.travels.pojo.AddPackageRequest;
+import com.tourism.travels.pojo.PackageRequest;
 import com.tourism.travels.pojo.PackageResource;
 import com.tourism.travels.sql.PackageEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -102,17 +102,17 @@ class PackageControllerTest {
         @Test
         void works() throws Exception {
             // Arrange
-            var addPackageRequest = new AddPackageRequest();
-            addPackageRequest.setPackageId(123);
-            addPackageRequest.setPackageName("Agra");
-            addPackageRequest.setTripDuration("4 Day");
-            addPackageRequest.setCostPerPerson(5000);
+            var packageRequest = new PackageRequest();
+            packageRequest.setPackageId(123);
+            packageRequest.setPackageName("Agra");
+            packageRequest.setTripDuration("4 Day");
+            packageRequest.setCostPerPerson(5000);
 
             var packageEntity = new PackageEntity();
 
-            when(travelMapper.toPackageEntity(any(AddPackageRequest.class))).thenReturn(packageEntity);
+            when(travelMapper.toPackageEntity(any(PackageRequest.class))).thenReturn(packageEntity);
             when(packageService.addNewPackage(packageEntity)).thenReturn(packageEntity);
-            when(travelMapper.toAddPackageRequest(packageEntity)).thenReturn(addPackageRequest);
+            when(travelMapper.toAddPackageRequest(packageEntity)).thenReturn(packageRequest);
 
             // Act/Assert
             mockMvc.perform(put("/packages/add")
@@ -121,7 +121,7 @@ class PackageControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(content().json(ADD_PACKAGE_REQUEST));
 
-            verify(travelMapper).toPackageEntity(any(AddPackageRequest.class));
+            verify(travelMapper).toPackageEntity(any(PackageRequest.class));
             verify(packageService).addNewPackage(packageEntity);
             verify(travelMapper).toAddPackageRequest(packageEntity);
 
