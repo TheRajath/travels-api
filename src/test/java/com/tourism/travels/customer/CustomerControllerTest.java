@@ -111,7 +111,7 @@ class CustomerControllerTest {
 
             when(travelMapper.toCustomerEntity(any(CustomerRequest.class))).thenReturn(customerEntity);
             when(customerService.signUp(customerEntity)).thenReturn(customerEntity);
-            when(travelMapper.toSignUpRequest(customerEntity)).thenReturn(customerRequest);
+            when(travelMapper.toCustomerRequest(customerEntity)).thenReturn(customerRequest);
 
             // Act/Assert
             mockMvc.perform(put("/customers/signup")
@@ -122,7 +122,7 @@ class CustomerControllerTest {
 
             verify(travelMapper).toCustomerEntity(any(CustomerRequest.class));
             verify(customerService).signUp(customerEntity);
-            verify(travelMapper).toSignUpRequest(customerEntity);
+            verify(travelMapper).toCustomerRequest(customerEntity);
 
             verifyNoMoreInteractions(customerService, travelMapper);
         }

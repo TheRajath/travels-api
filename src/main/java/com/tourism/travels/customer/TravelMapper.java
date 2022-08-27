@@ -21,7 +21,7 @@ public interface TravelMapper {
 
     CustomerEntity toCustomerEntity(CustomerRequest customerRequest);
 
-    CustomerRequest toSignUpRequest(CustomerEntity customerEntity);
+    CustomerRequest toCustomerRequest(CustomerEntity customerEntity);
 
     PackageEntity toPackageEntity(PackageRequest packageRequest);
 

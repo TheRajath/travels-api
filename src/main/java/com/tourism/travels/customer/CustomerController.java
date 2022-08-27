@@ -40,7 +40,7 @@ public class CustomerController {
         var customerEntity = travelMapper.toCustomerEntity(customerRequest);
         var customerEntityWithUpdates = customerService.signUp(customerEntity);
 
-        return travelMapper.toSignUpRequest(customerEntityWithUpdates);
+        return travelMapper.toCustomerRequest(customerEntityWithUpdates);
     }
 
     @DeleteMapping("/{customerId}")
