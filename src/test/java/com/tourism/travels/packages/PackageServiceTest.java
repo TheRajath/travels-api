@@ -131,6 +131,42 @@ class PackageServiceTest {
     }
 
     @Nested
+    class UpdateExistingPackage {
+
+        @Test
+        void works() {
+            // Arrange
+            var packageEntity = new PackageEntity();
+            packageEntity.setPackageId(123);
+
+            when(packageRepository.findById(packageEntity.getPackageId())).thenReturn(Optional.of(packageEntity));
+            // Act
+            packageService.updateExistingPackage(packageEntity);
+
+            // Assert
+            verify(packageRepository).findById(packageEntity.getPackageId());
+            verify(travelMapper).updatePackageEntity(any(PackageEntity.class), any(PackageEntity.class));
+            verify(packageRepository).save(packageEntity);
+
+            verifyNoMoreInteractions(packageRepository);
+        }
+
+        @Test
+        void throwsNotFoundException_whenThereIsNoRecordPresent() {
+            // Arrange
+            var packageEntity = new PackageEntity();
+            packageEntity.setPackageId(123);
+
+            when(packageRepository.findById(packageEntity.getPackageId())).thenReturn(Optional.empty());
+
+            // Act/Assert
+            assertThatThrownBy(() -> packageService.updateExistingPackage(packageEntity))
+                    .isInstanceOf(NotFoundException.class);
+        }
+
+    }
+
+    @Nested
     class DeleteByPackageId {
 
         @Test
