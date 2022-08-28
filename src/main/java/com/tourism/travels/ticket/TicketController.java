@@ -1,6 +1,7 @@
 package com.tourism.travels.ticket;
 
 import com.tourism.travels.customer.TravelMapper;
+import com.tourism.travels.pojo.TicketRequest;
 import com.tourism.travels.pojo.TicketResource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +26,12 @@ public class TicketController {
     }
 
     @PutMapping("/create")
-    public TicketResource createTicket(@Valid @RequestBody TicketResource ticketResource) {
+    public TicketRequest createTicket(@Valid @RequestBody TicketRequest ticketRequest) {
 
-        var ticketEntity = travelMapper.toTicketEntity(ticketResource);
+        var ticketEntity = travelMapper.toTicketEntity(ticketRequest);
         var newTicketEntity = ticketService.createTicket(ticketEntity);
 
-        return travelMapper.toTicketResource(newTicketEntity);
+        return travelMapper.toTicketRequest(newTicketEntity);
 
     }
 
