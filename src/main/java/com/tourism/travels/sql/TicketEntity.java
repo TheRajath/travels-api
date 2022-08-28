@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -27,7 +28,7 @@ public class TicketEntity {
     private int packageId;
 
     @Column(name = "travel_date")
-    private String travelDate;
+    private LocalDate travelDate;
 
     @Column(name = "total_members")
     private int totalMembers;
