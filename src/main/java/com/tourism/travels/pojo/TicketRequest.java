@@ -11,21 +11,21 @@ import javax.validation.constraints.NotNull;
 public class TicketRequest {
 
     @NotNull
-    private int ticketId;
+    private Integer ticketId;
 
     @NotNull
-    private int customerId;
+    private Integer customerId;
 
     @NotNull
-    private int packageId;
+    private Integer packageId;
 
     @NotEmpty
     private String travelDate;
 
     @NotNull
-    private int totalMembers;
+    private Integer totalMembers;
 
     @NotNull
-    private int totalCost;
+    private Integer totalCost;
 
 }
