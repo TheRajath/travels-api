@@ -15,8 +15,8 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RequestMapping("/customers")
 public class CustomerController {
 
-    private final CustomerService customerService;
     private final TravelMapper travelMapper;
+    private final CustomerService customerService;
 
     @GetMapping
     public List<CustomerResource> getCustomers() {

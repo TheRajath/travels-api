@@ -16,8 +16,8 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RequestMapping("/packages")
 public class PackageController {
 
-    private final PackageService packageService;
     private final TravelMapper travelMapper;
+    private final PackageService packageService;
 
     @GetMapping
     public List<PackageResource> getPackages() {
