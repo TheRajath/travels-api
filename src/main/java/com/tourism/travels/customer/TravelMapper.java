@@ -17,6 +17,8 @@ public interface TravelMapper {
 
     CustomerResource toCustomerResource(CustomerEntity entity);
 
+    TicketEntity toTicketEntity(TicketResource ticketResource);
+
     TicketResource toTicketResource(TicketEntity ticketEntity);
 
     PackageEntity toPackageEntity(PackageRequest packageRequest);
