@@ -30,7 +30,7 @@ public class TicketEntity {
     private String travelDate;
 
     @Column(name = "total_members")
-    private String totalMembers;
+    private int totalMembers;
 
     @Column(name = "total_cost")
     private int totalCost;

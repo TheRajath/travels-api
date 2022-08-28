@@ -11,7 +11,7 @@ public class TicketResource {
     private int customerId;
     private int packageId;
     private String travelDate;
-    private String totalMembers;
+    private int totalMembers;
     private int totalCost;
 
 }
