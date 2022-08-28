@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
@@ -35,7 +37,7 @@ class CustomerControllerTest {
     @BeforeEach
     void setUp() {
 
-        var customerController = new CustomerController(customerService, travelMapper);
+        var customerController = new CustomerController(travelMapper, customerService);
 
         mockMvc = MockMvcBuilders.standaloneSetup(customerController)
                 .setControllerAdvice(new GlobalExceptionHandler())
@@ -141,11 +143,12 @@ class CustomerControllerTest {
                     .andExpect(content().json(errorMessage));
         }
 
-        @Test
-        void return400BadException_whenFirstNameIsEmpty() throws Exception {
+        @ParameterizedTest
+        @CsvSource({"firstName,firstName", "email@gmail.com,email", "secret,password"})
+        void return400BadException_whenFirstNameOrEmailOrPasswordIsEmpty(String value, String fieldName) throws Exception {
             // Arrange
-            var request = CUSTOMER_REQUEST.replace("firstName", "");
-            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "firstName");
+            var request = CUSTOMER_REQUEST.replace(value, "");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", fieldName);
 
             // Act/Assert
             mockMvc.perform(put("/customers/signup")
@@ -161,34 +164,6 @@ class CustomerControllerTest {
             var request = CUSTOMER_REQUEST.replace("email@gmail.com", "email");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "email")
                     .replace("must not be empty", "must be a well-formed email address");
-
-            // Act/Assert
-            mockMvc.perform(put("/customers/signup")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(request))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().json(errorMessage));
-        }
-
-        @Test
-        void return400BadException_whenEmailIsEmpty() throws Exception {
-            // Arrange
-            var request = CUSTOMER_REQUEST.replace("email@gmail.com", "");
-            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "email");
-
-            // Act/Assert
-            mockMvc.perform(put("/customers/signup")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(request))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().json(errorMessage));
-        }
-
-        @Test
-        void return400BadException_whenPasswordIsEmpty() throws Exception {
-            // Arrange
-            var request = CUSTOMER_REQUEST.replace("secret", "");
-            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "password");
 
             // Act/Assert
             mockMvc.perform(put("/customers/signup")
@@ -247,11 +222,12 @@ class CustomerControllerTest {
                     .andExpect(content().json(errorMessage));
         }
 
-        @Test
-        void return400BadException_whenFirstNameIsEmpty() throws Exception {
+        @ParameterizedTest
+        @CsvSource({"firstName,firstName", "email@gmail.com,email", "secret,password"})
+        void return400BadException_whenFirstNameOrEmailOrPasswordIsEmpty(String value, String fieldName) throws Exception {
             // Arrange
-            var request = CUSTOMER_REQUEST.replace("firstName", "");
-            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "firstName");
+            var request = CUSTOMER_REQUEST.replace(value, "");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", fieldName);
 
             // Act/Assert
             mockMvc.perform(put("/customers/update")
@@ -267,34 +243,6 @@ class CustomerControllerTest {
             var request = CUSTOMER_REQUEST.replace("email@gmail.com", "email");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "email")
                     .replace("must not be empty", "must be a well-formed email address");
-
-            // Act/Assert
-            mockMvc.perform(put("/customers/update")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(request))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().json(errorMessage));
-        }
-
-        @Test
-        void return400BadException_whenEmailIsEmpty() throws Exception {
-            // Arrange
-            var request = CUSTOMER_REQUEST.replace("email@gmail.com", "");
-            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "email");
-
-            // Act/Assert
-            mockMvc.perform(put("/customers/update")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(request))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().json(errorMessage));
-        }
-
-        @Test
-        void return400BadException_whenPasswordIsEmpty() throws Exception {
-            // Arrange
-            var request = CUSTOMER_REQUEST.replace("secret", "");
-            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "password");
 
             // Act/Assert
             mockMvc.perform(put("/customers/update")

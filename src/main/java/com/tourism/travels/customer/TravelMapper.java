@@ -1,12 +1,10 @@
 
 package com.tourism.travels.customer;
 
-import com.tourism.travels.pojo.PackageRequest;
-import com.tourism.travels.pojo.CustomerResource;
-import com.tourism.travels.pojo.CustomerRequest;
-import com.tourism.travels.pojo.PackageResource;
+import com.tourism.travels.pojo.*;
 import com.tourism.travels.sql.CustomerEntity;
 import com.tourism.travels.sql.PackageEntity;
+import com.tourism.travels.sql.TicketEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -18,6 +16,8 @@ public interface TravelMapper {
     PackageResource toPackageResource(PackageEntity entity);
 
     CustomerResource toCustomerResource(CustomerEntity entity);
+
+    TicketResource toTicketResource(TicketEntity ticketEntity);
 
     PackageEntity toPackageEntity(PackageRequest packageRequest);
 

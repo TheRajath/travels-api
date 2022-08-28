@@ -36,7 +36,7 @@ class PackageControllerTest {
     @BeforeEach
     void setUp() {
 
-        var packageController = new PackageController(packageService, travelMapper);
+        var packageController = new PackageController(travelMapper, packageService);
 
         mockMvc = MockMvcBuilders.standaloneSetup(packageController)
                 .setControllerAdvice(new GlobalExceptionHandler())
