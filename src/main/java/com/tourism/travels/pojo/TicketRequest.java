@@ -3,8 +3,8 @@ package com.tourism.travels.pojo;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -19,8 +19,8 @@ public class TicketRequest {
     @NotNull
     private Integer packageId;
 
-    @NotEmpty
-    private String travelDate;
+    @NotNull
+    private LocalDate travelDate;
 
     @NotNull
     private Integer totalMembers;

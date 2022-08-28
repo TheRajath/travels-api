@@ -1,5 +1,7 @@
 package com.tourism.travels.ticket;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.GlobalExceptionHandler;
 import com.tourism.travels.pojo.TicketRequest;
@@ -14,9 +16,11 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
 import java.util.Collections;
 
 import static org.mockito.Mockito.*;
@@ -41,8 +45,13 @@ class TicketControllerTest {
 
         var ticketController = new TicketController(travelMapper, ticketService);
 
+        var objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         mockMvc = MockMvcBuilders.standaloneSetup(ticketController)
                 .setControllerAdvice(new GlobalExceptionHandler())
+                .setMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
                 .build();
     }
 
@@ -57,7 +66,7 @@ class TicketControllerTest {
             ticketResource.setTicketId(123);
             ticketResource.setCustomerId(789);
             ticketResource.setPackageId(456);
-            ticketResource.setTravelDate("2022-10-12");
+            ticketResource.setTravelDate(LocalDate.parse("2022-10-12"));
             ticketResource.setTotalMembers(2);
             ticketResource.setTotalCost(3000);
 
@@ -85,10 +94,10 @@ class TicketControllerTest {
             // Arrange
             var ticketRequest = new TicketRequest();
             ticketRequest.setTicketId(10);
-            ticketRequest.setCustomerId(20);
+            ticketRequest.setCustomerId(70);
             ticketRequest.setPackageId(30);
-            ticketRequest.setTravelDate("2022-12-15");
-            ticketRequest.setTotalMembers(15);
+            ticketRequest.setTravelDate(LocalDate.parse("2022-12-15"));
+            ticketRequest.setTotalMembers(75);
             ticketRequest.setTotalCost(90);
 
             var ticketEntity = new TicketEntity();
@@ -112,7 +121,7 @@ class TicketControllerTest {
         }
 
         @ParameterizedTest
-        @CsvSource({"10,ticketId", "20,customerId", "30,packageId", "15,totalMembers"})
+        @CsvSource({"10,ticketId", "70,customerId", "30,packageId", "75,totalMembers"})
         void throws400BadException_whenTicketIdOrCustomerIdOrPackageIdOrTotalMembersOrTotalCostIsNull(String value,
                                                                                                       String fieldName)
                                                                                                       throws Exception {
@@ -132,7 +141,7 @@ class TicketControllerTest {
         void returns400BadRequest_whenTravelDateIsNotPresent() throws Exception {
             // Arrange
             var request = TICKET_REQUEST.replace("2022-12-15", "");
-            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "travelDate").replace("null", "empty");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "travelDate");
 
             // Act/Assert
             mockMvc.perform(put("/tickets/create")
@@ -161,10 +170,10 @@ class TicketControllerTest {
             """
                     {
                         "ticketId": 10,
-                        "customerId": 20,
+                        "customerId": 70,
                         "packageId": 30,
                         "travelDate": "2022-12-15",
-                        "totalMembers": 15,
+                        "totalMembers": 75,
                         "totalCost": 90
                     }""";
 
