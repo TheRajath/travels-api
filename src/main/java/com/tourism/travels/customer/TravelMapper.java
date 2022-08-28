@@ -19,13 +19,13 @@ public interface TravelMapper {
 
     CustomerResource toCustomerResource(CustomerEntity entity);
 
-    CustomerEntity toCustomerEntity(CustomerRequest customerRequest);
-
-    CustomerRequest toCustomerRequest(CustomerEntity customerEntity);
-
     PackageEntity toPackageEntity(PackageRequest packageRequest);
 
     PackageRequest toPackageRequest(PackageEntity packageEntity);
+
+    CustomerEntity toCustomerEntity(CustomerRequest customerRequest);
+
+    CustomerRequest toCustomerRequest(CustomerEntity customerEntity);
 
     @Mapping(target = "packageId", ignore = true)
     void updatePackageEntity(@MappingTarget PackageEntity packageEntity, PackageEntity packageEntityWithUpdates);
