@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.GlobalExceptionHandler;
+import com.tourism.travels.packages.PackageService;
 import com.tourism.travels.pojo.TicketRequest;
 import com.tourism.travels.pojo.TicketResource;
+import com.tourism.travels.sql.PackageEntity;
 import com.tourism.travels.sql.TicketEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -36,6 +38,9 @@ class TicketControllerTest {
     private TicketService ticketService;
 
     @Mock
+    private PackageService packageService;
+
+    @Mock
     private TravelMapper travelMapper;
 
     private MockMvc mockMvc;
@@ -43,7 +48,7 @@ class TicketControllerTest {
     @BeforeEach
     void setUp() {
 
-        var ticketController = new TicketController(travelMapper, ticketService);
+        var ticketController = new TicketController(travelMapper, ticketService, packageService);
 
         var objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
@@ -61,17 +66,23 @@ class TicketControllerTest {
         @Test
         void works() throws Exception {
             // Arrange
+            var packageId = 456;
             var ticketEntity = new TicketEntity();
+
+            var packageEntity = new PackageEntity();
+            packageEntity.setCostPerPerson(1500);
+
             var ticketResource = new TicketResource();
             ticketResource.setTicketId(123);
             ticketResource.setCustomerId(789);
-            ticketResource.setPackageId(456);
+            ticketResource.setPackageId(packageId);
             ticketResource.setTravelDate(LocalDate.parse("2022-10-12"));
             ticketResource.setTotalMembers(2);
             ticketResource.setTotalCost(3000);
 
             when(ticketService.getTicketEntities()).thenReturn(Collections.singletonList(ticketEntity));
             when(travelMapper.toTicketResource(ticketEntity)).thenReturn(ticketResource);
+            when(packageService.getPackageEntityById(packageId)).thenReturn(packageEntity);
 
             // Act/Assert
             mockMvc.perform(get("/tickets"))
@@ -80,8 +91,9 @@ class TicketControllerTest {
 
             verify(ticketService).getTicketEntities();
             verify(travelMapper).toTicketResource(ticketEntity);
+            verify(packageService).getPackageEntityById(packageId);
 
-            verifyNoMoreInteractions(ticketService, travelMapper);
+            verifyNoMoreInteractions(ticketService, travelMapper, packageService);
         }
 
     }

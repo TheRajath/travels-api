@@ -1,6 +1,7 @@
 package com.tourism.travels.ticket;
 
 import com.tourism.travels.customer.TravelMapper;
+import com.tourism.travels.packages.PackageService;
 import com.tourism.travels.pojo.TicketRequest;
 import com.tourism.travels.pojo.TicketResource;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +17,16 @@ public class TicketController {
 
     private final TravelMapper travelMapper;
     private final TicketService ticketService;
+    private final PackageService packageService;
 
     @GetMapping
     public List<TicketResource> getTickets() {
 
-        return ticketService.getTicketEntities().stream()
+        var ticketResources = ticketService.getTicketEntities().stream()
                 .map(travelMapper::toTicketResource)
                 .toList();
+
+        return setTotalCostForTicketResources(ticketResources);
     }
 
     @PutMapping("/create")
@@ -33,6 +37,23 @@ public class TicketController {
 
         return travelMapper.toTicketRequest(newTicketEntity);
 
+    }
+
+    private List<TicketResource> setTotalCostForTicketResources(List<TicketResource> ticketResources) {
+
+        ticketResources.forEach(ticket -> {
+
+            var packageId = ticket.getPackageId();
+            var totalMembers = ticket.getTotalMembers();
+
+            var packageEntity = packageService.getPackageEntityById(packageId);
+            var costPerPerson = packageEntity.getCostPerPerson();
+            var totalCost = totalMembers * costPerPerson;
+
+            ticket.setTotalCost(totalCost);
+        });
+
+        return ticketResources;
     }
 
 }
