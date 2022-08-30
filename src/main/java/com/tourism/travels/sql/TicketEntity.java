@@ -33,7 +33,4 @@ public class TicketEntity {
     @Column(name = "total_members")
     private int totalMembers;
 
-    @Column(name = "total_cost")
-    private int totalCost;
-
 }

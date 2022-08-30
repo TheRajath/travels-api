@@ -25,7 +25,4 @@ public class TicketRequest {
     @NotNull
     private Integer totalMembers;
 
-    @NotNull
-    private Integer totalCost;
-
 }
