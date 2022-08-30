@@ -98,7 +98,6 @@ class TicketControllerTest {
             ticketRequest.setPackageId(30);
             ticketRequest.setTravelDate(LocalDate.parse("2022-12-15"));
             ticketRequest.setTotalMembers(75);
-            ticketRequest.setTotalCost(90);
 
             var ticketEntity = new TicketEntity();
 
@@ -173,8 +172,7 @@ class TicketControllerTest {
                         "customerId": 70,
                         "packageId": 30,
                         "travelDate": "2022-12-15",
-                        "totalMembers": 75,
-                        "totalCost": 90
+                        "totalMembers": 75
                     }""";
 
     private static final String COMMON_ERROR_MESSAGE =

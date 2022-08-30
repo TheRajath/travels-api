@@ -21,6 +21,7 @@ public interface TravelMapper {
 
     TicketRequest toTicketRequest(TicketEntity ticketEntity);
 
+    @Mapping(target = "totalCost", ignore = true)
     TicketResource toTicketResource(TicketEntity ticketEntity);
 
     PackageEntity toPackageEntity(PackageRequest packageRequest);
