@@ -28,4 +28,5 @@ public class PackageEntity {
 
     @Column(name = "cost_per_person")
     private int costPerPerson;
+
 }

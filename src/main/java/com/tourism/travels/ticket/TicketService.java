@@ -1,5 +1,6 @@
 package com.tourism.travels.ticket;
 
+import com.querydsl.core.types.Predicate;
 import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.sql.TicketEntity;
 import com.tourism.travels.sql.TicketRepository;
@@ -35,6 +36,11 @@ public class TicketService {
             throw new BusinessValidationException("The customerId/packageId is not a valid Id");
         }
 
+    }
+
+    public List<TicketEntity> getTicketsBySearchPredicate(Predicate predicate) {
+
+        return (List<TicketEntity>) ticketRepository.findAll(predicate);
     }
 
 }

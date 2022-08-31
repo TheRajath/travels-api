@@ -5,6 +5,7 @@ import com.tourism.travels.pojo.*;
 import com.tourism.travels.sql.CustomerEntity;
 import com.tourism.travels.sql.PackageEntity;
 import com.tourism.travels.sql.TicketEntity;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -17,6 +18,8 @@ public interface TravelMapper {
 
     CustomerResource toCustomerResource(CustomerEntity entity);
 
+    @Mapping(target = "packageEntity", ignore = true)
+    @Mapping(target = "customerEntity", ignore = true)
     TicketEntity toTicketEntity(TicketRequest ticketRequest);
 
     TicketRequest toTicketRequest(TicketEntity ticketEntity);
@@ -37,5 +40,25 @@ public interface TravelMapper {
 
     @Mapping(target = "customerId", ignore = true)
     void updateCustomerEntity(@MappingTarget CustomerEntity customerEntity, CustomerEntity customerEntityWithUpdates);
+
+    @Mapping(target = "totalCostOfTrip", ignore = true)
+    @Mapping(target = "firstName", source = "ticketEntity.customerEntity.firstName")
+    @Mapping(target = "lastName", source = "ticketEntity.customerEntity.lastName")
+    @Mapping(target = "email", source = "ticketEntity.customerEntity.email")
+    @Mapping(target = "packageName", source = "ticketEntity.packageEntity.packageName")
+    @Mapping(target = "tripDuration", source = "ticketEntity.packageEntity.tripDuration")
+    SearchTicketResource mapSearchResource(TicketEntity ticketEntity);
+
+    @AfterMapping
+    default void setTotalCostForSearchResource(@MappingTarget SearchTicketResource searchTicketResource,
+                                               TicketEntity ticketEntity) {
+
+        var totalMembers = ticketEntity.getTotalMembers();
+        var costPerPerson = ticketEntity.getPackageEntity().getCostPerPerson();
+
+        var totalCostOfTrip = totalMembers * costPerPerson;
+
+        searchTicketResource.setTotalCostOfTrip(totalCostOfTrip);
+    }
 
 }

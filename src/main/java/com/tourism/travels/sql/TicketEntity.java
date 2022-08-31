@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
@@ -32,5 +29,13 @@ public class TicketEntity {
 
     @Column(name = "total_members")
     private int totalMembers;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
+    private CustomerEntity customerEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "package_id", insertable = false, updatable = false)
+    private PackageEntity packageEntity;
 
 }

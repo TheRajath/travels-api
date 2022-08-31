@@ -1,5 +1,7 @@
 package com.tourism.travels.ticket;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.sql.TicketEntity;
 import com.tourism.travels.sql.TicketRepository;
@@ -99,6 +101,31 @@ class TicketServiceTest {
             assertThatThrownBy(() -> ticketService.createTicket(ticketEntity))
                     .isInstanceOf(BusinessValidationException.class)
                     .hasMessage("The customerId/packageId is not a valid Id");
+        }
+
+    }
+
+    @Nested
+    class GetTicketsBySearchPredicate {
+
+        @Test
+        void works() {
+            // Arrange
+            Predicate predicate = new BooleanBuilder();
+
+            var ticketEntities = Collections.singletonList(new TicketEntity());
+
+            when(ticketRepository.findAll(predicate)).thenReturn(ticketEntities);
+
+            // Act
+            var retrievedTicketEntities = ticketService.getTicketsBySearchPredicate(predicate);
+
+            // Assert
+            assertThat(retrievedTicketEntities).isNotNull().isNotEmpty().isEqualTo(ticketEntities);
+
+            verify(ticketRepository).findAll(predicate);
+
+            verifyNoMoreInteractions(ticketRepository);
         }
 
     }
