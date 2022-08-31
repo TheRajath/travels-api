@@ -100,7 +100,7 @@ public class TicketController {
         if (predicate.getValue() == null) {
 
             throw new AlreadyExistsException("request body must contain at least one of the following search" +
-                    "criteria: ticketId, customerId, packageId, travelDate");
+                    " criteria: ticketId, customerId, packageId, travelDate");
         }
 
         return predicate;
