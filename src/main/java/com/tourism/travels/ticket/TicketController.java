@@ -3,7 +3,7 @@ package com.tourism.travels.ticket;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.tourism.travels.customer.TravelMapper;
-import com.tourism.travels.exception.AlreadyExistsException;
+import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.packages.PackageService;
 import com.tourism.travels.pojo.SearchRequest;
 import com.tourism.travels.pojo.SearchTicketResource;
@@ -99,7 +99,7 @@ public class TicketController {
 
         if (predicate.getValue() == null) {
 
-            throw new AlreadyExistsException("request body must contain at least one of the following search" +
+            throw new BusinessValidationException("request body must contain at least one of the following search" +
                     " criteria: ticketId, customerId, packageId, travelDate");
         }
 
