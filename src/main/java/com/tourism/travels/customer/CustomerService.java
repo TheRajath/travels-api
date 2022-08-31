@@ -1,6 +1,6 @@
 package com.tourism.travels.customer;
 
-import com.tourism.travels.exception.AlreadyExistsException;
+import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.CustomerEntity;
 import com.tourism.travels.sql.CustomerRepository;
@@ -32,7 +32,7 @@ public class CustomerService {
         var customerId = newCustomerEntity.getCustomerId();
 
         customerRepository.findById(customerId)
-                .ifPresent(x -> { throw new AlreadyExistsException("Customer with this customerId: "
+                .ifPresent(x -> { throw new BusinessValidationException("Customer with this customerId: "
                            + customerId + " already exists"); });
 
         return customerRepository.save(newCustomerEntity);

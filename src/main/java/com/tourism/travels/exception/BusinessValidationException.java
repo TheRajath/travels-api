@@ -3,9 +3,9 @@ package com.tourism.travels.exception;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class AlreadyExistsException extends RuntimeException {
+public class BusinessValidationException extends RuntimeException {
 
-    public AlreadyExistsException(String message) {
+    public BusinessValidationException(String message) {
         super(message);
     }
 

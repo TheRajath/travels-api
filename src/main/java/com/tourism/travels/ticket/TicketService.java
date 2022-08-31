@@ -1,7 +1,7 @@
 package com.tourism.travels.ticket;
 
 import com.querydsl.core.types.Predicate;
-import com.tourism.travels.exception.AlreadyExistsException;
+import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.sql.TicketEntity;
 import com.tourism.travels.sql.TicketRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class TicketService {
         var ticketId = ticketEntity.getTicketId();
 
         ticketRepository.findById(ticketId)
-                .ifPresent(x -> { throw new AlreadyExistsException("Ticket already exists"); });
+                .ifPresent(x -> { throw new BusinessValidationException("Ticket already exists"); });
 
         try {
 
@@ -33,7 +33,7 @@ public class TicketService {
         }
         catch (RuntimeException exception) {
 
-            throw new AlreadyExistsException("The customerId/packageId is not a valid Id");
+            throw new BusinessValidationException("The customerId/packageId is not a valid Id");
         }
 
     }

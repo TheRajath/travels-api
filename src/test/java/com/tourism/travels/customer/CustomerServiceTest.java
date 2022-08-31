@@ -1,6 +1,6 @@
 package com.tourism.travels.customer;
 
-import com.tourism.travels.exception.AlreadyExistsException;
+import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.CustomerEntity;
 import com.tourism.travels.sql.CustomerRepository;
@@ -123,7 +123,7 @@ class CustomerServiceTest {
 
             // Act/Assert
             assertThatThrownBy(() -> customerService.signUp(customerEntity))
-                    .isInstanceOf(AlreadyExistsException.class)
+                    .isInstanceOf(BusinessValidationException.class)
                     .hasMessage("Customer with this customerId: 123 already exists");
         }
 

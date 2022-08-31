@@ -1,7 +1,7 @@
 package com.tourism.travels.packages;
 
 import com.tourism.travels.customer.TravelMapper;
-import com.tourism.travels.exception.AlreadyExistsException;
+import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.PackageEntity;
 import com.tourism.travels.sql.PackageRepository;
@@ -124,7 +124,7 @@ class PackageServiceTest {
 
             // Act/Assert
             assertThatThrownBy(() -> packageService.addNewPackage(packageEntity))
-                    .isInstanceOf(AlreadyExistsException.class)
+                    .isInstanceOf(BusinessValidationException.class)
                     .hasMessage("Package with is id: 123 already exists");
         }
 
