@@ -53,7 +53,7 @@ class GlobalExceptionHandlerTest {
         // Arrange
         var json = createJson();
 
-        when(mock.foo()).thenThrow(new AlreadyExistsException());
+        when(mock.foo()).thenThrow(new BusinessValidationException());
 
         // Act/Assert
         mockMvc.perform(post("/test")

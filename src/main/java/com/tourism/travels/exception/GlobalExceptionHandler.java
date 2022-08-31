@@ -2,8 +2,6 @@ package com.tourism.travels.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +33,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<Error> alreadyExistsException(AlreadyExistsException e) {
+    public ResponseEntity<Error> alreadyExistsException(BusinessValidationException e) {
 
         var exceptionMessage = e.getMessage();
 

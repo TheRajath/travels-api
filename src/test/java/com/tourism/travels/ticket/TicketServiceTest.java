@@ -1,6 +1,6 @@
 package com.tourism.travels.ticket;
 
-import com.tourism.travels.exception.AlreadyExistsException;
+import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.sql.TicketEntity;
 import com.tourism.travels.sql.TicketRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,7 +83,7 @@ class TicketServiceTest {
 
             // Act/Assert
             assertThatThrownBy(() -> ticketService.createTicket(ticketEntity))
-                    .isInstanceOf(AlreadyExistsException.class)
+                    .isInstanceOf(BusinessValidationException.class)
                     .hasMessage("Ticket already exists");
         }
 
@@ -97,7 +97,7 @@ class TicketServiceTest {
 
             // Act/Assert
             assertThatThrownBy(() -> ticketService.createTicket(ticketEntity))
-                    .isInstanceOf(AlreadyExistsException.class)
+                    .isInstanceOf(BusinessValidationException.class)
                     .hasMessage("The customerId/packageId is not a valid Id");
         }
 

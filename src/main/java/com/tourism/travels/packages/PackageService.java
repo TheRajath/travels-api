@@ -1,7 +1,7 @@
 package com.tourism.travels.packages;
 
 import com.tourism.travels.customer.TravelMapper;
-import com.tourism.travels.exception.AlreadyExistsException;
+import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.PackageEntity;
 import com.tourism.travels.sql.PackageRepository;
@@ -33,7 +33,7 @@ public class PackageService {
         var packageId = newPackageEntity.getPackageId();
 
         packageRepository.findById(packageId)
-                .ifPresent(x -> { throw new AlreadyExistsException("Package with is id: "
+                .ifPresent(x -> { throw new BusinessValidationException("Package with is id: "
                            + packageId + " already exists"); });
 
         return packageRepository.save(newPackageEntity);
