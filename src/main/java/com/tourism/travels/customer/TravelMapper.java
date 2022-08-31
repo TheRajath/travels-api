@@ -17,6 +17,8 @@ public interface TravelMapper {
 
     CustomerResource toCustomerResource(CustomerEntity entity);
 
+    @Mapping(target = "packageEntity", ignore = true)
+    @Mapping(target = "customerEntity", ignore = true)
     TicketEntity toTicketEntity(TicketRequest ticketRequest);
 
     TicketRequest toTicketRequest(TicketEntity ticketEntity);
