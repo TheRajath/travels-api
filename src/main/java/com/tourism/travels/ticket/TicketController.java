@@ -6,9 +6,9 @@ import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.AlreadyExistsException;
 import com.tourism.travels.packages.PackageService;
 import com.tourism.travels.pojo.SearchRequest;
+import com.tourism.travels.pojo.SearchTicketResource;
 import com.tourism.travels.pojo.TicketRequest;
 import com.tourism.travels.pojo.TicketResource;
-import com.tourism.travels.sql.TicketEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,11 +47,13 @@ public class TicketController {
     }
 
     @PostMapping("/search")
-    public List<TicketEntity> searchTicket(@Valid @RequestBody SearchRequest searchRequest) {
+    public List<SearchTicketResource> searchTicket(@Valid @RequestBody SearchRequest searchRequest) {
 
         var predicate = buildSearchPredicate(searchRequest);
 
-        return ticketService.getTicketsBySearchPredicate(predicate);
+        return ticketService.getTicketsBySearchPredicate(predicate).stream()
+                .map(travelMapper::mapSearchResource)
+                .toList();
     }
 
     private List<TicketResource> setTotalCostForTicketResources(List<TicketResource> ticketResources) {
