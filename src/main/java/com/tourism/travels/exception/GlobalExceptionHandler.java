@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
 
         var errors = fieldErrors.stream()
                 .map(x -> new Error(x.getField(), x.getDefaultMessage()))
-                .collect(Collectors.toList());
+                .toList();
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
