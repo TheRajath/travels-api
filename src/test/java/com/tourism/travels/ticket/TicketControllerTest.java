@@ -49,6 +49,8 @@ class TicketControllerTest {
 
     private ObjectMapper objectMapper;
 
+    private static final String TODAY_DATE = LocalDate.now().toString();
+
     @BeforeEach
     void setUp() {
 
@@ -112,7 +114,7 @@ class TicketControllerTest {
             ticketRequest.setTicketId(10);
             ticketRequest.setCustomerId(70);
             ticketRequest.setPackageId(30);
-            ticketRequest.setTravelDate(LocalDate.parse("2022-12-15"));
+            ticketRequest.setTravelDate(TODAY_DATE);
             ticketRequest.setTotalMembers(75);
 
             var ticketEntity = new TicketEntity();
@@ -153,10 +155,11 @@ class TicketControllerTest {
         }
 
         @Test
-        void returns400BadRequest_whenTravelDateIsNotPresent() throws Exception {
+        void returns400BadRequest_whenTravelDateIsNotInProperFormat() throws Exception {
             // Arrange
-            var request = TICKET_REQUEST.replace("2022-12-15", "");
-            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "travelDate");
+            var request = TICKET_REQUEST.replace(TODAY_DATE, "2020-01-0123");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "travelDate")
+                    .replace("must not be null", "travel date is in wrong format, correct format is yyyy-mm-dd");
 
             // Act/Assert
             mockMvc.perform(put("/tickets/create")
@@ -169,7 +172,7 @@ class TicketControllerTest {
         @Test
         void returns400BadRequest_whenTravelDateIsInPast() throws Exception {
             // Arrange
-            var request = TICKET_REQUEST.replace("2022", "2021");
+            var request = TICKET_REQUEST.replace(TODAY_DATE, "2022-01-01");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "travelDate")
                     .replace("must not be null", "must be a date in the present or in the future");
 
@@ -288,9 +291,9 @@ class TicketControllerTest {
                         "ticketId": 10,
                         "customerId": 70,
                         "packageId": 30,
-                        "travelDate": "2022-12-15",
+                        "travelDate": "%s",
                         "totalMembers": 75
-                    }""";
+                    }""".formatted(TODAY_DATE);
 
     public static final String SEARCH_TICKET_RESPONSE =
             """
