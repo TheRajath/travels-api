@@ -166,6 +166,21 @@ class TicketControllerTest {
                     .andExpect(content().json(errorMessage));
         }
 
+        @Test
+        void returns400BadRequest_whenTravelDateIsInPast() throws Exception {
+            // Arrange
+            var request = TICKET_REQUEST.replace("2022", "2021");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "travelDate")
+                    .replace("must not be null", "must be a date in the present or in the future");
+
+            // Act/Assert
+            mockMvc.perform(put("/tickets/create")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
     }
 
     @Nested

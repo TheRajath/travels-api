@@ -3,6 +3,7 @@ package com.tourism.travels.pojo;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -20,6 +21,7 @@ public class TicketRequest {
     private Integer packageId;
 
     @NotNull
+    @FutureOrPresent
     private LocalDate travelDate;
 
     @NotNull
