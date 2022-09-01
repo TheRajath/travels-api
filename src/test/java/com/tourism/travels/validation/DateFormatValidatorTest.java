@@ -13,7 +13,7 @@ class DateFormatValidatorTest {
     class IsValid {
 
         @Test
-        void returnsTrue_whenTravelDateIsNull() {
+        void returnsTrue_whenDateIsNull() {
             // Act
             var valid = dateFormatValidator.isValid(null, null);
 
@@ -22,7 +22,7 @@ class DateFormatValidatorTest {
         }
 
         @Test
-        void returnsTrue_whenTravelDateIsInProperFormat() {
+        void returnsTrue_whenDateIsInProperFormat() {
             // Arrange
             var date = "2020-12-01";
 
@@ -34,7 +34,7 @@ class DateFormatValidatorTest {
         }
 
         @Test
-        void returnsFalse_whenTravelDateIsInImProperFormat() {
+        void returnsFalse_whenDateIsInImProperFormat() {
             // Arrange
             var date = "date";
 
