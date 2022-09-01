@@ -226,6 +226,25 @@ class TicketControllerTest {
         }
 
         @Test
+        void returns400BadRequest_whenTravelDateIsInWrongFormat() throws Exception {
+            // Arrange
+            var searchRequest = new SearchRequest();
+            searchRequest.setTravelDate("travelDate");
+
+            var requestBody = objectMapper.writeValueAsString(searchRequest);
+
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "travelDate")
+                    .replace("must not be null", "travel date is in wrong format, correct format is yyyy-mm-dd");
+
+            // Act/Assert
+            mockMvc.perform(post("/tickets/search")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(requestBody))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
         void returns400BadRequest_whenSearchRequestDoesNotContainCriteria() throws Exception {
             // Arrange
             var searchRequest = new SearchRequest();
