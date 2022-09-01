@@ -194,7 +194,7 @@ class TicketControllerTest {
             searchRequest.setTicketId(123);
             searchRequest.setCustomerId(364);
             searchRequest.setPackageId(765);
-            searchRequest.setTravelDate(LocalDate.parse("2022-12-15"));
+            searchRequest.setTravelDate("2022-12-15");
 
             var searchTicketResource = new SearchTicketResource();
             searchTicketResource.setFirstName("firstName");

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.tourism.travels.sql.QTicketEntity.ticketEntity;
@@ -94,7 +95,7 @@ public class TicketController {
 
         if (searchRequest.getTravelDate() != null) {
 
-            predicate.and(ticketEntity.travelDate.eq(searchRequest.getTravelDate()));
+            predicate.and(ticketEntity.travelDate.eq(LocalDate.parse(searchRequest.getTravelDate())));
         }
 
         if (predicate.getValue() == null) {
