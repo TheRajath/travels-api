@@ -16,10 +16,10 @@ public class DateFormatValidator implements ConstraintValidator<DateFormatCheck,
         }
 
         try {
-            var travelDate = LocalDate.parse(date);
+            var localDate = LocalDate.parse(date);
             var dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-            return date.equals(dateTimeFormatter.format(travelDate));
+            return date.equals(dateTimeFormatter.format(localDate));
         }
 
         catch (Exception e) {
