@@ -8,18 +8,18 @@ import java.time.format.DateTimeFormatter;
 public class DateFormatValidator implements ConstraintValidator<DateFormatCheck, String> {
 
     @Override
-    public boolean isValid(String travelDateString, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String date, ConstraintValidatorContext constraintValidatorContext) {
 
-        if (travelDateString == null) {
+        if (date == null) {
 
             return true;
         }
 
         try {
-            var travelDate = LocalDate.parse(travelDateString);
+            var travelDate = LocalDate.parse(date);
             var dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-            return travelDateString.equals(dateTimeFormatter.format(travelDate));
+            return date.equals(dateTimeFormatter.format(travelDate));
         }
 
         catch (Exception e) {
