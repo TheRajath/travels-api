@@ -1,11 +1,11 @@
-package com.tourism.travels.pojo;
+package com.tourism.travels.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class DateValidator implements ConstraintValidator<DateFormatCheck, String> {
+public class DateFormatValidator implements ConstraintValidator<DateFormatCheck, String> {
 
     @Override
     public boolean isValid(String travelDateString, ConstraintValidatorContext constraintValidatorContext) {
