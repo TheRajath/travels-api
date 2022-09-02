@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,10 +18,10 @@ import static org.mockito.Mockito.*;
 class PresentOrFutureDateValidatorTest {
 
     @Mock
-    private ConstraintValidatorContext constraintValidatorContext;
+    private ConstraintViolationBuilder builder;
 
     @Mock
-    private ConstraintValidatorContext.ConstraintViolationBuilder builder;
+    private ConstraintValidatorContext constraintValidatorContext;
 
     private final PresentOrFutureDateValidator presentOrFutureDateValidator = new PresentOrFutureDateValidator();
 
