@@ -1,6 +1,5 @@
 package com.tourism.travels.pojo;
 
-import com.tourism.travels.validation.DateFormatCheck;
 import com.tourism.travels.validation.PresentOrFutureDateCheck;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +21,6 @@ public class TicketRequest {
     private Integer packageId;
 
     @NotEmpty
-    @DateFormatCheck
     @PresentOrFutureDateCheck
     private String travelDate;
 

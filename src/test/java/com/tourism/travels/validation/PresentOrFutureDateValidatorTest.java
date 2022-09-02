@@ -2,14 +2,30 @@ package com.tourism.travels.validation;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class PresentOrFutureDateValidatorTest {
 
+    @Mock
+    private ConstraintValidatorContext constraintValidatorContext;
+
+    @Mock
+    private ConstraintValidatorContext.ConstraintViolationBuilder builder;
+
     private final PresentOrFutureDateValidator presentOrFutureDateValidator = new PresentOrFutureDateValidator();
+
+    PresentOrFutureDateValidatorTest() {
+    }
 
     @Nested
     class IsValid {
@@ -60,15 +76,17 @@ class PresentOrFutureDateValidatorTest {
         }
 
         @Test
-        void returnsTrue_whenDateIsNotIsCorrectFormat() {
+        void returnsFalse_whenDateIsNotIsCorrectFormat() {
             // Arrange
             var date = "date";
 
+            when(constraintValidatorContext.buildConstraintViolationWithTemplate(anyString())).thenReturn(builder);
+
             // Act
-            var valid = presentOrFutureDateValidator.isValid(date, null);
+            var valid = presentOrFutureDateValidator.isValid(date, constraintValidatorContext);
 
             // Assert
-            assertThat(valid).isTrue();
+            assertThat(valid).isFalse();
         }
 
     }

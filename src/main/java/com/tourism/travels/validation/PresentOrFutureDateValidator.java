@@ -24,7 +24,12 @@ public class PresentOrFutureDateValidator implements ConstraintValidator<Present
 
         catch (Exception e) {
 
-            return true;
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext
+                    .buildConstraintViolationWithTemplate("date must be in correct format - yyyy-MM-dd")
+                    .addConstraintViolation();
+
+            return false;
         }
 
     }

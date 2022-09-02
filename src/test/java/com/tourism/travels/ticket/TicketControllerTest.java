@@ -159,7 +159,7 @@ class TicketControllerTest {
             // Arrange
             var request = TICKET_REQUEST.replace(TODAY_DATE, "2020-01-0123");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "travelDate")
-                    .replace("must not be null", "travel date is in wrong format, correct format is yyyy-mm-dd");
+                    .replace("must not be null", "date must be in correct format - yyyy-MM-dd");
 
             // Act/Assert
             mockMvc.perform(put("/tickets/create")
