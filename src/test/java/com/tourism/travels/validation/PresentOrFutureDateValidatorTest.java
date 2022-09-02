@@ -24,9 +24,6 @@ class PresentOrFutureDateValidatorTest {
 
     private final PresentOrFutureDateValidator presentOrFutureDateValidator = new PresentOrFutureDateValidator();
 
-    PresentOrFutureDateValidatorTest() {
-    }
-
     @Nested
     class IsValid {
 
