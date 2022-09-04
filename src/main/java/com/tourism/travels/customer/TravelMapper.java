@@ -35,6 +35,9 @@ public interface TravelMapper {
 
     CustomerRequest toCustomerRequest(CustomerEntity customerEntity);
 
+    @Mapping(target = "ticketId", ignore = true)
+    void updateTicketEntity(@MappingTarget TicketEntity ticketEntity, TicketEntity ticketEntityWithUpdates);
+
     @Mapping(target = "packageId", ignore = true)
     void updatePackageEntity(@MappingTarget PackageEntity packageEntity, PackageEntity packageEntityWithUpdates);
 

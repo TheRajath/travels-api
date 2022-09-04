@@ -2,6 +2,7 @@ package com.tourism.travels.ticket;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.TicketEntity;
@@ -24,6 +25,9 @@ import static org.mockito.Mockito.*;
 class TicketServiceTest {
 
     @Mock
+    private TravelMapper travelMapper;
+
+    @Mock
     private TicketRepository ticketRepository;
 
     private TicketService ticketService;
@@ -31,7 +35,7 @@ class TicketServiceTest {
     @BeforeEach
     void setup() {
 
-        ticketService = new TicketService(ticketRepository);
+        ticketService = new TicketService(travelMapper, ticketRepository);
     }
 
     @Nested

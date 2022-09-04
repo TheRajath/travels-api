@@ -58,6 +58,15 @@ public class TicketController {
                 .toList();
     }
 
+    @PutMapping("/update")
+    public TicketRequest updateTicket(@Valid @RequestBody TicketRequest ticketRequest) {
+
+        var ticketEntity = travelMapper.toTicketEntity(ticketRequest);
+        var newTicketEntityWithUpdates = ticketService.updateTicketById(ticketEntity);
+
+        return travelMapper.toTicketRequest(newTicketEntityWithUpdates);
+    }
+
     @DeleteMapping("/{ticketId}")
     @ResponseStatus(NO_CONTENT)
     public void cancelTicket(@PathVariable Integer ticketId) {
