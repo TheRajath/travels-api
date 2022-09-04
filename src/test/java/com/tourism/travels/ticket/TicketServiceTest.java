@@ -136,6 +136,59 @@ class TicketServiceTest {
     }
 
     @Nested
+    class UpdateTicketById {
+
+        @Test
+        void works() {
+            // Arrange
+            var ticketEntity = new TicketEntity();
+            ticketEntity.setTicketId(123);
+
+            when(ticketRepository.findById(ticketEntity.getTicketId())).thenReturn(Optional.of(ticketEntity));
+
+            // Act
+            ticketService.updateTicketById(ticketEntity);
+
+            // Assert
+            verify(ticketRepository).findById(ticketEntity.getTicketId());
+            verify(travelMapper).updateTicketEntity(any(TicketEntity.class), any(TicketEntity.class));
+            verify(ticketRepository).save(ticketEntity);
+
+            verifyNoMoreInteractions(travelMapper, ticketRepository);
+        }
+
+        @Test
+        void throwsNotFoundException_whenThereIsNoRecordPresent() {
+            // Arrange
+            var ticketEntity = new TicketEntity();
+            ticketEntity.setTicketId(123);
+
+            when(ticketRepository.findById(ticketEntity.getTicketId())).thenReturn(Optional.empty());
+
+            // Act/Assert
+            assertThatThrownBy(() -> ticketService.updateTicketById(ticketEntity))
+                    .isInstanceOf(NotFoundException.class);
+        }
+
+        @Test
+        void throwsBusinessValidationException_whenSavingTicketThrowsRunTimeException() {
+            // Arrange
+            var ticketEntity = new TicketEntity();
+            ticketEntity.setTicketId(123);
+
+            when(ticketRepository.findById(ticketEntity.getTicketId())).thenReturn(Optional.of(ticketEntity));
+
+            when(ticketRepository.save(ticketEntity)).thenThrow(BusinessValidationException.class);
+
+            // Act/Assert
+            assertThatThrownBy(() -> ticketService.updateTicketById(ticketEntity))
+                    .isInstanceOf(BusinessValidationException.class)
+                    .hasMessage("The customerId/packageId is not a valid Id");
+        }
+
+    }
+
+    @Nested
     class DeleteTicket {
 
         @Test
