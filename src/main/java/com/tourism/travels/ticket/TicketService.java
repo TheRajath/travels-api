@@ -1,6 +1,7 @@
 package com.tourism.travels.ticket;
 
 import com.querydsl.core.types.Predicate;
+import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.TicketEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TicketService {
 
+    private final TravelMapper travelMapper;
     private final TicketRepository ticketRepository;
 
     public List<TicketEntity> getTicketEntities() {
@@ -42,6 +44,26 @@ public class TicketService {
     public List<TicketEntity> getTicketsBySearchPredicate(Predicate predicate) {
 
         return (List<TicketEntity>) ticketRepository.findAll(predicate);
+    }
+
+    public TicketEntity updateTicketById(TicketEntity ticketEntityWithUpdates) {
+
+        var ticketId = ticketEntityWithUpdates.getTicketId();
+
+        var ticketEntity = ticketRepository.findById(ticketId)
+                .orElseThrow(NotFoundException::new);
+
+        travelMapper.updateTicketEntity(ticketEntity, ticketEntityWithUpdates);
+
+        try {
+
+            return ticketRepository.save(ticketEntity);
+        }
+        catch (RuntimeException exception) {
+
+            throw new BusinessValidationException("The customerId/packageId is not a valid Id");
+        }
+
     }
 
     public void deleteTicket(int ticketId) {

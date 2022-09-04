@@ -102,13 +102,8 @@ class PackageControllerTest {
         @Test
         void works() throws Exception {
             // Arrange
-            var packageRequest = new PackageRequest();
-            packageRequest.setPackageId(123);
-            packageRequest.setPackageName("Agra");
-            packageRequest.setTripDuration("4 Day");
-            packageRequest.setCostPerPerson(5000);
-
             var packageEntity = new PackageEntity();
+            var packageRequest = getPackageRequest();
 
             when(travelMapper.toPackageEntity(any(PackageRequest.class))).thenReturn(packageEntity);
             when(packageService.addNewPackage(packageEntity)).thenReturn(packageEntity);
@@ -159,7 +154,7 @@ class PackageControllerTest {
         @Test
         void returns400BadRequest_whenTripDurationIsEmpty() throws Exception {
             // Arrange
-            var request = PACKAGE_REQUEST.replace("4 Day", "");
+            var request = PACKAGE_REQUEST.replace("4 Days", "");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "tripDuration");
 
             // Act/Assert
@@ -192,13 +187,8 @@ class PackageControllerTest {
         @Test
         void works() throws Exception {
             // Arrange
-            var packageRequest = new PackageRequest();
-            packageRequest.setPackageId(123);
-            packageRequest.setPackageName("Agra");
-            packageRequest.setTripDuration("4 Day");
-            packageRequest.setCostPerPerson(5000);
-
             var packageEntity = new PackageEntity();
+            var packageRequest = getPackageRequest();
 
             when(travelMapper.toPackageEntity(any(PackageRequest.class))).thenReturn(packageEntity);
             when(packageService.updateExistingPackage(packageEntity)).thenReturn(packageEntity);
@@ -249,7 +239,7 @@ class PackageControllerTest {
         @Test
         void returns400BadRequest_whenTripDurationIsEmpty() throws Exception {
             // Arrange
-            var request = PACKAGE_REQUEST.replace("4 Day", "");
+            var request = PACKAGE_REQUEST.replace("4 Days", "");
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "tripDuration");
 
             // Act/Assert
@@ -292,6 +282,17 @@ class PackageControllerTest {
 
     }
 
+    private PackageRequest getPackageRequest() {
+
+        var packageRequest = new PackageRequest();
+        packageRequest.setPackageId(123);
+        packageRequest.setPackageName("Agra");
+        packageRequest.setTripDuration("4 Days");
+        packageRequest.setCostPerPerson(5000);
+
+        return packageRequest;
+    }
+
     private PackageResource getPackageResource() {
 
         var packageResource = new PackageResource();
@@ -320,7 +321,7 @@ class PackageControllerTest {
                     {
                         "packageId": 123,
                         "packageName": "Agra",
-                        "tripDuration": "4 Day",
+                        "tripDuration": "4 Days",
                         "costPerPerson": 5000
                     }""";
 

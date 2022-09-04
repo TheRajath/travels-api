@@ -2,6 +2,7 @@ package com.tourism.travels.ticket;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.TicketEntity;
@@ -24,6 +25,9 @@ import static org.mockito.Mockito.*;
 class TicketServiceTest {
 
     @Mock
+    private TravelMapper travelMapper;
+
+    @Mock
     private TicketRepository ticketRepository;
 
     private TicketService ticketService;
@@ -31,7 +35,7 @@ class TicketServiceTest {
     @BeforeEach
     void setup() {
 
-        ticketService = new TicketService(ticketRepository);
+        ticketService = new TicketService(travelMapper, ticketRepository);
     }
 
     @Nested
@@ -127,6 +131,59 @@ class TicketServiceTest {
             verify(ticketRepository).findAll(predicate);
 
             verifyNoMoreInteractions(ticketRepository);
+        }
+
+    }
+
+    @Nested
+    class UpdateTicketById {
+
+        @Test
+        void works() {
+            // Arrange
+            var ticketEntity = new TicketEntity();
+            ticketEntity.setTicketId(123);
+
+            when(ticketRepository.findById(ticketEntity.getTicketId())).thenReturn(Optional.of(ticketEntity));
+
+            // Act
+            ticketService.updateTicketById(ticketEntity);
+
+            // Assert
+            verify(ticketRepository).findById(ticketEntity.getTicketId());
+            verify(travelMapper).updateTicketEntity(any(TicketEntity.class), any(TicketEntity.class));
+            verify(ticketRepository).save(ticketEntity);
+
+            verifyNoMoreInteractions(travelMapper, ticketRepository);
+        }
+
+        @Test
+        void throwsNotFoundException_whenThereIsNoRecordPresent() {
+            // Arrange
+            var ticketEntity = new TicketEntity();
+            ticketEntity.setTicketId(123);
+
+            when(ticketRepository.findById(ticketEntity.getTicketId())).thenReturn(Optional.empty());
+
+            // Act/Assert
+            assertThatThrownBy(() -> ticketService.updateTicketById(ticketEntity))
+                    .isInstanceOf(NotFoundException.class);
+        }
+
+        @Test
+        void throwsBusinessValidationException_whenSavingTicketThrowsRunTimeException() {
+            // Arrange
+            var ticketEntity = new TicketEntity();
+            ticketEntity.setTicketId(123);
+
+            when(ticketRepository.findById(ticketEntity.getTicketId())).thenReturn(Optional.of(ticketEntity));
+
+            when(ticketRepository.save(ticketEntity)).thenThrow(BusinessValidationException.class);
+
+            // Act/Assert
+            assertThatThrownBy(() -> ticketService.updateTicketById(ticketEntity))
+                    .isInstanceOf(BusinessValidationException.class)
+                    .hasMessage("The customerId/packageId is not a valid Id");
         }
 
     }
