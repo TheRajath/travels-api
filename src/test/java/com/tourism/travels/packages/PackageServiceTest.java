@@ -184,6 +184,7 @@ class PackageServiceTest {
             packageService.deleteByPackageId(packageId);
 
             // Assert
+            verify(packageRepository).findById(packageId);
             verify(packageRepository).deleteById(packageId);
 
             verifyNoMoreInteractions(packageRepository);

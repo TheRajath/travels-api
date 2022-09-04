@@ -272,6 +272,22 @@ class TicketControllerTest {
 
     }
 
+    @Nested
+    class CancelTicket {
+
+        @Test
+        void works() throws Exception {
+            // Act/Assert
+            mockMvc.perform(delete("/tickets/1"))
+                    .andExpect(status().isNoContent());
+
+            verify(ticketService).deleteTicket(1);
+
+            verifyNoMoreInteractions(ticketService);
+        }
+
+    }
+
     public static final String TICKET_DETAILS_RESPONSE =
             """
                     [

@@ -53,9 +53,8 @@ public class PackageController {
         return travelMapper.toPackageRequest(packageEntityWithUpdates);
     }
 
-
-    @DeleteMapping("/{customerId}")
     @ResponseStatus(NO_CONTENT)
+    @DeleteMapping("/{customerId}")
     public void deletePackage(@PathVariable String customerId) {
 
         packageService.deleteByPackageId(Integer.parseInt(customerId));

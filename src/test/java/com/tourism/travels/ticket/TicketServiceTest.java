@@ -3,6 +3,7 @@ package com.tourism.travels.ticket;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.tourism.travels.exception.BusinessValidationException;
+import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.TicketEntity;
 import com.tourism.travels.sql.TicketRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -126,6 +127,38 @@ class TicketServiceTest {
             verify(ticketRepository).findAll(predicate);
 
             verifyNoMoreInteractions(ticketRepository);
+        }
+
+    }
+
+    @Nested
+    class DeleteTicket {
+
+        @Test
+        void works() {
+            // Arrange
+            var ticketId = 123;
+
+            var ticketEntity = new TicketEntity();
+            ticketEntity.setTicketId(ticketId);
+
+            when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(ticketEntity));
+
+            // Act
+            ticketService.deleteTicket(ticketId);
+
+            // Assert
+            verify(ticketRepository).findById(ticketId);
+            verify(ticketRepository).deleteById(ticketId);
+
+            verifyNoMoreInteractions(ticketRepository);
+        }
+
+        @Test
+        void throwsNotFoundException_whenRecordIsNotPresent() {
+            // Act/Assert
+            assertThatThrownBy(() -> ticketService.deleteTicket(123))
+                    .isInstanceOf(NotFoundException.class);
         }
 
     }

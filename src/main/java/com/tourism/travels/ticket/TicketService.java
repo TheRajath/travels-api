@@ -2,6 +2,7 @@ package com.tourism.travels.ticket;
 
 import com.querydsl.core.types.Predicate;
 import com.tourism.travels.exception.BusinessValidationException;
+import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.TicketEntity;
 import com.tourism.travels.sql.TicketRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,14 @@ public class TicketService {
     public List<TicketEntity> getTicketsBySearchPredicate(Predicate predicate) {
 
         return (List<TicketEntity>) ticketRepository.findAll(predicate);
+    }
+
+    public void deleteTicket(int ticketId) {
+
+        ticketRepository.findById(ticketId)
+                .orElseThrow(NotFoundException::new);
+
+        ticketRepository.deleteById(ticketId);
     }
 
 }
