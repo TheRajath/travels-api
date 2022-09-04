@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.tourism.travels.sql.QTicketEntity.ticketEntity;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,6 +56,13 @@ public class TicketController {
         return ticketService.getTicketsBySearchPredicate(predicate).stream()
                 .map(travelMapper::mapSearchResource)
                 .toList();
+    }
+
+    @DeleteMapping("/{ticketId}")
+    @ResponseStatus(NO_CONTENT)
+    public void cancelTicket(@PathVariable Integer ticketId) {
+
+        ticketService.deleteTicket(ticketId);
     }
 
     private List<TicketResource> setTotalCostForTicketResources(List<TicketResource> ticketResources) {
