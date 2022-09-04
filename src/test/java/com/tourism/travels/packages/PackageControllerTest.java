@@ -105,7 +105,6 @@ class PackageControllerTest {
             var packageEntity = new PackageEntity();
             var packageRequest = getPackageRequest();
 
-
             when(travelMapper.toPackageEntity(any(PackageRequest.class))).thenReturn(packageEntity);
             when(packageService.addNewPackage(packageEntity)).thenReturn(packageEntity);
             when(travelMapper.toPackageRequest(packageEntity)).thenReturn(packageRequest);
