@@ -184,11 +184,7 @@ class TicketControllerTest {
         void works() throws Exception {
             // Arrange
             var ticketEntity = new TicketEntity();
-            var searchRequest = new SearchRequest();
-            searchRequest.setTicketId(123);
-            searchRequest.setCustomerId(364);
-            searchRequest.setPackageId(765);
-            searchRequest.setTravelDate("2022-12-15");
+            var searchRequest = new SearchRequest(123, 364, 765, "2022-12-15");
 
             var searchTicketResource = new SearchTicketResource();
             searchTicketResource.setFirstName("firstName");
@@ -222,8 +218,7 @@ class TicketControllerTest {
         @Test
         void returns400BadRequest_whenTravelDateIsInWrongFormat() throws Exception {
             // Arrange
-            var searchRequest = new SearchRequest();
-            searchRequest.setTravelDate("travelDate");
+            var searchRequest = new SearchRequest(null, null, null, "travelDate");
 
             var requestBody = objectMapper.writeValueAsString(searchRequest);
 
@@ -241,7 +236,7 @@ class TicketControllerTest {
         @Test
         void returns400BadRequest_whenSearchRequestDoesNotContainCriteria() throws Exception {
             // Arrange
-            var searchRequest = new SearchRequest();
+            var searchRequest = new SearchRequest(null, null, null, null);
 
             var requestBody = objectMapper.writeValueAsString(searchRequest);
 

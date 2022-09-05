@@ -92,24 +92,24 @@ public class TicketController {
 
         var predicate = new BooleanBuilder();
 
-        if (searchRequest.getTicketId() != null) {
+        if (searchRequest.ticketId() != null) {
 
-            predicate.and(ticketEntity.ticketId.eq(searchRequest.getTicketId()));
+            predicate.and(ticketEntity.ticketId.eq(searchRequest.ticketId()));
         }
 
-        if (searchRequest.getCustomerId() != null) {
+        if (searchRequest.customerId() != null) {
 
-            predicate.and(ticketEntity.customerId.eq(searchRequest.getCustomerId()));
+            predicate.and(ticketEntity.customerId.eq(searchRequest.customerId()));
         }
 
-        if (searchRequest.getPackageId() != null) {
+        if (searchRequest.packageId() != null) {
 
-            predicate.and(ticketEntity.packageId.eq(searchRequest.getPackageId()));
+            predicate.and(ticketEntity.packageId.eq(searchRequest.packageId()));
         }
 
-        if (searchRequest.getTravelDate() != null) {
+        if (searchRequest.travelDate() != null) {
 
-            predicate.and(ticketEntity.travelDate.eq(LocalDate.parse(searchRequest.getTravelDate())));
+            predicate.and(ticketEntity.travelDate.eq(LocalDate.parse(searchRequest.travelDate())));
         }
 
         if (predicate.getValue() == null) {
