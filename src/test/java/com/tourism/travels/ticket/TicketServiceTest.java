@@ -5,6 +5,7 @@ import com.querydsl.core.types.Predicate;
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.exception.NotFoundException;
+import com.tourism.travels.sql.PackageEntity;
 import com.tourism.travels.sql.TicketEntity;
 import com.tourism.travels.sql.TicketRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -196,15 +197,22 @@ class TicketServiceTest {
             // Arrange
             var ticketId = 123;
 
+            var packageEntity = new PackageEntity();
+            packageEntity.setCostPerPerson(5000);
+
             var ticketEntity = new TicketEntity();
             ticketEntity.setTicketId(ticketId);
+            ticketEntity.setTotalMembers(4);
+            ticketEntity.setPackageEntity(packageEntity);
 
             when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(ticketEntity));
 
             // Act
-            ticketService.deleteTicket(ticketId);
+            var refund = ticketService.deleteTicket(ticketId);
 
             // Assert
+            assertThat(refund).isEqualTo(16000);
+
             verify(ticketRepository).findById(ticketId);
             verify(ticketRepository).deleteById(ticketId);
 
