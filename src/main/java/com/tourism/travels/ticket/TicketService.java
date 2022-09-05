@@ -66,12 +66,18 @@ public class TicketService {
 
     }
 
-    public void deleteTicket(int ticketId) {
+    public Integer deleteTicket(int ticketId) {
 
-        ticketRepository.findById(ticketId)
+        var ticketEntity = ticketRepository.findById(ticketId)
                 .orElseThrow(NotFoundException::new);
 
+        var costPerPerson = ticketEntity.getPackageEntity().getCostPerPerson();
+        var totalMembers = ticketEntity.getTotalMembers();
+        var totalCost = totalMembers * costPerPerson;
+
         ticketRepository.deleteById(ticketId);
+
+        return (totalCost * 80) / 100;
     }
 
 }

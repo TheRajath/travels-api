@@ -6,10 +6,7 @@ import com.querydsl.core.types.Predicate;
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.GlobalExceptionHandler;
 import com.tourism.travels.packages.PackageService;
-import com.tourism.travels.pojo.SearchRequest;
-import com.tourism.travels.pojo.SearchTicketResource;
-import com.tourism.travels.pojo.TicketRequest;
-import com.tourism.travels.pojo.TicketResource;
+import com.tourism.travels.pojo.*;
 import com.tourism.travels.sql.PackageEntity;
 import com.tourism.travels.sql.TicketEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -347,9 +344,16 @@ class TicketControllerTest {
 
         @Test
         void works() throws Exception {
+            // Arrange
+            var ticketRefund = new TicketRefund(200);
+            var response = objectMapper.writeValueAsString(ticketRefund);
+
+            when(ticketService.deleteTicket(1)).thenReturn(200);
+
             // Act/Assert
             mockMvc.perform(delete("/tickets/1"))
-                    .andExpect(status().isNoContent());
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(response));
 
             verify(ticketService).deleteTicket(1);
 

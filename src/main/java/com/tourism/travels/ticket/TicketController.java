@@ -5,10 +5,7 @@ import com.querydsl.core.types.Predicate;
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.BusinessValidationException;
 import com.tourism.travels.packages.PackageService;
-import com.tourism.travels.pojo.SearchRequest;
-import com.tourism.travels.pojo.SearchTicketResource;
-import com.tourism.travels.pojo.TicketRequest;
-import com.tourism.travels.pojo.TicketResource;
+import com.tourism.travels.pojo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +14,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.tourism.travels.sql.QTicketEntity.ticketEntity;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequiredArgsConstructor
@@ -68,10 +64,11 @@ public class TicketController {
     }
 
     @DeleteMapping("/{ticketId}")
-    @ResponseStatus(NO_CONTENT)
-    public void cancelTicket(@PathVariable Integer ticketId) {
+    public TicketRefund cancelTicket(@PathVariable Integer ticketId) {
 
-        ticketService.deleteTicket(ticketId);
+        var refundAmount  = ticketService.deleteTicket(ticketId);
+
+        return new TicketRefund(refundAmount);
     }
 
     private List<TicketResource> setTotalCostForTicketResources(List<TicketResource> ticketResources) {
