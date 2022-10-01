@@ -6,7 +6,10 @@ import com.querydsl.core.types.Predicate;
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.GlobalExceptionHandler;
 import com.tourism.travels.packages.PackageService;
-import com.tourism.travels.pojo.*;
+import com.tourism.travels.pojo.SearchTicketResource;
+import com.tourism.travels.pojo.TicketRefund;
+import com.tourism.travels.pojo.TicketRequest;
+import com.tourism.travels.pojo.TicketResource;
 import com.tourism.travels.sql.PackageEntity;
 import com.tourism.travels.sql.TicketEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,11 +79,11 @@ class TicketControllerTest {
             packageEntity.setCostPerPerson(1500);
 
             var ticketResource = new TicketResource();
-            ticketResource.setTicketId(123);
-            ticketResource.setCustomerId(789);
-            ticketResource.setPackageId(packageId);
+            ticketResource.setTicketId("123");
+            ticketResource.setCustomerId("789");
+            ticketResource.setPackageId("456");
             ticketResource.setTravelDate(LocalDate.parse("2022-10-12"));
-            ticketResource.setTotalMembers(2);
+            ticketResource.setTotalMembers("2");
             ticketResource.setTotalCost(3000);
 
             when(ticketService.getTicketEntities()).thenReturn(Collections.singletonList(ticketEntity));
@@ -129,13 +132,13 @@ class TicketControllerTest {
         }
 
         @ParameterizedTest
-        @CsvSource({"10,ticketId", "70,customerId", "30,packageId", "75,totalMembers"})
+        @CsvSource({"987,ticketId", "123,customerId", "999,packageId", "748,totalMembers"})
         void throws400BadException_whenTicketIdOrCustomerIdOrPackageIdOrTotalMembersOrTotalCostIsNull(String value,
                                                                                                       String fieldName)
                                                                                                       throws Exception {
             // Arrange
-            var request = TICKET_REQUEST.replace(value, "null");
-            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", fieldName);
+            var request = TICKET_REQUEST.replace(value, "");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", fieldName).replace("null", "empty");
 
             // Act/Assert
             mockMvc.perform(put("/tickets/create")
@@ -184,7 +187,6 @@ class TicketControllerTest {
         void works() throws Exception {
             // Arrange
             var ticketEntity = new TicketEntity();
-            var searchRequest = new SearchRequest(123, 364, 765, "2022-12-15");
 
             var searchTicketResource = new SearchTicketResource();
             searchTicketResource.setFirstName("firstName");
@@ -196,8 +198,6 @@ class TicketControllerTest {
             searchTicketResource.setTotalMembers(2);
             searchTicketResource.setTotalCostOfTrip(1500);
 
-            var requestBody = objectMapper.writeValueAsString(searchRequest);
-
             when(ticketService.getTicketsBySearchPredicate(any(Predicate.class)))
                     .thenReturn(Collections.singletonList(ticketEntity));
             when(travelMapper.mapSearchResource(ticketEntity)).thenReturn(searchTicketResource);
@@ -205,7 +205,7 @@ class TicketControllerTest {
             // Act/Assert
             mockMvc.perform(post("/tickets/search")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(requestBody))
+                    .content(SEARCH_REQUEST))
                     .andExpect(status().isOk())
                     .andExpect(content().json(SEARCH_TICKET_RESPONSE));
 
@@ -218,9 +218,7 @@ class TicketControllerTest {
         @Test
         void returns400BadRequest_whenTravelDateIsInWrongFormat() throws Exception {
             // Arrange
-            var searchRequest = new SearchRequest(null, null, null, "travelDate");
-
-            var requestBody = objectMapper.writeValueAsString(searchRequest);
+            var requestBody = SEARCH_REQUEST.replace("2022-12-15", "travelDate");
 
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "travelDate")
                     .replace("must not be null", "travel date is in wrong format, correct format is yyyy-mm-dd");
@@ -236,12 +234,10 @@ class TicketControllerTest {
         @Test
         void returns400BadRequest_whenSearchRequestDoesNotContainCriteria() throws Exception {
             // Arrange
-            var searchRequest = new SearchRequest(null, null, null, null);
-
-            var requestBody = objectMapper.writeValueAsString(searchRequest);
-
+            var requestBody = "{}";
             var message = "request body must contain at least one of the following search" +
-                    " criteria: ticketId, customerId, packageId, travelDate";
+                    " criteria: customerId, packageId, travelDate";
+
             var errorMessage =
                     """
                             {
@@ -286,13 +282,13 @@ class TicketControllerTest {
         }
 
         @ParameterizedTest
-        @CsvSource({"10,ticketId", "70,customerId", "30,packageId", "75,totalMembers"})
+        @CsvSource({"987,ticketId", "123,customerId", "999,packageId", "748,totalMembers"})
         void throws400BadException_whenTicketIdOrCustomerIdOrPackageIdOrTotalMembersOrTotalCostIsNull(String value,
                                                                                                       String fieldName)
                 throws Exception {
             // Arrange
-            var request = TICKET_REQUEST.replace(value, "null");
-            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", fieldName);
+            var request = TICKET_REQUEST.replace(value, "");
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", fieldName).replace("null", "empty");
 
             // Act/Assert
             mockMvc.perform(put("/tickets/update")
@@ -360,11 +356,11 @@ class TicketControllerTest {
     private TicketRequest getTicketRequest() {
 
         var ticketRequest = new TicketRequest();
-        ticketRequest.setTicketId(10);
-        ticketRequest.setCustomerId(70);
-        ticketRequest.setPackageId(30);
+        ticketRequest.setTicketId("987");
+        ticketRequest.setCustomerId("123");
+        ticketRequest.setPackageId("999");
         ticketRequest.setTravelDate(TODAY_DATE);
-        ticketRequest.setTotalMembers(75);
+        ticketRequest.setTotalMembers("748");
 
         return ticketRequest;
     }
@@ -373,11 +369,11 @@ class TicketControllerTest {
             """
                     [
                         {
-                            "ticketId": 123,
-                            "customerId": 789,
-                            "packageId": 456,
+                            "ticketId": "123",
+                            "customerId": "789",
+                            "packageId": "456",
                             "travelDate": "2022-10-12",
-                            "totalMembers": 2,
+                            "totalMembers": "2",
                             "totalCost": 3000
                         }
                     ]""";
@@ -385,12 +381,20 @@ class TicketControllerTest {
     public static final String TICKET_REQUEST =
             """
                     {
-                        "ticketId": 10,
-                        "customerId": 70,
-                        "packageId": 30,
+                        "ticketId": "987",
+                        "customerId": "123",
+                        "packageId": "999",
                         "travelDate": "%s",
-                        "totalMembers": 75
+                        "totalMembers": "748"
                     }""".formatted(TODAY_DATE);
+
+    public static final String SEARCH_REQUEST =
+            """
+                    {
+                      "customerId": "123",
+                      "packageId": "987",
+                      "travelDate": "2022-12-15"
+                    }""";
 
     public static final String SEARCH_TICKET_RESPONSE =
             """

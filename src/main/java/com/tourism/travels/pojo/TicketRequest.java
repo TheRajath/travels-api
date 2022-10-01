@@ -5,26 +5,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class TicketRequest {
 
-    @NotNull
-    private Integer ticketId;
+    @NotEmpty
+    private String ticketId;
 
-    @NotNull
-    private Integer customerId;
+    @NotEmpty
+    private String customerId;
 
-    @NotNull
-    private Integer packageId;
+    @NotEmpty
+    private String packageId;
 
     @NotEmpty
     @PresentOrFutureDateCheck
     private String travelDate;
 
-    @NotNull
-    private Integer totalMembers;
+    @NotEmpty
+    private String totalMembers;
 
 }

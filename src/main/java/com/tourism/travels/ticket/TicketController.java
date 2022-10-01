@@ -75,8 +75,8 @@ public class TicketController {
 
         ticketResources.forEach(ticket -> {
 
-            var packageId = ticket.getPackageId();
-            var totalMembers = ticket.getTotalMembers();
+            var packageId = Integer.parseInt(ticket.getPackageId());
+            var totalMembers = Integer.parseInt(ticket.getTotalMembers());
 
             var packageEntity = packageService.getPackageEntityById(packageId);
             var costPerPerson = packageEntity.getCostPerPerson();
@@ -91,11 +91,6 @@ public class TicketController {
     private Predicate buildSearchPredicate(SearchRequest searchRequest) {
 
         var predicate = new BooleanBuilder();
-
-        if (searchRequest.ticketId() != null) {
-
-            predicate.and(ticketEntity.ticketId.eq(searchRequest.ticketId()));
-        }
 
         if (searchRequest.customerId() != null) {
 
@@ -115,7 +110,7 @@ public class TicketController {
         if (predicate.getValue() == null) {
 
             throw new BusinessValidationException("request body must contain at least one of the following search" +
-                    " criteria: ticketId, customerId, packageId, travelDate");
+                    " criteria: customerId, packageId, travelDate");
         }
 
         return predicate;
