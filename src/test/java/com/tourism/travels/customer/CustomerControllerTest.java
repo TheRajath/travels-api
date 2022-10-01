@@ -284,32 +284,32 @@ class CustomerControllerTest {
     private static final String CUSTOMER_DETAILS_RESPONSE =
             """
                     [
-                        {
-                            "customerId": 123,
-                            "firstName": "firstName",
-                            "lastName": "lastName",
-                            "email": "email@gmail.com",
-                            "password": "savedPassword"
-                        }
+                      {
+                        "customerId": 123,
+                        "firstName": "firstName",
+                        "lastName": "lastName",
+                        "email": "email@gmail.com",
+                        "password": "savedPassword"
+                      }
                     ]""";
 
     private static final String CUSTOMER_REQUEST =
             """
                     {
-                        "customerId": 123,
-                        "firstName": "firstName",
-                        "lastName": "lastName",
-                        "email": "email@gmail.com",
-                        "password": "secret"
+                      "customerId": 123,
+                      "firstName": "firstName",
+                      "lastName": "lastName",
+                      "email": "email@gmail.com",
+                      "password": "secret"
                     }""";
 
     private static final String COMMON_ERROR_MESSAGE =
             """
                     [
-                        {
-                            "field": "fieldName",
-                            "message": "must not be empty"
-                        }
+                      {
+                        "field": "fieldName",
+                        "message": "must not be empty"
+                      }
                     ]""";
 
 }

@@ -308,30 +308,30 @@ class PackageControllerTest {
     private static final String PACKAGE_RESPONSE =
             """
                     [
-                        {
-                            "packageId": 123,
-                            "packageName": "Agra",
-                            "tripDuration": "2 Days,1 Night",
-                            "totalCost": 5000
-                        }
+                      {
+                        "packageId": 123,
+                        "packageName": "Agra",
+                        "tripDuration": "2 Days,1 Night",
+                        "totalCost": 5000
+                      }
                     ]""";
 
     private static final String PACKAGE_REQUEST =
             """
                     {
-                        "packageId": 123,
-                        "packageName": "Agra",
-                        "tripDuration": "4 Days",
-                        "costPerPerson": 5000
+                      "packageId": 123,
+                      "packageName": "Agra",
+                      "tripDuration": "4 Days",
+                      "costPerPerson": 5000
                     }""";
 
     private static final String COMMON_ERROR_MESSAGE =
             """
                     [
-                        {
-                            "field": "fieldName",
-                            "message": "must not be empty"
-                        }
+                      {
+                        "field": "fieldName",
+                        "message": "must not be empty"
+                      }
                     ]""";
 
 }

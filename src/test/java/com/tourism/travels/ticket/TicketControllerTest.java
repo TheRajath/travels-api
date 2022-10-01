@@ -368,24 +368,24 @@ class TicketControllerTest {
     public static final String TICKET_DETAILS_RESPONSE =
             """
                     [
-                        {
-                            "ticketId": "123",
-                            "customerId": "789",
-                            "packageId": "456",
-                            "travelDate": "2022-10-12",
-                            "totalMembers": "2",
-                            "totalCost": 3000
-                        }
+                      {
+                        "ticketId": "123",
+                        "customerId": "789",
+                        "packageId": "456",
+                        "travelDate": "2022-10-12",
+                        "totalMembers": "2",
+                        "totalCost": 3000
+                      }
                     ]""";
 
     public static final String TICKET_REQUEST =
             """
                     {
-                        "ticketId": "987",
-                        "customerId": "123",
-                        "packageId": "999",
-                        "travelDate": "%s",
-                        "totalMembers": "748"
+                      "ticketId": "987",
+                      "customerId": "123",
+                      "packageId": "999",
+                      "travelDate": "%s",
+                      "totalMembers": "748"
                     }""".formatted(TODAY_DATE);
 
     public static final String SEARCH_REQUEST =
@@ -399,25 +399,25 @@ class TicketControllerTest {
     public static final String SEARCH_TICKET_RESPONSE =
             """
                     [
-                        {
-                            "firstName": "firstName",
-                            "lastName": "lastName",
-                            "email": "email@email.com",
-                            "packageName": "packageName",
-                            "tripDuration": "2 Days",
-                            "travelDate": "2022-12-15",
-                            "totalMembers": 2,
-                            "totalCostOfTrip": 1500
-                        }
+                      {
+                        "firstName": "firstName",
+                        "lastName": "lastName",
+                        "email": "email@email.com",
+                        "packageName": "packageName",
+                        "tripDuration": "2 Days",
+                        "travelDate": "2022-12-15",
+                        "totalMembers": 2,
+                        "totalCostOfTrip": 1500
+                      }
                     ]""";
 
     private static final String COMMON_ERROR_MESSAGE =
             """
                     [
-                        {
-                            "field": "fieldName",
-                            "message": "must not be null"
-                        }
+                      {
+                        "field": "fieldName",
+                        "message": "must not be null"
+                      }
                     ]""";
 
 }
