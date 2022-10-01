@@ -9,11 +9,11 @@ import java.time.LocalDate;
 @Setter
 public class TicketResource {
 
-    private int ticketId;
-    private int customerId;
-    private int packageId;
+    private String ticketId;
+    private String customerId;
+    private String packageId;
     private LocalDate travelDate;
-    private int totalMembers;
+    private String totalMembers;
     private int totalCost;
 
 }
