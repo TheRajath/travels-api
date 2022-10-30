@@ -215,6 +215,24 @@ class TicketControllerTest {
             verifyNoMoreInteractions(ticketService, travelMapper);
         }
 
+        @ParameterizedTest
+        @CsvSource({"123, customerId", "987, packageId"})
+        void returns400BadRequest_whenCustomerIdOrPackageIdIsPresentAndIsEmpty(String value,
+                                                                               String fieldName) throws Exception {
+            // Arrange
+            var requestBody = SEARCH_REQUEST.replace(value, "");
+
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", fieldName)
+                    .replace("must not be null", "must not be empty if present");
+
+            // Act/Assert
+            mockMvc.perform(post("/tickets/search")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(requestBody))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
         @Test
         void returns400BadRequest_whenTravelDateIsInWrongFormat() throws Exception {
             // Arrange
