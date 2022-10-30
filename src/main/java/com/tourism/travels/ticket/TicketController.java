@@ -115,7 +115,7 @@ public class TicketController {
         if (predicate.getValue() == null) {
 
             throw new BusinessValidationException("request body must contain at least one of the following search" +
-                    " criteria: customerId, packageId, travelDate");
+                    " criteria: customerId, packageId, email, travelDate");
         }
 
         return predicate;

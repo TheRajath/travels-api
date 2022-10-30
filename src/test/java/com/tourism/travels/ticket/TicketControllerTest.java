@@ -270,7 +270,7 @@ class TicketControllerTest {
             // Arrange
             var requestBody = "{}";
             var message = "request body must contain at least one of the following search" +
-                    " criteria: customerId, packageId, travelDate";
+                    " criteria: customerId, packageId, email, travelDate";
 
             var errorMessage =
                     """
