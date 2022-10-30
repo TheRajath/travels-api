@@ -216,7 +216,7 @@ class TicketControllerTest {
         }
 
         @ParameterizedTest
-        @CsvSource({"123, customerId", "987, packageId"})
+        @CsvSource({"123, customerId", "987, packageId", "ias456@google.com, email"})
         void returns400BadRequest_whenCustomerIdOrPackageIdIsPresentAndIsEmpty(String value,
                                                                                String fieldName) throws Exception {
             // Arrange
@@ -224,6 +224,22 @@ class TicketControllerTest {
 
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", fieldName)
                     .replace("must not be null", "must not be empty if present");
+
+            // Act/Assert
+            mockMvc.perform(post("/tickets/search")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(requestBody))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void returns400BadRequest_whenEmailIsInWrongFormat() throws Exception {
+            // Arrange
+            var requestBody = SEARCH_REQUEST.replace("ias456@google.com", "google");
+
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "email")
+                    .replace("must not be null", "must be a well-formed email address");
 
             // Act/Assert
             mockMvc.perform(post("/tickets/search")
@@ -411,6 +427,7 @@ class TicketControllerTest {
                     {
                       "customerId": "123",
                       "packageId": "987",
+                      "email": "ias456@google.com",
                       "travelDate": "2022-12-15"
                     }""";
 

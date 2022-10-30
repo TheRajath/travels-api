@@ -102,6 +102,11 @@ public class TicketController {
             predicate.and(ticketEntity.packageId.eq(searchRequest.packageId()));
         }
 
+        if (searchRequest.email() != null) {
+
+            predicate.and(ticketEntity.customerEntity.email.eq(searchRequest.email()));
+        }
+
         if (searchRequest.travelDate() != null) {
 
             predicate.and(ticketEntity.travelDate.eq(LocalDate.parse(searchRequest.travelDate())));
