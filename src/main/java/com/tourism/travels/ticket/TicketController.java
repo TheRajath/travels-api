@@ -7,6 +7,7 @@ import com.tourism.travels.sql.TicketEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -48,7 +49,9 @@ public class TicketController {
         var predicate = predicateBuilder.buildSearchPredicate(searchRequest);
 
         var pagination = searchRequest.getPagination();
-        var pageRequest = PageRequest.of(pagination.getPageNumber(), pagination.getPageSize());
+        var sortResultsBy = searchRequest.getSortResultsBy();
+        var pageRequest = PageRequest.of(pagination.getPageNumber(), pagination.getPageSize(),
+                Sort.by(sortResultsBy.getOrderBy(), sortResultsBy.getFieldName().toString()));
 
         var ticketEntityPage = ticketService.getTicketsBySearchPredicate(predicate, pageRequest);
 
