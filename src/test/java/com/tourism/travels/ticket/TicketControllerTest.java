@@ -227,6 +227,38 @@ class TicketControllerTest {
             verifyNoMoreInteractions(predicateBuilder, ticketService, travelMapper);
         }
 
+        @Test
+        void returns400BadRequest_whenPageNumberIsLessThan0() throws Exception {
+            // Arrange
+            var requestBody = SEARCH_REQUEST.replace("\"pageNumber\": 0,", "\"pageNumber\": -1,");
+
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "pagination.pageNumber")
+                    .replace("must not be null", "must be greater than or equal to 0");
+
+            // Act/Assert
+            mockMvc.perform(post("/tickets/search")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(requestBody))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void returns400BadRequest_whenPageSizeIsLessThan1() throws Exception {
+            // Arrange
+            var requestBody = SEARCH_REQUEST.replace("25", "0");
+
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "pagination.pageSize")
+                    .replace("must not be null", "must be greater than or equal to 1");
+
+            // Act/Assert
+            mockMvc.perform(post("/tickets/search")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(requestBody))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
         @ParameterizedTest
         @CsvSource({"123, customerId", "987, packageId", "ias456@google.com, email"})
         void returns400BadRequest_whenCustomerIdOrPackageIdIsPresentAndIsEmpty(String value,
@@ -416,6 +448,10 @@ class TicketControllerTest {
     public static final String SEARCH_REQUEST =
             """
                     {
+                      "pagination": {
+                        "pageNumber": 0,
+                        "pageSize": 25
+                      },
                       "customerId": "123",
                       "packageId": "987",
                       "email": "ias456@google.com",
