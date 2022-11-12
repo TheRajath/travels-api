@@ -46,19 +46,20 @@ public class TicketController {
     public SearchTicketResource searchTicket(@Valid @RequestBody SearchRequest searchRequest) {
 
         var predicate = predicateBuilder.buildSearchPredicate(searchRequest);
-        var pageRequest = PageRequest.of(searchRequest.getPagination().getPageNumber(),
-                searchRequest.getPagination().getPageSize());
+
+        var pagination = searchRequest.getPagination();
+        var pageRequest = PageRequest.of(pagination.getPageNumber(), pagination.getPageSize());
 
         var ticketEntityPage = ticketService.getTicketsBySearchPredicate(predicate, pageRequest);
 
-        var pagination = buildPaginationForTicketSearch(ticketEntityPage);
+        var resultPagination = buildPaginationForTicketSearch(ticketEntityPage);
 
         var ticketDetails = ticketEntityPage.stream()
                 .map(travelMapper::mapTicketDetails)
                 .toList();
 
         var searchTicketResource = new SearchTicketResource();
-        searchTicketResource.setPagination(pagination);
+        searchTicketResource.setPagination(resultPagination);
         searchTicketResource.setTicketDetails(ticketDetails);
 
         return searchTicketResource;
