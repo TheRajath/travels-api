@@ -17,24 +17,24 @@ public class PredicateBuilder {
 
         var predicate = new BooleanBuilder();
 
-        if (searchRequest.customerId() != null) {
+        if (searchRequest.getCustomerId() != null) {
 
-            predicate.and(ticketEntity.customerId.eq(searchRequest.customerId()));
+            predicate.and(ticketEntity.customerId.eq(searchRequest.getCustomerId()));
         }
 
-        if (searchRequest.packageId() != null) {
+        if (searchRequest.getPackageId() != null) {
 
-            predicate.and(ticketEntity.packageId.eq(searchRequest.packageId()));
+            predicate.and(ticketEntity.packageId.eq(searchRequest.getPackageId()));
         }
 
-        if (searchRequest.email() != null) {
+        if (searchRequest.getEmail() != null) {
 
-            predicate.and(ticketEntity.customerEntity.email.eq(searchRequest.email()));
+            predicate.and(ticketEntity.customerEntity.email.eq(searchRequest.getEmail()));
         }
 
-        if (searchRequest.travelDate() != null) {
+        if (searchRequest.getTravelDate() != null) {
 
-            predicate.and(ticketEntity.travelDate.eq(LocalDate.parse(searchRequest.travelDate())));
+            predicate.and(ticketEntity.travelDate.eq(LocalDate.parse(searchRequest.getTravelDate())));
         }
 
         if (predicate.getValue() == null) {
