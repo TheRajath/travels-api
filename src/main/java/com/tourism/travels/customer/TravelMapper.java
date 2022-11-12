@@ -2,6 +2,7 @@
 package com.tourism.travels.customer;
 
 import com.tourism.travels.pojo.*;
+import com.tourism.travels.pojo.SearchTicketResource.TicketDetail;
 import com.tourism.travels.sql.CustomerEntity;
 import com.tourism.travels.sql.PackageEntity;
 import com.tourism.travels.sql.TicketEntity;
@@ -50,18 +51,17 @@ public interface TravelMapper {
     @Mapping(target = "email", source = "ticketEntity.customerEntity.email")
     @Mapping(target = "packageName", source = "ticketEntity.packageEntity.packageName")
     @Mapping(target = "tripDuration", source = "ticketEntity.packageEntity.tripDuration")
-    SearchTicketResource mapSearchResource(TicketEntity ticketEntity);
+    TicketDetail mapTicketDetails(TicketEntity ticketEntity);
 
     @AfterMapping
-    default void setTotalCostForSearchResource(@MappingTarget SearchTicketResource searchTicketResource,
-                                               TicketEntity ticketEntity) {
+    default void setTotalCostForSearchResource(@MappingTarget TicketDetail ticketDetail, TicketEntity ticketEntity) {
 
         var totalMembers = ticketEntity.getTotalMembers();
         var costPerPerson = ticketEntity.getPackageEntity().getCostPerPerson();
 
         var totalCostOfTrip = totalMembers * costPerPerson;
 
-        searchTicketResource.setTotalCostOfTrip(totalCostOfTrip);
+        ticketDetail.setTotalCostOfTrip(totalCostOfTrip);
     }
 
 }

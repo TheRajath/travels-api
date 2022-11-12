@@ -25,7 +25,7 @@ class TravelMapperTest {
             ticketEntity.setPackageEntity(packageEntity);
 
             // Act
-            var searchTicketResource = travelMapper.mapSearchResource(ticketEntity);
+            var searchTicketResource = travelMapper.mapTicketDetails(ticketEntity);
 
             // Assert
             assertThat(searchTicketResource.getTotalCostOfTrip()).isEqualTo(3000);

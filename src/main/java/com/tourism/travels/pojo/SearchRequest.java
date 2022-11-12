@@ -5,6 +5,7 @@ import com.tourism.travels.validation.NotEmptyIfPresent;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
 @Getter
@@ -23,5 +24,8 @@ public class SearchRequest {
 
     @DateFormatCheck
     private String travelDate;
+
+    @Valid
+    private Pagination pagination = new Pagination();
 
 }
