@@ -2,22 +2,30 @@ package com.tourism.travels.pojo;
 
 import com.tourism.travels.validation.DateFormatCheck;
 import com.tourism.travels.validation.NotEmptyIfPresent;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
-public record SearchRequest(
+@Getter
+@Setter
+public class SearchRequest {
 
     @NotEmptyIfPresent
-    String customerId,
+    private String customerId;
 
     @NotEmptyIfPresent
-    String packageId,
+    private String packageId;
 
     @Email
     @NotEmptyIfPresent
-    String email,
+    private String email;
 
     @DateFormatCheck
-    String travelDate) {
+    private String travelDate;
+
+    @Valid
+    private Pagination pagination = new Pagination();
 
 }

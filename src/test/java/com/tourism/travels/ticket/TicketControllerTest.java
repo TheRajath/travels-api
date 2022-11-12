@@ -6,7 +6,11 @@ import com.querydsl.core.BooleanBuilder;
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.GlobalExceptionHandler;
 import com.tourism.travels.packages.PackageService;
-import com.tourism.travels.pojo.*;
+import com.tourism.travels.pojo.SearchRequest;
+import com.tourism.travels.pojo.SearchTicketResource.TicketDetail;
+import com.tourism.travels.pojo.TicketRefund;
+import com.tourism.travels.pojo.TicketRequest;
+import com.tourism.travels.pojo.TicketResource;
 import com.tourism.travels.sql.PackageEntity;
 import com.tourism.travels.sql.TicketEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +21,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
@@ -188,21 +194,24 @@ class TicketControllerTest {
             // Arrange
             var predicate = new BooleanBuilder();
             var ticketEntity = new TicketEntity();
+            var pageRequest = PageRequest.of(0, 25);
 
-            var searchTicketResource = new SearchTicketResource();
-            searchTicketResource.setFirstName("firstName");
-            searchTicketResource.setLastName("lastName");
-            searchTicketResource.setEmail("email@email.com");
-            searchTicketResource.setPackageName("packageName");
-            searchTicketResource.setTripDuration("2 Days");
-            searchTicketResource.setTravelDate(LocalDate.parse("2022-12-15"));
-            searchTicketResource.setTotalMembers(2);
-            searchTicketResource.setTotalCostOfTrip(1500);
+            PageImpl<TicketEntity> ticketEntities =
+                    new PageImpl<>(Collections.singletonList(ticketEntity), pageRequest, 20);
+
+            var ticketDetail = new TicketDetail();
+            ticketDetail.setFirstName("firstName");
+            ticketDetail.setLastName("lastName");
+            ticketDetail.setEmail("email@email.com");
+            ticketDetail.setPackageName("packageName");
+            ticketDetail.setTripDuration("2 Days");
+            ticketDetail.setTravelDate(LocalDate.parse("2022-12-15"));
+            ticketDetail.setTotalMembers(2);
+            ticketDetail.setTotalCostOfTrip(1500);
 
             when(predicateBuilder.buildSearchPredicate(any(SearchRequest.class))).thenReturn(predicate);
-            when(ticketService.getTicketsBySearchPredicate(predicate))
-                    .thenReturn(Collections.singletonList(ticketEntity));
-            when(travelMapper.mapSearchResource(ticketEntity)).thenReturn(searchTicketResource);
+            when(ticketService.getTicketsBySearchPredicate(predicate, pageRequest)).thenReturn(ticketEntities);
+            when(travelMapper.mapTicketDetails(ticketEntity)).thenReturn(ticketDetail);
 
             // Act/Assert
             mockMvc.perform(post("/tickets/search")
@@ -212,8 +221,8 @@ class TicketControllerTest {
                     .andExpect(content().json(SEARCH_TICKET_RESPONSE));
 
             verify(predicateBuilder).buildSearchPredicate(any(SearchRequest.class));
-            verify(ticketService).getTicketsBySearchPredicate(predicate);
-            verify(travelMapper).mapSearchResource(ticketEntity);
+            verify(ticketService).getTicketsBySearchPredicate(predicate, pageRequest);
+            verify(travelMapper).mapTicketDetails(ticketEntity);
 
             verifyNoMoreInteractions(predicateBuilder, ticketService, travelMapper);
         }
@@ -415,18 +424,26 @@ class TicketControllerTest {
 
     public static final String SEARCH_TICKET_RESPONSE =
             """
-                    [
-                      {
-                        "firstName": "firstName",
-                        "lastName": "lastName",
-                        "email": "email@email.com",
-                        "packageName": "packageName",
-                        "tripDuration": "2 Days",
-                        "travelDate": "2022-12-15",
-                        "totalMembers": 2,
-                        "totalCostOfTrip": 1500
-                      }
-                    ]""";
+                    {
+                      "pagination": {
+                        "pageNumber": 0,
+                        "pageSize": 25,
+                        "totalReturnCount": 1,
+                        "totalRowCount": 1
+                      },
+                      "ticketDetails": [
+                        {
+                          "firstName": "firstName",
+                          "lastName": "lastName",
+                          "email": "email@email.com",
+                          "packageName": "packageName",
+                          "tripDuration": "2 Days",
+                          "travelDate": "2022-12-15",
+                          "totalMembers": 2,
+                          "totalCostOfTrip": 1500
+                        }
+                      ]
+                    }""";
 
     private static final String COMMON_ERROR_MESSAGE =
             """

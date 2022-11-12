@@ -7,6 +7,8 @@ import com.tourism.travels.exception.NotFoundException;
 import com.tourism.travels.sql.TicketEntity;
 import com.tourism.travels.sql.TicketRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,9 +43,9 @@ public class TicketService {
 
     }
 
-    public List<TicketEntity> getTicketsBySearchPredicate(Predicate predicate) {
+    public Page<TicketEntity> getTicketsBySearchPredicate(Predicate predicate, Pageable pageable) {
 
-        return (List<TicketEntity>) ticketRepository.findAll(predicate);
+        return ticketRepository.findAll(predicate, pageable);
     }
 
     public TicketEntity updateTicketById(TicketEntity ticketEntityWithUpdates) {

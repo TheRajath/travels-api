@@ -22,7 +22,8 @@ class PredicateBuilderTest {
         @Test
         void setsCustomerId_whenRequestContainsCustomerId() {
             // Arrange
-            var searchRequest = new SearchRequest("123", null, null, null);
+            var searchRequest = new SearchRequest();
+            searchRequest.setCustomerId("123");
 
             var expectedPredicate = new BooleanBuilder();
             expectedPredicate.and(ticketEntity.customerId.eq("123"));
@@ -37,7 +38,8 @@ class PredicateBuilderTest {
         @Test
         void setsPackageId_whenRequestContainsPackageId() {
             // Arrange
-            var searchRequest = new SearchRequest(null, "123", null, null);
+            var searchRequest = new SearchRequest();
+            searchRequest.setPackageId("123");
 
             var expectedPredicate = new BooleanBuilder();
             expectedPredicate.and(ticketEntity.packageId.eq("123"));
@@ -52,7 +54,8 @@ class PredicateBuilderTest {
         @Test
         void setsEmail_whenRequestContainsEmail() {
             // Arrange
-            var searchRequest = new SearchRequest(null, null, "sai@gmail.com", null);
+            var searchRequest = new SearchRequest();
+            searchRequest.setEmail("sai@gmail.com");
 
             var expectedPredicate = new BooleanBuilder();
             expectedPredicate.and(ticketEntity.customerEntity.email.eq("sai@gmail.com"));
@@ -67,7 +70,8 @@ class PredicateBuilderTest {
         @Test
         void setsTravelDate_whenRequestContainsTravelDate() {
             // Arrange
-            var searchRequest = new SearchRequest(null, null, null, "2022-12-15");
+            var searchRequest = new SearchRequest();
+            searchRequest.setTravelDate("2022-12-15");
 
             var expectedPredicate = new BooleanBuilder();
             expectedPredicate.and(ticketEntity.travelDate.eq(LocalDate.parse("2022-12-15")));
@@ -82,7 +86,7 @@ class PredicateBuilderTest {
         @Test
         void throwsBusinessValidationException_whenRequestBodyIsNull() {
             // Arrange
-            var searchRequest = new SearchRequest(null, null, null, null);
+            var searchRequest = new SearchRequest();
 
             // Act/Assert
             assertThatThrownBy(() -> predicateBuilder.buildSearchPredicate(searchRequest))

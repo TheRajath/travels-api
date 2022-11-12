@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -118,18 +120,21 @@ class TicketServiceTest {
         void works() {
             // Arrange
             Predicate predicate = new BooleanBuilder();
+            var ticketEntity = new TicketEntity();
+            var pageRequest = PageRequest.of(0, 25);
 
-            var ticketEntities = Collections.singletonList(new TicketEntity());
+            PageImpl<TicketEntity> ticketEntities =
+                    new PageImpl<>(Collections.singletonList(ticketEntity), pageRequest, 20);
 
-            when(ticketRepository.findAll(predicate)).thenReturn(ticketEntities);
+            when(ticketRepository.findAll(predicate, pageRequest)).thenReturn(ticketEntities);
 
             // Act
-            var retrievedTicketEntities = ticketService.getTicketsBySearchPredicate(predicate);
+            var retrievedTicketEntities = ticketService.getTicketsBySearchPredicate(predicate, pageRequest);
 
             // Assert
             assertThat(retrievedTicketEntities).isNotNull().isNotEmpty().isEqualTo(ticketEntities);
 
-            verify(ticketRepository).findAll(predicate);
+            verify(ticketRepository).findAll(predicate, pageRequest);
 
             verifyNoMoreInteractions(ticketRepository);
         }

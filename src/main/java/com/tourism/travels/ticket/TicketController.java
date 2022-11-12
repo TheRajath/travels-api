@@ -3,7 +3,10 @@ package com.tourism.travels.ticket;
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.packages.PackageService;
 import com.tourism.travels.pojo.*;
+import com.tourism.travels.sql.TicketEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,13 +43,26 @@ public class TicketController {
     }
 
     @PostMapping("/search")
-    public List<SearchTicketResource> searchTicket(@Valid @RequestBody SearchRequest searchRequest) {
+    public SearchTicketResource searchTicket(@Valid @RequestBody SearchRequest searchRequest) {
 
         var predicate = predicateBuilder.buildSearchPredicate(searchRequest);
 
-        return ticketService.getTicketsBySearchPredicate(predicate).stream()
-                .map(travelMapper::mapSearchResource)
+        var pagination = searchRequest.getPagination();
+        var pageRequest = PageRequest.of(pagination.getPageNumber(), pagination.getPageSize());
+
+        var ticketEntityPage = ticketService.getTicketsBySearchPredicate(predicate, pageRequest);
+
+        var resultPagination = buildPaginationForTicketSearch(ticketEntityPage);
+
+        var ticketDetails = ticketEntityPage.stream()
+                .map(travelMapper::mapTicketDetails)
                 .toList();
+
+        var searchTicketResource = new SearchTicketResource();
+        searchTicketResource.setPagination(resultPagination);
+        searchTicketResource.setTicketDetails(ticketDetails);
+
+        return searchTicketResource;
     }
 
     @PutMapping("/update")
@@ -81,6 +97,18 @@ public class TicketController {
         });
 
         return ticketResources;
+    }
+
+    private Pagination buildPaginationForTicketSearch(Page<TicketEntity> ticketEntityPage) {
+
+        var pagination = new Pagination();
+
+        pagination.setPageNumber(ticketEntityPage.getNumber());
+        pagination.setPageSize(ticketEntityPage.getSize());
+        pagination.setTotalReturnCount(ticketEntityPage.getTotalElements());
+        pagination.setTotalRowCount(ticketEntityPage.getNumberOfElements());
+
+        return pagination;
     }
 
 }
