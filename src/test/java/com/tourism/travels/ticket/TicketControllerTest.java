@@ -2,14 +2,11 @@ package com.tourism.travels.ticket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.querydsl.core.types.Predicate;
+import com.querydsl.core.BooleanBuilder;
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.GlobalExceptionHandler;
 import com.tourism.travels.packages.PackageService;
-import com.tourism.travels.pojo.SearchTicketResource;
-import com.tourism.travels.pojo.TicketRefund;
-import com.tourism.travels.pojo.TicketRequest;
-import com.tourism.travels.pojo.TicketResource;
+import com.tourism.travels.pojo.*;
 import com.tourism.travels.sql.PackageEntity;
 import com.tourism.travels.sql.TicketEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,13 +34,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class TicketControllerTest {
 
     @Mock
+    private TravelMapper travelMapper;
+
+    @Mock
     private TicketService ticketService;
 
     @Mock
     private PackageService packageService;
 
     @Mock
-    private TravelMapper travelMapper;
+    private PredicateBuilder predicateBuilder;
 
     private MockMvc mockMvc;
 
@@ -54,7 +54,7 @@ class TicketControllerTest {
     @BeforeEach
     void setUp() {
 
-        var ticketController = new TicketController(travelMapper, ticketService, packageService);
+        var ticketController = new TicketController(travelMapper, ticketService, packageService, predicateBuilder);
 
         objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
@@ -186,6 +186,7 @@ class TicketControllerTest {
         @Test
         void works() throws Exception {
             // Arrange
+            var predicate = new BooleanBuilder();
             var ticketEntity = new TicketEntity();
 
             var searchTicketResource = new SearchTicketResource();
@@ -198,7 +199,8 @@ class TicketControllerTest {
             searchTicketResource.setTotalMembers(2);
             searchTicketResource.setTotalCostOfTrip(1500);
 
-            when(ticketService.getTicketsBySearchPredicate(any(Predicate.class)))
+            when(predicateBuilder.buildSearchPredicate(any(SearchRequest.class))).thenReturn(predicate);
+            when(ticketService.getTicketsBySearchPredicate(predicate))
                     .thenReturn(Collections.singletonList(ticketEntity));
             when(travelMapper.mapSearchResource(ticketEntity)).thenReturn(searchTicketResource);
 
@@ -209,10 +211,11 @@ class TicketControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(content().json(SEARCH_TICKET_RESPONSE));
 
-            verify(ticketService).getTicketsBySearchPredicate(any(Predicate.class));
+            verify(predicateBuilder).buildSearchPredicate(any(SearchRequest.class));
+            verify(ticketService).getTicketsBySearchPredicate(predicate);
             verify(travelMapper).mapSearchResource(ticketEntity);
 
-            verifyNoMoreInteractions(ticketService, travelMapper);
+            verifyNoMoreInteractions(predicateBuilder, ticketService, travelMapper);
         }
 
         @ParameterizedTest
@@ -256,27 +259,6 @@ class TicketControllerTest {
 
             var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "travelDate")
                     .replace("must not be null", "travel date is in wrong format, correct format is yyyy-mm-dd");
-
-            // Act/Assert
-            mockMvc.perform(post("/tickets/search")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(requestBody))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().json(errorMessage));
-        }
-
-        @Test
-        void returns400BadRequest_whenSearchRequestDoesNotContainCriteria() throws Exception {
-            // Arrange
-            var requestBody = "{}";
-            var message = "request body must contain at least one of the following search" +
-                    " criteria: customerId, packageId, email, travelDate";
-
-            var errorMessage =
-                    """
-                            {
-                                "message": "%s"
-                            }""".formatted(message);
 
             // Act/Assert
             mockMvc.perform(post("/tickets/search")
