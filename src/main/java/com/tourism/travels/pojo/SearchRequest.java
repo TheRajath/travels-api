@@ -3,10 +3,16 @@ package com.tourism.travels.pojo;
 import com.tourism.travels.validation.DateFormatCheck;
 import com.tourism.travels.validation.NotEmptyIfPresent;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Sort.Direction;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
+import static com.tourism.travels.pojo.SearchRequest.FieldName.TRAVEL_DATE;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @Getter
 @Setter
@@ -27,5 +33,33 @@ public class SearchRequest {
 
     @Valid
     private Pagination pagination = new Pagination();
+
+    @Valid
+    @NotNull
+    private SortResultsBy sortResultsBy = new SortResultsBy();
+
+    @Getter
+    @Setter
+    public static class SortResultsBy {
+
+        @NotNull
+        private FieldName fieldName = TRAVEL_DATE;
+
+        @NotNull
+        private Direction orderBy = ASC;
+
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public enum FieldName {
+
+        TRAVEL_DATE("travelDate"),
+        CUSTOMER_ID("customerId"),
+        CUSTOMER_NAME("customerEntity.firstName");
+
+        private final String columnName;
+
+    }
 
 }
