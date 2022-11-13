@@ -306,8 +306,98 @@ class TicketControllerTest {
 
             // Act/Assert
             mockMvc.perform(post("/tickets/search")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void returns400BadRequest_whenSortResultsByIsNull() throws Exception {
+            // Arrange
+            var requestJson =
+                    """
+                    {
+                      "customerId": "123",
+                      "sortResultsBy": null
+                    }""";
+
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "sortResultsBy");
+
+            // Act/Assert
+            mockMvc.perform(post("/tickets/search")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(requestJson))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void returns400BadRequest_whenFieldNameIsNotProper() throws Exception {
+            // Arrange
+            var request = SEARCH_REQUEST.replace("TRAVEL_DATE", "DATE");
+
+            var errorMessage =
+                    """
+                            {
+                              "field": "sortResultsBy",
+                              "message": "Invalid value. Valid values: TRAVEL_DATE, CUSTOMER_ID, CUSTOMER_NAME"
+                            }""";
+
+            // Act/Assert
+            mockMvc.perform(post("/tickets/search")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void returns400BadRequest_whenFieldNameIsNull() throws Exception {
+            // Arrange
+            var request = SEARCH_REQUEST.replace("\"TRAVEL_DATE\"", "null");
+
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "sortResultsBy.fieldName");
+
+            // Act/Assert
+            mockMvc.perform(post("/tickets/search")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void returns400BadRequest_whenOrderByIsNotProper() throws Exception {
+            // Arrange
+            var request = SEARCH_REQUEST.replace("ASC", "123");
+
+            var errorMessage =
+                    """
+                            {
+                              "field": "sortResultsBy",
+                              "message": "Invalid value. Valid values: ASC, DESC"
+                            }""";
+
+            // Act/Assert
+            mockMvc.perform(post("/tickets/search")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().json(errorMessage));
+        }
+
+        @Test
+        void returns400BadRequest_whenOrderByIsNull() throws Exception {
+            // Arrange
+            var request = SEARCH_REQUEST.replace("\"ASC\"", "null");
+
+            var errorMessage = COMMON_ERROR_MESSAGE.replace("fieldName", "sortResultsBy.orderBy");
+
+            // Act/Assert
+            mockMvc.perform(post("/tickets/search")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
                     .andExpect(status().isBadRequest())
                     .andExpect(content().json(errorMessage));
         }
@@ -458,7 +548,11 @@ class TicketControllerTest {
                       "customerId": "123",
                       "packageId": "987",
                       "email": "ias456@google.com",
-                      "travelDate": "2022-12-15"
+                      "travelDate": "2022-12-15",
+                      "sortResultsBy": {
+                        "fieldName": "TRAVEL_DATE",
+                        "orderBy": "ASC"
+                      }
                     }""";
 
     public static final String SEARCH_TICKET_RESPONSE =
