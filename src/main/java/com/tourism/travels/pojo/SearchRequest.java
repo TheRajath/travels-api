@@ -3,13 +3,14 @@ package com.tourism.travels.pojo;
 import com.tourism.travels.validation.DateFormatCheck;
 import com.tourism.travels.validation.NotEmptyIfPresent;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Sort.Direction;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
-import static com.tourism.travels.pojo.SearchRequest.SortResultsBy.FieldName.TRAVEL_DATE;
+import static com.tourism.travels.pojo.SearchRequest.FieldName.TRAVEL_DATE;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @Getter
@@ -43,11 +44,17 @@ public class SearchRequest {
 
         private Direction orderBy = ASC;
 
-        public enum FieldName {
+    }
 
-            TRAVEL_DATE
+    @Getter
+    @RequiredArgsConstructor
+    public enum FieldName {
 
-        }
+        TRAVEL_DATE("travelDate"),
+        CUSTOMER_ID("customerId"),
+        CUSTOMER_NAME("customerEntity.firstName");
+
+        private final String columnName;
 
     }
 

@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,7 +32,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.time.LocalDate;
 import java.util.Collections;
 
+import static com.tourism.travels.pojo.SearchRequest.FieldName.TRAVEL_DATE;
 import static org.mockito.Mockito.*;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -194,7 +197,7 @@ class TicketControllerTest {
             // Arrange
             var predicate = new BooleanBuilder();
             var ticketEntity = new TicketEntity();
-            var pageRequest = PageRequest.of(0, 25);
+            var pageRequest = PageRequest.of(0, 25).withSort(Sort.by(ASC, TRAVEL_DATE.getColumnName()));
 
             PageImpl<TicketEntity> ticketEntities =
                     new PageImpl<>(Collections.singletonList(ticketEntity), pageRequest, 20);

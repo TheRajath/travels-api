@@ -50,8 +50,8 @@ public class TicketController {
 
         var pagination = searchRequest.getPagination();
         var sortResultsBy = searchRequest.getSortResultsBy();
-        var pageRequest = PageRequest.of(pagination.getPageNumber(), pagination.getPageSize(),
-                Sort.by(sortResultsBy.getOrderBy(), sortResultsBy.getFieldName().toString()));
+        var pageRequest = PageRequest.of(pagination.getPageNumber(), pagination.getPageSize())
+                .withSort(Sort.by(sortResultsBy.getOrderBy(), sortResultsBy.getFieldName().getColumnName()));
 
         var ticketEntityPage = ticketService.getTicketsBySearchPredicate(predicate, pageRequest);
 
