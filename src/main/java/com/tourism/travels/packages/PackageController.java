@@ -3,10 +3,10 @@ package com.tourism.travels.packages;
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.pojo.PackageRequest;
 import com.tourism.travels.pojo.PackageResource;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
