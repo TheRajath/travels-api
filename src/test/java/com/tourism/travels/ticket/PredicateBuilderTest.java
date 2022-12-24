@@ -26,7 +26,7 @@ class PredicateBuilderTest {
             searchRequest.setCustomerId("123");
 
             var expectedPredicate = new BooleanBuilder();
-            expectedPredicate.and(ticketEntity.customerId.eq("123"));
+            expectedPredicate.and(ticketEntity.customerId.eq(123));
 
             // Act
             var returnedPredicate = predicateBuilder.buildSearchPredicate(searchRequest);
@@ -42,7 +42,7 @@ class PredicateBuilderTest {
             searchRequest.setPackageId("123");
 
             var expectedPredicate = new BooleanBuilder();
-            expectedPredicate.and(ticketEntity.packageId.eq("123"));
+            expectedPredicate.and(ticketEntity.packageId.eq(123));
 
             // Act
             var returnedPredicate = predicateBuilder.buildSearchPredicate(searchRequest);
