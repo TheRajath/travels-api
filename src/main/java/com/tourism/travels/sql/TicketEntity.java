@@ -19,10 +19,10 @@ public class TicketEntity {
     private int ticketId;
 
     @Column(name = "customer_id")
-    private String customerId;
+    private int customerId;
 
     @Column(name = "package_id")
-    private String packageId;
+    private int packageId;
 
     @Column(name = "travel_date")
     private LocalDate travelDate;
