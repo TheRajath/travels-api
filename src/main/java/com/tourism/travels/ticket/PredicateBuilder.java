@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 import static com.tourism.travels.sql.QTicketEntity.ticketEntity;
+import static java.lang.Integer.parseInt;
 
 @Component
 public class PredicateBuilder {
@@ -19,12 +20,12 @@ public class PredicateBuilder {
 
         if (searchRequest.getCustomerId() != null) {
 
-            predicate.and(ticketEntity.customerId.eq(searchRequest.getCustomerId()));
+            predicate.and(ticketEntity.customerId.eq(parseInt(searchRequest.getCustomerId())));
         }
 
         if (searchRequest.getPackageId() != null) {
 
-            predicate.and(ticketEntity.packageId.eq(searchRequest.getPackageId()));
+            predicate.and(ticketEntity.packageId.eq(parseInt(searchRequest.getPackageId())));
         }
 
         if (searchRequest.getEmail() != null) {

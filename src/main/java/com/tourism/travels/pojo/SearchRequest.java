@@ -2,14 +2,13 @@ package com.tourism.travels.pojo;
 
 import com.tourism.travels.validation.DateFormatCheck;
 import com.tourism.travels.validation.NotEmptyIfPresent;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Sort.Direction;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 
 import static com.tourism.travels.pojo.SearchRequest.FieldName.TRAVEL_DATE;
 import static org.springframework.data.domain.Sort.Direction.ASC;

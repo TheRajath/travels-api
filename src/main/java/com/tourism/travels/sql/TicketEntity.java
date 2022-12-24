@@ -1,10 +1,10 @@
 package com.tourism.travels.sql;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
@@ -19,10 +19,10 @@ public class TicketEntity {
     private int ticketId;
 
     @Column(name = "customer_id")
-    private String customerId;
+    private int customerId;
 
     @Column(name = "package_id")
-    private String packageId;
+    private int packageId;
 
     @Column(name = "travel_date")
     private LocalDate travelDate;

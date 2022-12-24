@@ -1,7 +1,8 @@
 package com.tourism.travels.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+
 import java.time.LocalDate;
 
 public class PresentOrFutureDateValidator implements ConstraintValidator<PresentOrFutureDateCheck, String> {

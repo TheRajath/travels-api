@@ -4,13 +4,13 @@ import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.packages.PackageService;
 import com.tourism.travels.pojo.*;
 import com.tourism.travels.sql.TicketEntity;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
