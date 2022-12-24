@@ -52,8 +52,8 @@ public class CustomerController {
         return travelMapper.toCustomerRequest(customerEntityWithUpdates);
     }
 
-    @DeleteMapping("/{customerId}")
     @ResponseStatus(NO_CONTENT)
+    @DeleteMapping("/{customerId}")
     public void deleteCustomer(@PathVariable String customerId) {
 
         customerService.deleteByCustomerId(Integer.parseInt(customerId));
