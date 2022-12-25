@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.querydsl.core.BooleanBuilder;
 import com.tourism.travels.customer.TravelMapper;
 import com.tourism.travels.exception.GlobalExceptionHandler;
-import com.tourism.travels.packages.PackageService;
 import com.tourism.travels.pojo.SearchRequest;
 import com.tourism.travels.pojo.SearchTicketResource.TicketDetail;
 import com.tourism.travels.pojo.TicketRefund;
@@ -49,9 +48,6 @@ class TicketControllerTest {
     private TicketService ticketService;
 
     @Mock
-    private PackageService packageService;
-
-    @Mock
     private PredicateBuilder predicateBuilder;
 
     private MockMvc mockMvc;
@@ -63,7 +59,7 @@ class TicketControllerTest {
     @BeforeEach
     void setUp() {
 
-        var ticketController = new TicketController(travelMapper, ticketService, packageService, predicateBuilder);
+        var ticketController = new TicketController(travelMapper, ticketService, predicateBuilder);
 
         objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
@@ -97,7 +93,6 @@ class TicketControllerTest {
 
             when(ticketService.getTicketEntities()).thenReturn(Collections.singletonList(ticketEntity));
             when(travelMapper.toTicketResource(ticketEntity)).thenReturn(ticketResource);
-            when(packageService.getPackageEntityById(packageId)).thenReturn(packageEntity);
 
             // Act/Assert
             mockMvc.perform(get("/tickets"))
@@ -106,9 +101,8 @@ class TicketControllerTest {
 
             verify(ticketService).getTicketEntities();
             verify(travelMapper).toTicketResource(ticketEntity);
-            verify(packageService).getPackageEntityById(packageId);
 
-            verifyNoMoreInteractions(ticketService, travelMapper, packageService);
+            verifyNoMoreInteractions(ticketService, travelMapper);
         }
 
     }

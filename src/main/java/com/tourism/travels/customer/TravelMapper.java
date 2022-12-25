@@ -54,14 +54,26 @@ public interface TravelMapper {
     TicketDetail mapTicketDetails(TicketEntity ticketEntity);
 
     @AfterMapping
+    default void setTotalCostInTicketResource(@MappingTarget TicketResource ticketResource, TicketEntity ticketEntity) {
+
+        var totalCost = getCostOfTrip(ticketEntity);
+
+        ticketResource.setTotalCost(totalCost);
+    }
+
+    @AfterMapping
     default void setTotalCostForSearchResource(@MappingTarget TicketDetail ticketDetail, TicketEntity ticketEntity) {
 
+        var totalCostOfTrip = getCostOfTrip(ticketEntity);
+
+        ticketDetail.setTotalCostOfTrip(totalCostOfTrip);
+    }
+
+    private int getCostOfTrip(TicketEntity ticketEntity) {
         var totalMembers = ticketEntity.getTotalMembers();
         var costPerPerson = ticketEntity.getPackageEntity().getCostPerPerson();
 
-        var totalCostOfTrip = totalMembers * costPerPerson;
-
-        ticketDetail.setTotalCostOfTrip(totalCostOfTrip);
+        return totalMembers * costPerPerson;
     }
 
 }

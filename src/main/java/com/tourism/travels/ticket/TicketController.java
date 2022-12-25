@@ -1,7 +1,6 @@
 package com.tourism.travels.ticket;
 
 import com.tourism.travels.customer.TravelMapper;
-import com.tourism.travels.packages.PackageService;
 import com.tourism.travels.pojo.*;
 import com.tourism.travels.sql.TicketEntity;
 import jakarta.validation.Valid;
@@ -20,17 +19,14 @@ public class TicketController {
 
     private final TravelMapper travelMapper;
     private final TicketService ticketService;
-    private final PackageService packageService;
     private final PredicateBuilder predicateBuilder;
 
     @GetMapping
     public List<TicketResource> getTickets() {
 
-        var ticketResources = ticketService.getTicketEntities().stream()
+        return ticketService.getTicketEntities().stream()
                 .map(travelMapper::toTicketResource)
                 .toList();
-
-        return setTotalCostForTicketResources(ticketResources);
     }
 
     @PutMapping("/create")
@@ -83,23 +79,6 @@ public class TicketController {
         var refundAmount  = ticketService.deleteTicket(ticketId);
 
         return new TicketRefund(refundAmount);
-    }
-
-    private List<TicketResource> setTotalCostForTicketResources(List<TicketResource> ticketResources) {
-
-        ticketResources.forEach(ticket -> {
-
-            var packageId = Integer.parseInt(ticket.getPackageId());
-            var totalMembers = Integer.parseInt(ticket.getTotalMembers());
-
-            var packageEntity = packageService.getPackageEntityById(packageId);
-            var costPerPerson = packageEntity.getCostPerPerson();
-            var totalCost = totalMembers * costPerPerson;
-
-            ticket.setTotalCost(totalCost);
-        });
-
-        return ticketResources;
     }
 
     private Pagination buildPaginationForTicketSearch(Page<TicketEntity> ticketEntityPage) {
