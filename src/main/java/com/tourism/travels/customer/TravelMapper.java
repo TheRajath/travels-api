@@ -70,6 +70,7 @@ public interface TravelMapper {
     }
 
     private int getCostOfTrip(TicketEntity ticketEntity) {
+
         var totalMembers = ticketEntity.getTotalMembers();
         var costPerPerson = ticketEntity.getPackageEntity().getCostPerPerson();
 
