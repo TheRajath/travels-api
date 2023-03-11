@@ -1,3 +1,3 @@
 # Tourism API
 
-Spring Boot API.
+Spring Boot REST API.
