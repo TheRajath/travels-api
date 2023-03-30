@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.4</version>
+        <version>3.0.5</version>
         <relativePath/>
     </parent>
     <groupId>com.tourism</groupId>
     <artifactId>travels</artifactId>
     <version>1.0.1</version>
     <name>travels</name>
-    <description>Tourism Project</description>
+    <description>travels-api</description>
     <properties>
         <java.version>17</java.version>
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
