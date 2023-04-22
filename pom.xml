@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.5</version>
+        <version>3.0.6</version>
         <relativePath/>
     </parent>
     <groupId>com.tourism</groupId>
@@ -15,7 +15,7 @@
     <description>travels-api</description>
     <properties>
         <java.version>17</java.version>
-        <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
+        <org.mapstruct.version>1.5.4.Final</org.mapstruct.version>
     </properties>
     <dependencies>
         <dependency>
